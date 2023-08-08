@@ -1,58 +1,68 @@
 import './styles.css';
+import { useRef, useEffect } from 'react';
+import { IMoveImageAreaViewModel } from 'viewModels';
+import { fromEvent, map } from 'rxjs';
+import { TPosition } from 'types';
 
-import { useState, useRef } from 'react';
-
-type TPosition = {
-  x: number;
-  y: number;
-};
-
-export const MoveImageArea = () => {
-  const [isMouseDown, setIsMouseDown] = useState(false);
-  const [offset, setOffset] = useState<TPosition>({ x: 0, y: 0 });
-
+export const useMouseImageAreaViewModel = (viewModel: IMoveImageAreaViewModel) => {
   const moveRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    setIsMouseDown(true);
+  const handleMoveElement = () => {
+    const mousemove$ = fromEvent(moveRef.current!, 'mousemove');
+    const moveElementUnsubscribe = viewModel.handleMoveElement(mousemove$);
 
-    const newOffset = {
-      x: moveRef.current!.offsetLeft - event.clientX,
-      y: moveRef.current!.offsetTop - event.clientY,
+    const elementOffset$ = viewModel.elementOffset$.subscribe((newPosition) => {
+      moveRef.current!.style.left = `${newPosition.x}px`;
+      moveRef.current!.style.top = `${newPosition.y}px`;
+    });
+
+    return () => {
+      moveElementUnsubscribe();
+      elementOffset$.unsubscribe();
     };
-
-    setOffset(newOffset);
   };
 
-  const handleMouseUp = () => {
-    setIsMouseDown(false);
-  };
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-
-    if (isMouseDown) {
-      const newMousePosition: TPosition = {
-        x: event.clientX,
-        y: event.clientY,
+  const handleMouseDownElement = () => {
+    const mousedown$ = fromEvent(moveRef.current!, 'mousedown').pipe(
+      map(viewModel.convertToReactMouseEvent),
+    );
+    const action$ = mousedown$.subscribe((event) => {
+      const elementOffset: TPosition = {
+        x: moveRef.current!.offsetLeft,
+        y: moveRef.current!.offsetTop,
       };
 
-      const divLeft = newMousePosition.x + offset.x;
-      const divTop = newMousePosition.y + offset.y;
+      viewModel.handleMouseDown(event, elementOffset);
+    });
 
-      moveRef.current!.style.left = `${divLeft}px`;
-      moveRef.current!.style.top = `${divTop}px`;
-    }
+    return () => action$.unsubscribe();
   };
 
+  useEffect(() => {
+    const clean = handleMoveElement();
+    const cleanMouseDown = handleMouseDownElement();
+
+    return () => {
+      clean();
+      cleanMouseDown();
+    };
+  }, [viewModel]);
+
+  return {
+    handleMouseUp: viewModel.turnOffIsMouseDown,
+    moveRef,
+  };
+};
+
+type Props = {
+  viewModel: IMoveImageAreaViewModel;
+};
+
+export const MoveImageArea = ({ viewModel }: Props) => {
+  const { handleMouseUp, moveRef } = useMouseImageAreaViewModel(viewModel);
+
   return (
-    <div
-      className="bg-gray-200 move-image"
-      ref={moveRef}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
-    >
+    <div className="bg-gray-200 move-image" ref={moveRef} onMouseUp={handleMouseUp}>
       div to move
     </div>
   );

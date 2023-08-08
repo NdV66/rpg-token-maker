@@ -1,10 +1,10 @@
 import { APP_ENV } from 'appEnv';
-import { MainComponent } from 'components';
-import { SettingContextWrapper } from 'components/SettingsContextComponent';
+import { MainComponent, SettingContextWrapper } from 'components';
+import { moveImageAreaViewModel } from 'modelBuilder';
 
 export const App = () => (
   <SettingContextWrapper translations={APP_ENV.translations}>
-    <MainComponent />
+    <MainComponent moveImageAreaViewModel={moveImageAreaViewModel} />
   </SettingContextWrapper>
 );
 
