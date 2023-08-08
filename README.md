@@ -45,13 +45,13 @@ This project allows you to create an RPG token from your own image.
 - `/src`\
     Source code folder.
     - `modelBuilder.ts`
-    - `appEnvs.ts`
+    - `appEnv.ts`
     - `App.tsx`
     - `/data` \
         All **const** data for the app (translations, icon names, errors, color themes etc.).
     - `/models` \
         Models with logic for this app.
-    - `/pages` \
+    - `/components` \
         Visual part of this app.
         - `/<name>Component` \
         A dedicated areas of a page(s).
