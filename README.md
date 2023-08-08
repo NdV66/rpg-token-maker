@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Getting Started with RPG Token Maker
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 This project allows you to create an RPG token from your own image.
