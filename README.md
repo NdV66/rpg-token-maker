@@ -1,46 +1,110 @@
 # Getting Started with Create React App
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+This project allows you to create an RPG token from your own image.
 
-In the project directory, you can run:
+# Run locally
+## Requirements
+- Node.js (>= 16) is installed
+- yarn or npm is installed
 
-### `npm start`
+## How to run?
+1. Download repo.
+2. Go to the main folder.
+3. Run `yarn install`.
+4. Run `yarn start` to run app in the dev mode.
+5. App is available under `localhost:3000`.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# How to deploy?
+0. Create dedicated branch for the version
+1. Change version in the `package.json`.
+2. Make sure everything is merged etc.
+3. Create git tag. \
+`git tag -a vX.X.X -m "What was done"` \
+`git push --tags`
+4. Merge all changes to the `master` branch.
+5. After merge a simple deploy action is called //TODO
+6. Refresh master locally using `git pull origin master`.
+7. App is available under `rpg-token.narin.dev`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<!-- ## How to run e2e tests?
+1. Go to the main folder.
+2. Run `yarn start`
+3. Run `yarn cypress:open` -->
 
-### `npm test`
+# Architecture
+## Overview
+![Here should be an architecture image](./doc/architectureFlow.jpg "Title")
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Folders
+*Warning!* Everything important parts should be always exported by a module`index.ts`.
+- `/doc` \
+    Documentation, version features etc.
+- `/public` \
+    All public data, for example: favicon.
+- `/src`\
+    Source code folder.
+    - `modelBuilder.ts`
+    - `appEnvs.ts`
+    - `App.tsx`
+    - `/data` \
+        All **const** data for the app (translations, icon names, errors, color themes etc.).
+    - `/models` \
+        Models with logic for this app.
+    - `/pages` \
+        Visual part of this app.
+        - `/<name>Component` \
+        A dedicated areas of a page(s).
+    - `/tests` \
+        Test for the app.
+        - `/models` \
+            Tests for models.
+    - `/tools` \
+        All tools and small helpers.
+    - `/types` \
+        All important types and all enums.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Naming conventions
+- use camelCase
+- "real" const should have THIS_NAME
+- follow DRY!
+- less code in more files is better than more code in less files :)
+### Models
+- should be named as `<Name>Model`
+- file name should be the same as the model name
+- should export it's interface, named as `I<Name>`
+- model class should implement its interface
+- use as vanilla TS as possible
+### ViewModels
+- should be named as `<ViewName>ViewModel`
+- file name should be the same as the viewModel name
+- should export it's interface, named as `I<ViewName>ViewModel`
+- viewModel class should implement its interface
+- can use RxJS (if needed)
+- can combine its own logic with dedicated view components, but not with other view models
+### ViewComponents
+- "small" view model
+- should be named as `<ViewName>ViewComponent`
+- file name should be the same as the viewComponent name
+- should export it's interface, named as `I<ViewName>ViewComponent`
+- viewComponent class should implement its interface
+- can use RxJS (if needed)
+### Contexts & ContextWrappers
+- React Context
+- should be named as `<Name>Context`
+- should have its `<Name>ContextWrapper` as a separate file
+- file name should be the same as the context name
+- should export it's interface, named as `I<Name>Context`
+- context should use its interface
+- can use RxJS (if needed)
+### Pages
+- should be named as `<Name>Page`
+- file name should be the same as the page name
+- can use RxJS (if needed)
+- all logic should be placed inside its own hook (often in the same file)
+### PageComponents
+- should be named as `<Name>PageComponent`
+- file name should be the same as the pageComponent name
+- can use RxJS (if needed)
+- all logic should be placed inside its own hook (often in the same file)
