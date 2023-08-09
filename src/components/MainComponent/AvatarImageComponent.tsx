@@ -1,14 +1,21 @@
 import { useEffect } from 'react';
 import { IAvatarImageComponentViewModel } from 'viewModels';
-import { useImageOnCanvasViewModel } from './useImageOnCanvasViewModel';
+
 import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
+
+import img from 'data/testImg.jpg'; //TODO load
+import { useDrawAnyImageOnCanvas } from './useDrawAnyImageOnCanvas';
 
 type Props = {
   viewModel: IAvatarImageComponentViewModel;
 };
 
 export const AvatarImageComponent = ({ viewModel }: Props) => {
-  const { drawImageOnCanvas } = useImageOnCanvasViewModel(viewModel.drawImageOnCanvasViewModel);
+  const { drawImageOnCanvas } = useDrawAnyImageOnCanvas(
+    img,
+    260,
+    viewModel.drawImageOnCanvasViewModel,
+  );
   const { canvasRef } = useImageOnCanvasMoveViewModel(viewModel.imageOnCanvasMoveViewModel);
 
   useEffect(() => {

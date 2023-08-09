@@ -1,5 +1,4 @@
 import { TAppEnv } from 'types';
-import img from 'data/testImg.jpg'; //TODO load
 
 type TDrawSize = {
   drawWidth: number;
@@ -14,29 +13,23 @@ type TCanvasSize = {
 };
 
 export interface IDrawImageOnCanvasViewModel {
-  imgSrc: string;
-
-  prepareImageSize: (image: HTMLImageElement) => TDrawSize;
-  calculateCanvasSize: (drawHeight: number) => TCanvasSize;
+  prepareImageSize: (image: HTMLImageElement, defaultImageWidth: number) => TDrawSize;
+  calculateCanvasSize: (drawHeight: number, defaultImageWidth: number) => TCanvasSize;
 }
 
 export class DrawImageOnCanvasViewModel implements IDrawImageOnCanvasViewModel {
-  constructor(private readonly _appEnv: TAppEnv) {}
-
-  public readonly imgSrc = img;
-
-  public prepareImageSize(image: HTMLImageElement) {
+  public prepareImageSize(image: HTMLImageElement, defaultImageWidth: number) {
     const { width, height } = image;
-    const drawHeight = (this._appEnv.defaultImageWidth * height) / width;
+    const drawHeight = (defaultImageWidth * height) / width;
     return {
       drawHeight,
-      drawWidth: this._appEnv.defaultImageWidth,
+      drawWidth: defaultImageWidth,
     };
   }
 
-  public calculateCanvasSize(drawHeight: number) {
+  public calculateCanvasSize(drawHeight: number, defaultImageWidth: number) {
     const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
-    const width = this._appEnv.defaultImageWidth * DEVICE_PIXEL_RATIO;
+    const width = defaultImageWidth * DEVICE_PIXEL_RATIO;
     const height = drawHeight * DEVICE_PIXEL_RATIO;
     const styleWidth = width / DEVICE_PIXEL_RATIO;
     const styleHeight = height / DEVICE_PIXEL_RATIO;
