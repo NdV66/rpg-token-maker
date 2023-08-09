@@ -1,5 +1,5 @@
 import { IMoveImageAreaViewModel } from 'viewModels';
-import { MoveImageArea } from './MoveImageArea';
+import { MoveImageAreaComponent } from './MoveImageAreaComponent';
 
 type Props = {
   moveImageAreaViewModel: IMoveImageAreaViewModel;
@@ -8,7 +8,7 @@ type Props = {
 export const MainComponent = ({ moveImageAreaViewModel }: Props) => {
   return (
     <div>
-      <MoveImageArea viewModel={moveImageAreaViewModel} />
+      <MoveImageAreaComponent viewModel={moveImageAreaViewModel} />
     </div>
   );
 };

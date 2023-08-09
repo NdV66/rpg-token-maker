@@ -1,14 +1,25 @@
-import { BehaviorSubject, Observable, Subscription, combineLatest, filter, map } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subscription,
+  combineLatest,
+  filter,
+  fromEvent,
+  map,
+} from 'rxjs';
 import { TPosition } from 'types';
 
 export interface IMoveImageAreaViewModel {
   isMouseDown$: Observable<boolean>;
   elementOffset$: Observable<TPosition>;
 
-  handleMoveElement: (mousemove$: Observable<Event>) => Subscription['unsubscribe'];
-  handleMouseDown: (event: React.MouseEvent, elementOffset: TPosition) => void;
+  handleMoveElement: (mousemove$: Observable<React.MouseEvent>) => Subscription['unsubscribe'];
+  setCurrentOffset: (event: React.MouseEvent, elementOffset: TPosition) => void;
   turnOffIsMouseDown: () => void;
-  convertToReactMouseEvent: (event: Event) => React.MouseEvent;
+  fromMouseEvent: <T extends HTMLElement>(
+    element: T,
+    trigger: string,
+  ) => Observable<React.MouseEvent<Element, MouseEvent>>;
 }
 
 export class MoveImageAreaViewModel implements IMoveImageAreaViewModel {
@@ -24,15 +35,15 @@ export class MoveImageAreaViewModel implements IMoveImageAreaViewModel {
     return this._elementOffset$.asObservable();
   }
 
-  public convertToReactMouseEvent(event: Event) {
-    return event as any as React.MouseEvent;
+  public fromMouseEvent<T extends HTMLElement>(element: T, trigger: string) {
+    return fromEvent(element, trigger).pipe(map(this._convertToReactMouseEvent));
   }
 
-  public handleMoveElement = (mousemove$: Observable<Event>) => {
+  public handleMoveElement = (mousemove$: Observable<React.MouseEvent>) => {
     const moveElement$ = combineLatest([mousemove$, this.isMouseDown$])
       .pipe(
         filter(([_, isMouseDown]) => !!isMouseDown),
-        map(([event, _]) => this.convertToReactMouseEvent(event)),
+        map(([event]) => event),
       )
       .subscribe((event) => {
         const newMousePosition = this._positionFromEvent(event);
@@ -46,7 +57,7 @@ export class MoveImageAreaViewModel implements IMoveImageAreaViewModel {
     this._isMouseDown$.next(false);
   };
 
-  public handleMouseDown = (event: React.MouseEvent, elementOffset: TPosition) => {
+  public setCurrentOffset = (event: React.MouseEvent, elementOffset: TPosition) => {
     this._isMouseDown$.next(true);
     const eventOffset = this._positionFromEvent(event);
 
@@ -55,6 +66,10 @@ export class MoveImageAreaViewModel implements IMoveImageAreaViewModel {
       y: elementOffset.y - eventOffset.y,
     };
   };
+
+  private _convertToReactMouseEvent(event: Event) {
+    return event as any as React.MouseEvent;
+  }
 
   private _setNewElementPosition(mousePosition: TPosition) {
     const value = {
