@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { IDrawImageOnCanvasViewModel } from 'viewModels';
 
 export const useDrawAnyImageOnCanvas = (
   imgSrc: string,
   defaultImageWidth: number,
   viewModel: IDrawImageOnCanvasViewModel,
+  canvasRef: React.RefObject<HTMLCanvasElement>,
 ) => {
   const adjustCanvasSizeToScreen = (canvas: HTMLCanvasElement, drawHeight: number) => {
     const values = viewModel.calculateCanvasSize(drawHeight, defaultImageWidth);
@@ -26,7 +28,11 @@ export const useDrawAnyImageOnCanvas = (
     };
   };
 
-  return {
-    drawImageOnCanvas,
-  };
+  useEffect(() => {
+    const context = canvasRef.current?.getContext('2d');
+
+    if (context) {
+      drawImageOnCanvas(context, canvasRef.current!);
+    }
+  }, [canvasRef]); //TODO dependencies
 };

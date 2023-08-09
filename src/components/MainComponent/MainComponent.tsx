@@ -11,6 +11,7 @@ type Props = {
 export const MainComponent = ({ mainComponentViewModel }: Props) => {
   const mainCanvasRef = useRef<HTMLCanvasElement>(null);
   const frameCanvasRef = useRef<HTMLCanvasElement>(null);
+  const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
   return (
     <>
@@ -21,11 +22,13 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
         }}
       >
         <AvatarImageComponent
+          canvasRef={imageCanvasRef}
           defaultWidth={mainComponentViewModel.defaultAvatarImageWidth}
           drawImageViewModel={mainComponentViewModel.drawImageOnCanvasViewModel}
           moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
         />
         <AvatarFrameComponent
+          canvasRef={frameCanvasRef}
           size={mainComponentViewModel.avatarFrameSize}
           viewModel={mainComponentViewModel.drawImageOnCanvasViewModel}
         />

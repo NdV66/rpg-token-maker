@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { IDrawImageOnCanvasViewModel, IImageOnCanvasMoveViewModel } from 'viewModels';
 
 import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
@@ -8,6 +7,7 @@ import { useDrawAnyImageOnCanvas } from './useDrawAnyImageOnCanvas';
 
 type Props = {
   defaultWidth: number;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
   moveImageViewModel: IImageOnCanvasMoveViewModel;
   drawImageViewModel: IDrawImageOnCanvasViewModel;
 };
@@ -16,17 +16,10 @@ export const AvatarImageComponent = ({
   drawImageViewModel,
   moveImageViewModel,
   defaultWidth,
+  canvasRef,
 }: Props) => {
-  const { drawImageOnCanvas } = useDrawAnyImageOnCanvas(img, defaultWidth, drawImageViewModel);
-  const { canvasRef } = useImageOnCanvasMoveViewModel(moveImageViewModel);
-
-  useEffect(() => {
-    const context = canvasRef.current?.getContext('2d');
-
-    if (context) {
-      drawImageOnCanvas(context, canvasRef.current!);
-    }
-  }, [canvasRef]); //TODO dependencies
+  useDrawAnyImageOnCanvas(img, defaultWidth, drawImageViewModel, canvasRef);
+  useImageOnCanvasMoveViewModel(moveImageViewModel, canvasRef);
 
   return <canvas ref={canvasRef} className="image-canvas" />;
 };

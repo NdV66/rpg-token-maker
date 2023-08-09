@@ -1,9 +1,10 @@
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
 import { IImageOnCanvasMoveViewModel } from 'viewModels';
 
-export const useImageOnCanvasMoveViewModel = (viewModel: IImageOnCanvasMoveViewModel) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
+export const useImageOnCanvasMoveViewModel = (
+  viewModel: IImageOnCanvasMoveViewModel,
+  canvasRef: React.RefObject<HTMLCanvasElement>,
+) => {
   useEffect(() => {
     const element = canvasRef.current;
 
@@ -32,7 +33,7 @@ export const useImageOnCanvasMoveViewModel = (viewModel: IImageOnCanvasMoveViewM
         subscribeToOffset$.unsubscribe();
       };
     }
-  }, [viewModel]);
+  }, [viewModel, canvasRef]);
 
   return {
     canvasRef,
