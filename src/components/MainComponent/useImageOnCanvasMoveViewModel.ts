@@ -45,7 +45,8 @@ export const useImageOnCanvasMoveViewModel = (
    */
   const subscribeToMouseUp = useCallback(() => {
     const mouseup$ = viewModel.fromMouseEvent(moveRef.current!, 'mouseup').subscribe(() => {
-      viewModel.turnOffIsMouseDown();
+      console.log('MOUSE UP');
+      viewModel.turnOffIsMouseDown(); //TODO is it ok?
     });
     return () => mouseup$.unsubscribe();
   }, [viewModel, moveRef]);
