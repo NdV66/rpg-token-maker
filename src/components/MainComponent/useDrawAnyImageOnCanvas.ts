@@ -7,16 +7,19 @@ export const useDrawAnyImageOnCanvas = (
   viewModel: IDrawImageOnCanvasViewModel,
   canvasRef: React.RefObject<HTMLCanvasElement>,
 ) => {
-  const adjustCanvasSizeToScreen = (canvas: HTMLCanvasElement, drawHeight: number) => {
-    const values = viewModel.calculateCanvasSize(drawHeight, defaultImageWidth);
+  const adjustCanvasSizeToScreen = useCallback(
+    (canvas: HTMLCanvasElement, drawHeight: number) => {
+      const values = viewModel.calculateCanvasSize(drawHeight, defaultImageWidth);
 
-    canvas.width = values.width;
-    canvas.height = values.height;
-    canvas.style.width = `${values.styleWidth}px`;
-    canvas.style.height = `${values.styleHeight}px`;
+      canvas.width = values.width;
+      canvas.height = values.height;
+      canvas.style.width = `${values.styleWidth}px`;
+      canvas.style.height = `${values.styleHeight}px`;
 
-    return values;
-  };
+      return values;
+    },
+    [defaultImageWidth, viewModel],
+  );
 
   const drawImageOnCanvas = useCallback(
     (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
@@ -28,7 +31,7 @@ export const useDrawAnyImageOnCanvas = (
         ctx.drawImage(image, 0, 0, size.width, size.height);
       };
     },
-    [],
+    [imgSrc, adjustCanvasSizeToScreen, viewModel, defaultImageWidth],
   );
 
   useEffect(() => {

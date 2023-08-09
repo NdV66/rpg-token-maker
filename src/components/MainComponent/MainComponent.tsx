@@ -14,16 +14,28 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
 
   const exportAsImage = () => {
     const exportCanvas = document.createElement('canvas');
-    exportCanvas.width = 300;
-    exportCanvas.height = 300;
+    exportCanvas.width = 600;
+    exportCanvas.height = 600;
 
     const context = exportCanvas.getContext('2d');
     if (context) {
-      context.drawImage(imageCanvasRef.current!, 0, 0);
-      context.drawImage(frameCanvasRef.current!, 0, 0);
+      const currentImage = imageCanvasRef.current!;
+      const currentFrame = frameCanvasRef.current!;
+
+      context.drawImage(currentImage, currentImage.offsetLeft, currentImage.offsetTop);
+      context.drawImage(currentFrame, currentFrame.offsetLeft, currentFrame.offsetTop);
+
+      context.save();
+
+      context.beginPath();
+      context.arc(50, 50, 100, 0, Math.PI * 2, true);
+      context.closePath();
+
+      context.clip();
+      context.restore();
 
       const exportData = exportCanvas.toDataURL();
-      window.location.href = exportData; //TODO better
+      window.open(exportData, '_blank'); //TODO
     }
   };
 
