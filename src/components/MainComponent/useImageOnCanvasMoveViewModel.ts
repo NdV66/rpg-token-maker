@@ -1,92 +1,41 @@
-import { useEffect, useCallback } from 'react';
+import { useRef } from 'react';
 import { IImageOnCanvasMoveViewModel } from 'viewModels';
 import { TPosition } from 'types';
-import { debounceTime } from 'rxjs';
 
-/**
- * Prepare data and actions for MoveImageAreaComponent.
- * @param viewModel: IMoveImageAreaViewModel
- * @returns
- * - moveRef: ref to the element that is able to move by mouse
- * - handleMouseUp: what to do for 'mouseup' event
- */
-export const useImageOnCanvasMoveViewModel = (
-  viewModel: IImageOnCanvasMoveViewModel,
-  moveRef: React.RefObject<HTMLCanvasElement>,
-) => {
-  /**
-   * Handle move element by mouse.
-   * With every 'mousemove' event it prepares a new offset for the element.
-   */
-  const subscribeToMouseMove = useCallback(() => {
-    const mousemove$ = viewModel
-      .fromMouseEvent(moveRef.current!, 'mousemove')
-      .pipe(debounceTime(5));
-    const moveElementUnsubscribe = viewModel.handleMoveElement(mousemove$);
+export const useImageOnCanvasMoveViewModel = (viewModel: IImageOnCanvasMoveViewModel) => {
+  let mousePosition;
+  let offset: TPosition = { x: 0, y: 0 };
+  let isDown = false;
 
-    return () => moveElementUnsubscribe();
-  }, [viewModel, moveRef]);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  /**
-   * Subscribe to offset Observable.
-   * When there is a change, then it sets a new offset (position) for moving element.
-   */
-  const subscribeToElementOffset = useCallback(() => {
-    const elementOffset$ = viewModel.elementOffset$.subscribe((newPosition) => {
-      moveRef.current!.style.left = `${newPosition.x + 5}px`; //TODO add 5 or not?
-      moveRef.current!.style.top = `${newPosition.y}px`;
-    });
+  const onMouseDown = (e: React.MouseEvent) => {
+    const element = canvasRef.current!;
+    isDown = true;
+    offset = { x: element.offsetLeft - e.clientX, y: element.offsetTop - e.clientY };
+  };
 
-    return () => elementOffset$.unsubscribe();
-  }, [viewModel, moveRef]);
+  const onMouseUp = (e: React.MouseEvent) => {
+    isDown = false;
+  };
 
-  /**
-   *
-   */
-  const subscribeToMouseUp = useCallback(() => {
-    const mouseup$ = viewModel.fromMouseEvent(moveRef.current!, 'mouseup').subscribe(() => {
-      console.log('MOUSE UP');
-      viewModel.turnOffIsMouseDown(); //TODO is it ok?
-    });
-    return () => mouseup$.unsubscribe();
-  }, [viewModel, moveRef]);
-
-  /**
-   * Handle start moving of the element.
-   * When there is 'mousedown' event detected, then it sets new element offset in the viewModel.
-   */
-  const subscribeToMouseDown = useCallback(() => {
-    const mousedown$ = viewModel.fromMouseEvent(moveRef.current!, 'mousedown');
-
-    const action$ = mousedown$.subscribe((event) => {
-      const elementOffset: TPosition = {
-        x: moveRef.current!.offsetLeft,
-        y: moveRef.current!.offsetTop,
+  const onMouseMove = (event: React.MouseEvent) => {
+    const element = canvasRef.current!;
+    event.preventDefault();
+    if (isDown) {
+      mousePosition = {
+        x: event.clientX,
+        y: event.clientY,
       };
+      element.style.left = mousePosition.x + offset.x + 'px';
+      element.style.top = mousePosition.y + offset.y + 'px';
+    }
+  };
 
-      viewModel.setCurrentOffset(event, elementOffset);
-    });
-
-    return () => action$.unsubscribe();
-  }, [viewModel, moveRef]);
-
-  useEffect(() => {
-    const clean = subscribeToMouseMove();
-    const cleanMouseDown = subscribeToMouseDown();
-    const cleanSubscribeToOffset = subscribeToElementOffset();
-    const cleanMouseUp = subscribeToMouseUp();
-
-    return () => {
-      clean();
-      cleanMouseDown();
-      cleanSubscribeToOffset();
-      cleanMouseUp();
-    };
-  }, [
-    viewModel,
-    subscribeToMouseDown,
-    subscribeToMouseMove,
-    subscribeToElementOffset,
-    subscribeToMouseUp,
-  ]);
+  return {
+    onMouseDown,
+    onMouseMove,
+    onMouseUp,
+    canvasRef,
+  };
 };

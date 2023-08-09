@@ -13,7 +13,7 @@ export interface IImageOnCanvasMoveViewModel {
   elementOffset$: Observable<TPosition>;
 
   handleMoveElement: (mousemove$: Observable<React.MouseEvent>) => Subscription['unsubscribe'];
-  setCurrentOffset: (event: React.MouseEvent, elementOffset: TPosition) => void;
+  setCurrentOffset: (elementOffset: TPosition) => void;
   turnOffIsMouseDown: () => void;
   fromMouseEvent: <T extends HTMLElement>(
     element: T,
@@ -28,10 +28,6 @@ export class ImageOnCanvasMoveViewModel implements IImageOnCanvasMoveViewModel {
   private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
   private _currentOffset = START_OFFSET;
 
-  private get isMouseDown$() {
-    return this._isMouseDown$.asObservable();
-  }
-
   get elementOffset$() {
     return this._elementOffset$.asObservable();
   }
@@ -41,10 +37,13 @@ export class ImageOnCanvasMoveViewModel implements IImageOnCanvasMoveViewModel {
   }
 
   public handleMoveElement = (mousemove$: Observable<React.MouseEvent>) => {
-    const moveElement$ = combineLatest([mousemove$, this.isMouseDown$])
+    const moveElement$ = combineLatest([mousemove$, this._isMouseDown$])
       .pipe(
         filter(([_, isMouseDown]) => !!isMouseDown),
-        map(([event]) => event),
+        map(([event]) => {
+          event.preventDefault();
+          return event;
+        }),
       )
       .subscribe((event) => {
         const newMousePosition = this._positionFromEvent(event);
@@ -58,17 +57,13 @@ export class ImageOnCanvasMoveViewModel implements IImageOnCanvasMoveViewModel {
     this._isMouseDown$.next(false);
   };
 
-  public setCurrentOffset = (event: React.MouseEvent, elementOffset: TPosition) => {
+  public setCurrentOffset = (elementOffset: TPosition) => {
     this._isMouseDown$.next(true);
-    const eventOffset = this._positionFromEvent(event);
-
-    this._currentOffset = {
-      x: elementOffset.x - eventOffset.x,
-      y: elementOffset.y - eventOffset.y,
-    };
+    this._currentOffset = elementOffset;
   };
 
   private _convertToReactMouseEvent(event: Event) {
+    event.preventDefault();
     return event as any as React.MouseEvent;
   }
 
