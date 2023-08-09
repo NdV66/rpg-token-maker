@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { IDrawImageOnCanvasViewModel } from 'viewModels';
 
 export const useDrawAnyImageOnCanvas = (
@@ -18,21 +18,21 @@ export const useDrawAnyImageOnCanvas = (
     return values;
   };
 
-  const drawImageOnCanvas = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
-    const image = new Image();
-    image.src = imgSrc;
-    image.onload = () => {
-      const { drawWidth } = viewModel.prepareImageSize(image, defaultImageWidth);
-      const size = adjustCanvasSizeToScreen(canvas, drawWidth);
-      ctx.drawImage(image, 0, 0, size.width, size.height);
-    };
-  };
+  const drawImageOnCanvas = useCallback(
+    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+      const image = new Image();
+      image.src = imgSrc;
+      image.onload = () => {
+        const { drawWidth } = viewModel.prepareImageSize(image, defaultImageWidth);
+        const size = adjustCanvasSizeToScreen(canvas, drawWidth);
+        ctx.drawImage(image, 0, 0, size.width, size.height);
+      };
+    },
+    [],
+  );
 
   useEffect(() => {
     const context = canvasRef.current?.getContext('2d');
-
-    if (context) {
-      drawImageOnCanvas(context, canvasRef.current!);
-    }
-  }, [canvasRef]); //TODO dependencies
+    if (context) drawImageOnCanvas(context, canvasRef.current!);
+  }, [canvasRef, drawImageOnCanvas]);
 };

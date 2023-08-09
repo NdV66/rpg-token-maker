@@ -9,12 +9,27 @@ type Props = {
 };
 
 export const MainComponent = ({ mainComponentViewModel }: Props) => {
-  const mainCanvasRef = useRef<HTMLCanvasElement>(null);
   const frameCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
+  const exportAsImage = () => {
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 300;
+    exportCanvas.height = 300;
+
+    const context = exportCanvas.getContext('2d');
+    if (context) {
+      context.drawImage(imageCanvasRef.current!, 0, 0);
+      context.drawImage(frameCanvasRef.current!, 0, 0);
+
+      const exportData = exportCanvas.toDataURL();
+      window.location.href = exportData; //TODO better
+    }
+  };
+
   return (
     <>
+      <button onClick={exportAsImage}>TEST ME</button>
       <div
         className="area"
         onMouseLeave={() => {
