@@ -49,6 +49,7 @@ export class MoveImageAreaViewModel implements IMoveImageAreaViewModel {
       )
       .subscribe((event) => {
         const newMousePosition = this._positionFromEvent(event);
+        console.log(newMousePosition);
         this._setNewElementPosition(newMousePosition);
       });
 

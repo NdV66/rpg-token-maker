@@ -1,9 +1,3 @@
-.move-image {
-    width: 200px;
-    height: 200px;
-    cursor: pointer;
+.main-component {
 
-    position: absolute;
-    top: 0;
-    left: 0;
 }
