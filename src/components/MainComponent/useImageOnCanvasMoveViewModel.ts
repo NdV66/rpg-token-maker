@@ -22,6 +22,7 @@ export const useImageOnCanvasMoveViewModel = (viewModel: IImageOnCanvasMoveViewM
   const onMouseMove = (event: React.MouseEvent) => {
     const element = canvasRef.current!;
     event.preventDefault();
+    console.log(isDown);
     if (isDown) {
       mousePosition = {
         x: event.clientX,
@@ -37,5 +38,6 @@ export const useImageOnCanvasMoveViewModel = (viewModel: IImageOnCanvasMoveViewM
     onMouseMove,
     onMouseUp,
     canvasRef,
+    turnOffDown: () => (isDown = false),
   };
 };
