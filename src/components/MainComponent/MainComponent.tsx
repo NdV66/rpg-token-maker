@@ -1,21 +1,28 @@
-import { IAvatarImageComponentViewModel } from 'viewModels';
+import { IMainComponentViewModel } from 'viewModels';
 import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
 
 type Props = {
-  avatarImageComponentViewModel: IAvatarImageComponentViewModel;
+  mainComponentViewModel: IMainComponentViewModel;
 };
 
-export const MainComponent = ({ avatarImageComponentViewModel }: Props) => {
+export const MainComponent = ({ mainComponentViewModel }: Props) => {
   return (
     <div
       className="area"
       onMouseLeave={() => {
-        avatarImageComponentViewModel.imageOnCanvasMoveViewModel.turnOffIsMouseDown();
+        mainComponentViewModel.imageOnCanvasMoveViewModel.turnOffIsMouseDown();
       }}
     >
-      <AvatarImageComponent viewModel={avatarImageComponentViewModel} />
-      <AvatarFrameComponent viewModel={avatarImageComponentViewModel} />
+      <AvatarImageComponent
+        defaultWidth={mainComponentViewModel.defaultAvatarImageWidth}
+        drawImageViewModel={mainComponentViewModel.drawImageOnCanvasViewModel}
+        moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
+      />
+      <AvatarFrameComponent
+        size={mainComponentViewModel.avatarFrameSize}
+        viewModel={mainComponentViewModel.drawImageOnCanvasViewModel}
+      />
     </div>
   );
 };
