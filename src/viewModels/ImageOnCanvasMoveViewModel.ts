@@ -10,7 +10,6 @@ import {
 import { TPosition } from 'types';
 
 export interface IImageOnCanvasMoveViewModel {
-  isMouseDown$: Observable<boolean>;
   elementOffset$: Observable<TPosition>;
 
   handleMoveElement: (mousemove$: Observable<React.MouseEvent>) => Subscription['unsubscribe'];
@@ -29,7 +28,7 @@ export class ImageOnCanvasMoveViewModel implements IImageOnCanvasMoveViewModel {
   private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
   private _currentOffset = START_OFFSET;
 
-  get isMouseDown$() {
+  private get isMouseDown$() {
     return this._isMouseDown$.asObservable();
   }
 

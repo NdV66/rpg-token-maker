@@ -4,3 +4,10 @@
     left: 0;
     cursor: pointer;
 }
+
+.xx {
+    width: 600px;
+    height: 600px;
+    overflow: hidden;
+    background-color: blueviolet;
+}

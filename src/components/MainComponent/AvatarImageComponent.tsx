@@ -9,6 +9,7 @@ type Props = {
 
 export const AvatarImageComponent = ({ viewModel }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const { drawImageOnCanvas } = useImageOnCanvasViewModel(viewModel.drawImageOnCanvasViewModel);
   useImageOnCanvasMoveViewModel(viewModel.imageOnCanvasMoveViewModel, canvasRef);
 
@@ -20,5 +21,15 @@ export const AvatarImageComponent = ({ viewModel }: Props) => {
     }
   }, [canvasRef]); //TODO dependencies
 
-  return <canvas ref={canvasRef} className="image-canvas" />;
+  return (
+    <div
+      className="xx"
+      onMouseLeave={() => {
+        // console.log('MOUSE LEAVE');
+        // canvasRef.current && (canvasRef.current.style.display = 'none'); //TODO not here and better
+      }}
+    >
+      <canvas ref={canvasRef} className="image-canvas" />
+    </div>
+  );
 };
