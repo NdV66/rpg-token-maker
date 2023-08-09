@@ -10,12 +10,14 @@
     width: 600px;
     height: 600px;
     overflow: hidden;
+
     background-color: blueviolet;
     position: relative;
+    z-index: 1;
 }
 
 .frame {
-    $size: 200px;
+    $size: 200px; //the same as in env!!!
     width: $size;
     height: $size;
     position: absolute;
