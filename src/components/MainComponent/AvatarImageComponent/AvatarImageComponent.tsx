@@ -1,30 +1,38 @@
 import './styles.css';
 import { useRef, useEffect } from 'react';
-import { IMoveImageAreaViewModel } from 'viewModels';
-
-import img from 'data/testImg.jpg';
 
 type Props = {
-  viewModel: IMoveImageAreaViewModel;
+  imgSrc: string;
+  defaultDrawWidth: number;
 };
 
-const drawWidth = 200;
-
-const useMouseImageAreaViewModel = () => {};
-
-export const AvatarImageComponent = ({ viewModel }: Props) => {
+export const AvatarImageComponent = ({ imgSrc, defaultDrawWidth }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  const adjustCanvasSizeToScreen = (
+    canvas: HTMLCanvasElement,
+    drawWidth: number,
+    drawHeight: number,
+  ) => {
+    canvas.width = drawWidth * devicePixelRatio;
+    canvas.height = drawHeight * devicePixelRatio;
+    canvas.style.width = (canvas.width / devicePixelRatio).toString() + 'px';
+    canvas.style.height = (canvas.height / devicePixelRatio).toString() + 'px';
+  };
+
+  const prepareImageSize = (image: HTMLImageElement, drawWidth: number) => {
+    const { width, height } = image;
+    const drawHight = (drawWidth * height) / width;
+    return { drawHight, drawWidth };
+  };
+
+  const drawImageOnCanvas = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
     const image = new Image();
-    image.src = img;
+    image.src = imgSrc;
     image.onload = () => {
-      const { width, height } = image;
-      const drawHight = (drawWidth * height) / width;
-      canvasRef.current!.width = drawWidth;
-      canvasRef.current!.height = drawHight;
-      console.log(drawWidth, drawHight);
-      ctx.drawImage(image, 0, 0, drawWidth, drawHight);
+      const { drawHight, drawWidth } = prepareImageSize(image, defaultDrawWidth);
+      adjustCanvasSizeToScreen(canvas, drawWidth, drawHight);
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     };
   };
 
@@ -32,7 +40,7 @@ export const AvatarImageComponent = ({ viewModel }: Props) => {
     const context = canvasRef.current?.getContext('2d');
 
     if (context) {
-      draw(context);
+      drawImageOnCanvas(context, canvasRef.current!);
     }
   }, [canvasRef]);
 
