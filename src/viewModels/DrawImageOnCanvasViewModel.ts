@@ -31,8 +31,8 @@ export class DrawImageOnCanvasViewModel implements IDrawImageOnCanvasViewModel {
   }
 
   public calculateCanvasSize(drawHeight: number, defaultImageWidth: number) {
-    const width = defaultImageWidth * this._appEnv.devicePixelRatio;
-    const height = drawHeight * this._appEnv.devicePixelRatio;
+    const width = defaultImageWidth;
+    const height = drawHeight;
 
     return {
       width,
