@@ -22,10 +22,12 @@ export interface IMoveImageAreaViewModel {
   ) => Observable<React.MouseEvent<Element, MouseEvent>>;
 }
 
+const START_OFFSET: TPosition = { x: 0, y: 0 };
+
 export class MoveImageAreaViewModel implements IMoveImageAreaViewModel {
   private _isMouseDown$ = new BehaviorSubject<boolean>(false);
-  private _elementOffset$ = new BehaviorSubject<TPosition>({ x: 0, y: 0 });
-  private _currentOffset = { x: 0, y: 0 };
+  private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
+  private _currentOffset = START_OFFSET;
 
   get isMouseDown$() {
     return this._isMouseDown$.asObservable();
@@ -81,8 +83,8 @@ export class MoveImageAreaViewModel implements IMoveImageAreaViewModel {
 
   private _positionFromEvent(event: React.MouseEvent) {
     return {
-      x: event.clientX,
-      y: event.clientY,
+      x: event.pageX,
+      y: event.pageY,
     };
   }
 }
