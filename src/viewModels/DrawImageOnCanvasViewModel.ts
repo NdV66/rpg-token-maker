@@ -1,5 +1,3 @@
-import { TAppEnv } from 'types';
-
 type TDrawSize = {
   drawWidth: number;
   drawHeight: number;
