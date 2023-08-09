@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { IAvatarImageComponentViewModel } from 'viewModels';
 import { useImageOnCanvasViewModel } from './useImageOnCanvasViewModel';
+import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
 
 type Props = {
   viewModel: IAvatarImageComponentViewModel;
@@ -9,6 +10,7 @@ type Props = {
 export const AvatarImageComponent = ({ viewModel }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { drawImageOnCanvas } = useImageOnCanvasViewModel(viewModel.drawImageOnCanvasViewModel);
+  useImageOnCanvasMoveViewModel(viewModel.imageOnCanvasMoveViewModel, canvasRef);
 
   useEffect(() => {
     const context = canvasRef.current?.getContext('2d');

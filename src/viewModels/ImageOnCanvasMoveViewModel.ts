@@ -29,8 +29,6 @@ export class ImageOnCanvasMoveViewModel implements IImageOnCanvasMoveViewModel {
   private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
   private _currentOffset = START_OFFSET;
 
-  constructor() {}
-
   get isMouseDown$() {
     return this._isMouseDown$.asObservable();
   }
@@ -51,7 +49,6 @@ export class ImageOnCanvasMoveViewModel implements IImageOnCanvasMoveViewModel {
       )
       .subscribe((event) => {
         const newMousePosition = this._positionFromEvent(event);
-        console.log(newMousePosition);
         this._setNewElementPosition(newMousePosition);
       });
 
