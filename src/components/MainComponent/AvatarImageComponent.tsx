@@ -19,14 +19,5 @@ export const AvatarImageComponent = ({ viewModel }: Props) => {
     }
   }, [canvasRef]); //TODO dependencies
 
-  return (
-    <div
-      className="xx"
-      onMouseLeave={() => {
-        viewModel.imageOnCanvasMoveViewModel.turnOffIsMouseDown();
-      }}
-    >
-      <canvas ref={canvasRef} className="image-canvas" />
-    </div>
-  );
+  return <canvas ref={canvasRef} className="image-canvas" />;
 };

@@ -1,0 +1,32 @@
+.image-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: move;
+    z-index: 10;
+}
+
+.area {
+    width: 600px;
+    height: 600px;
+    overflow: hidden;
+    background-color: blueviolet;
+    position: relative;
+}
+
+.frame {
+    $size: 200px;
+    width: $size;
+    height: $size;
+    position: absolute;
+
+    top: calc(50% - $size/2);
+    left: calc(50% - $size/2);
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border: 1px solid red;
+
+    z-index: 20;
+}
