@@ -5,7 +5,7 @@ import {
   ImageOnCanvasMoveViewModel,
 } from 'viewModels';
 
-const drawImageOnCanvasViewModel = new DrawImageOnCanvasViewModel();
+const drawImageOnCanvasViewModel = new DrawImageOnCanvasViewModel(APP_ENV);
 const imageOnCanvasMoveViewModel = new ImageOnCanvasMoveViewModel();
 
 export const mainComponentViewModel = new MainComponentViewModel(

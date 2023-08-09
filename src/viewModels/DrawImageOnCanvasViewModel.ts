@@ -1,3 +1,5 @@
+import { TAppEnv } from 'types';
+
 type TDrawSize = {
   drawWidth: number;
   drawHeight: number;
@@ -16,9 +18,12 @@ export interface IDrawImageOnCanvasViewModel {
 }
 
 export class DrawImageOnCanvasViewModel implements IDrawImageOnCanvasViewModel {
+  constructor(private readonly _appEnv: TAppEnv) {}
+
   public prepareImageSize(image: HTMLImageElement, defaultImageWidth: number) {
     const { width, height } = image;
     const drawHeight = (defaultImageWidth * height) / width;
+
     return {
       drawHeight,
       drawWidth: defaultImageWidth,
@@ -26,17 +31,14 @@ export class DrawImageOnCanvasViewModel implements IDrawImageOnCanvasViewModel {
   }
 
   public calculateCanvasSize(drawHeight: number, defaultImageWidth: number) {
-    const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
-    const width = defaultImageWidth * DEVICE_PIXEL_RATIO;
-    const height = drawHeight * DEVICE_PIXEL_RATIO;
-    const styleWidth = width / DEVICE_PIXEL_RATIO;
-    const styleHeight = height / DEVICE_PIXEL_RATIO;
+    const width = defaultImageWidth * this._appEnv.devicePixelRatio;
+    const height = drawHeight * this._appEnv.devicePixelRatio;
 
     return {
       width,
       height,
-      styleHeight,
-      styleWidth,
+      styleHeight: drawHeight,
+      styleWidth: defaultImageWidth,
     };
   }
 }

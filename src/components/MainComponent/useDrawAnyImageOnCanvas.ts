@@ -16,8 +16,6 @@ export const useDrawAnyImageOnCanvas = (
       canvas.style.width = `${values.styleWidth}px`;
       canvas.style.height = `${values.styleHeight}px`;
 
-      console.log(values);
-
       return values;
     },
     [defaultImageWidth, viewModel],
@@ -28,8 +26,8 @@ export const useDrawAnyImageOnCanvas = (
       const image = new Image();
       image.src = imgSrc;
       image.onload = () => {
-        const { drawWidth } = viewModel.prepareImageSize(image, defaultImageWidth);
-        const size = adjustCanvasSizeToScreen(canvas, drawWidth);
+        const { drawHeight } = viewModel.prepareImageSize(image, defaultImageWidth);
+        const size = adjustCanvasSizeToScreen(canvas, drawHeight);
         ctx.drawImage(image, 0, 0, size.width, size.height);
       };
     },

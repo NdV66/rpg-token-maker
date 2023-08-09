@@ -13,13 +13,8 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const exportAsImage = () => {
-    const FINAL_CANVAS_SIZE = 800;
-
     const exportCanvas = document.createElement('canvas');
     const finalCanvas = document.createElement('canvas');
-
-    exportCanvas.width = FINAL_CANVAS_SIZE;
-    exportCanvas.height = FINAL_CANVAS_SIZE;
 
     const context = exportCanvas.getContext('2d');
     const finalContext = finalCanvas.getContext('2d');
@@ -29,6 +24,10 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
       const currentFrame = frameCanvasRef.current!;
 
       const FRAME_SIZE = currentFrame.width; //height is the same
+      const FINAL_CANVAS_SIZE = 800;
+
+      exportCanvas.width = FINAL_CANVAS_SIZE;
+      exportCanvas.height = FINAL_CANVAS_SIZE;
 
       context.drawImage(currentImage, currentImage.offsetLeft, currentImage.offsetTop);
       context.drawImage(currentFrame, currentFrame.offsetLeft, currentFrame.offsetTop);

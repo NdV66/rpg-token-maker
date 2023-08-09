@@ -2,7 +2,9 @@ import { IDrawImageOnCanvasViewModel, IImageOnCanvasMoveViewModel } from 'viewMo
 
 import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
 
-import img from 'data/testImg.jpg'; //TODO load
+// import img from 'data/testImg.jpg'; //TODO load
+
+import img2 from 'data/other3.jpeg'; //TODO load
 import { useDrawAnyImageOnCanvas } from './useDrawAnyImageOnCanvas';
 
 type Props = {
@@ -18,7 +20,7 @@ export const AvatarImageComponent = ({
   defaultWidth,
   canvasRef,
 }: Props) => {
-  useDrawAnyImageOnCanvas(img, defaultWidth, drawImageViewModel, canvasRef);
+  useDrawAnyImageOnCanvas(img2, defaultWidth, drawImageViewModel, canvasRef);
   useImageOnCanvasMoveViewModel(moveImageViewModel, canvasRef);
 
   return <canvas ref={canvasRef} className="image-canvas" />;
