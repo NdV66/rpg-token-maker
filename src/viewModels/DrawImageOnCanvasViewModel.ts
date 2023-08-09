@@ -1,6 +1,5 @@
 import { TAppEnv } from 'types';
-
-import img from 'data/testImg.jpg'; //TODO tmp
+import img from 'data/testImg.jpg'; //TODO load
 
 type TDrawSize = {
   drawWidth: number;
@@ -14,14 +13,14 @@ type TCanvasSize = {
   styleWidth: number;
 };
 
-export interface IImageOnCanvasViewModel {
+export interface IDrawImageOnCanvasViewModel {
   imgSrc: string;
 
   prepareImageSize: (image: HTMLImageElement) => TDrawSize;
   calculateCanvasSize: (drawHeight: number) => TCanvasSize;
 }
 
-export class ImageOnCanvasViewModel implements IImageOnCanvasViewModel {
+export class DrawImageOnCanvasViewModel implements IDrawImageOnCanvasViewModel {
   constructor(private readonly _appEnv: TAppEnv) {}
 
   public readonly imgSrc = img;

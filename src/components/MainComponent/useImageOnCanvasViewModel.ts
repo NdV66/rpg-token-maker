@@ -1,6 +1,6 @@
-import { IImageOnCanvasViewModel } from 'viewModels';
+import { IDrawImageOnCanvasViewModel } from 'viewModels';
 
-export const useImageOnCanvasViewModel = (viewModel: IImageOnCanvasViewModel) => {
+export const useImageOnCanvasViewModel = (viewModel: IDrawImageOnCanvasViewModel) => {
   const adjustCanvasSizeToScreen = (canvas: HTMLCanvasElement, drawHeight: number) => {
     const values = viewModel.calculateCanvasSize(drawHeight);
 

@@ -8,7 +8,7 @@ type Props = {
 
 export const AvatarImageComponent = ({ viewModel }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { drawImageOnCanvas } = useImageOnCanvasViewModel(viewModel.imageOnCanvasViewModel);
+  const { drawImageOnCanvas } = useImageOnCanvasViewModel(viewModel.drawImageOnCanvasViewModel);
 
   useEffect(() => {
     const context = canvasRef.current?.getContext('2d');

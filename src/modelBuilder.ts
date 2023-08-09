@@ -1,8 +1,14 @@
 import { APP_ENV } from 'appEnv';
-import { AvatarImageComponentViewModel, ImageOnCanvasViewModel } from 'viewModels';
+import {
+  AvatarImageComponentViewModel,
+  DrawImageOnCanvasViewModel,
+  ImageOnCanvasMoveViewModel,
+} from 'viewModels';
 
-const imageOnCanvasViewModel = new ImageOnCanvasViewModel(APP_ENV);
+const drawImageOnCanvasViewModel = new DrawImageOnCanvasViewModel(APP_ENV);
+const imageOnCanvasMoveViewModel = new ImageOnCanvasMoveViewModel();
 
 export const avatarImageComponentViewModel = new AvatarImageComponentViewModel(
-  imageOnCanvasViewModel,
+  drawImageOnCanvasViewModel,
+  imageOnCanvasMoveViewModel,
 );

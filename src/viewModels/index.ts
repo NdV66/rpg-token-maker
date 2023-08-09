@@ -1,3 +1,4 @@
 export * from './SettingsContext';
 export * from './AvatarImageComponentViewModel';
-export * from './ImageOnCanvasViewModel';
+export * from './DrawImageOnCanvasViewModel';
+export * from './ImageOnCanvasMoveViewModel';
