@@ -8,8 +8,11 @@ import {
   map,
 } from 'rxjs';
 import { TPosition } from 'types';
+import { IImageOnCanvasViewModel } from './ImageOnCanvasViewModel';
 
-export interface IMoveImageAreaViewModel {
+export interface IAvatarImageComponentViewModel {
+  imageOnCanvasViewModel: IImageOnCanvasViewModel;
+
   isMouseDown$: Observable<boolean>;
   elementOffset$: Observable<TPosition>;
 
@@ -24,10 +27,12 @@ export interface IMoveImageAreaViewModel {
 
 const START_OFFSET: TPosition = { x: 0, y: 0 };
 
-export class MoveImageAreaViewModel implements IMoveImageAreaViewModel {
+export class AvatarImageComponentViewModel implements IAvatarImageComponentViewModel {
   private _isMouseDown$ = new BehaviorSubject<boolean>(false);
   private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
   private _currentOffset = START_OFFSET;
+
+  constructor(public readonly imageOnCanvasViewModel: IImageOnCanvasViewModel) {}
 
   get isMouseDown$() {
     return this._isMouseDown$.asObservable();

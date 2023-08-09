@@ -1,3 +1,8 @@
-import { MoveImageAreaViewModel } from 'viewModels';
+import { APP_ENV } from 'appEnv';
+import { AvatarImageComponentViewModel, ImageOnCanvasViewModel } from 'viewModels';
 
-export const moveImageAreaViewModel = new MoveImageAreaViewModel();
+const imageOnCanvasViewModel = new ImageOnCanvasViewModel(APP_ENV);
+
+export const avatarImageComponentViewModel = new AvatarImageComponentViewModel(
+  imageOnCanvasViewModel,
+);
