@@ -1,7 +1,6 @@
 import { IAvatarImageComponentViewModel } from 'viewModels';
+import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
-
-import frame from 'data/frame.png';
 
 type Props = {
   avatarImageComponentViewModel: IAvatarImageComponentViewModel;
@@ -16,7 +15,7 @@ export const MainComponent = ({ avatarImageComponentViewModel }: Props) => {
       }}
     >
       <AvatarImageComponent viewModel={avatarImageComponentViewModel} />
-      <div className="frame" style={{ backgroundImage: `url('${frame}')` }} />
+      <AvatarFrameComponent viewModel={avatarImageComponentViewModel} />
     </div>
   );
 };
