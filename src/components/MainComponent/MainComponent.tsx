@@ -13,9 +13,7 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const exportAsImage = () => {
-    const FINAL_CANVAS_SIZE = 1200;
-    const FRAME_SIZE = 200;
-    const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
+    const FINAL_CANVAS_SIZE = 800;
 
     const exportCanvas = document.createElement('canvas');
     const finalCanvas = document.createElement('canvas');
@@ -30,13 +28,15 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
       const currentImage = imageCanvasRef.current!;
       const currentFrame = frameCanvasRef.current!;
 
+      const FRAME_SIZE = currentFrame.width; //height is the same
+
       context.drawImage(currentImage, currentImage.offsetLeft, currentImage.offsetTop);
       context.drawImage(currentFrame, currentFrame.offsetLeft, currentFrame.offsetTop);
 
-      finalCanvas.width = FRAME_SIZE * DEVICE_PIXEL_RATIO;
-      finalCanvas.height = FRAME_SIZE * DEVICE_PIXEL_RATIO;
+      finalCanvas.width = FRAME_SIZE;
+      finalCanvas.height = FRAME_SIZE;
 
-      const size = FINAL_CANVAS_SIZE / DEVICE_PIXEL_RATIO;
+      const size = FINAL_CANVAS_SIZE;
 
       finalContext.drawImage(
         exportCanvas,
@@ -46,8 +46,8 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
         size,
         0,
         0,
-        800,
-        800,
+        size,
+        size,
       ); //TODO wtf 800
 
       const exportData = finalCanvas.toDataURL('image/png', 1.0);

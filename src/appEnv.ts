@@ -3,6 +3,6 @@ import { enEN } from 'data';
 
 export const APP_ENV: TAppEnv = {
   translations: enEN,
-  defaultImageWidth: 280,
+  defaultImageWidth: 300,
   defaultFrameSize: 200,
 };
