@@ -1,43 +1,40 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { IImageOnCanvasMoveViewModel } from 'viewModels';
-import { TPosition } from 'types';
 
 export const useImageOnCanvasMoveViewModel = (viewModel: IImageOnCanvasMoveViewModel) => {
-  let mousePosition;
-  let offset: TPosition = { x: 0, y: 0 };
-  let isDown = false;
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const onMouseDown = (e: React.MouseEvent) => {
-    const element = canvasRef.current!;
-    isDown = true;
-    offset = { x: element.offsetLeft - e.clientX, y: element.offsetTop - e.clientY };
-  };
+  useEffect(() => {
+    const element = canvasRef.current;
 
-  const onMouseUp = (e: React.MouseEvent) => {
-    isDown = false;
-  };
+    if (element) {
+      const mouseUp$ = viewModel.fromMouseEvent(element, 'mouseup').subscribe(() => {
+        viewModel.turnOffIsMouseDown();
+      });
 
-  const onMouseMove = (event: React.MouseEvent) => {
-    const element = canvasRef.current!;
-    event.preventDefault();
-    console.log(isDown);
-    if (isDown) {
-      mousePosition = {
-        x: event.clientX,
-        y: event.clientY,
+      const mouseDown$ = viewModel.fromMouseEvent(element, 'mousedown').subscribe((event) => {
+        viewModel.handleMouseDown(element, event);
+      });
+
+      const mouseMove$ = viewModel.fromMouseEvent(element, 'mousemove').subscribe((event) => {
+        viewModel.handleMoveElement(event);
+      });
+
+      const subscribeToOffset$ = viewModel.elementOffset$.subscribe((offset) => {
+        element.style.left = `${offset.x}px`;
+        element.style.top = `${offset.y}px`;
+      });
+
+      return () => {
+        mouseUp$.unsubscribe();
+        mouseDown$.unsubscribe();
+        mouseMove$.unsubscribe();
+        subscribeToOffset$.unsubscribe();
       };
-      element.style.left = mousePosition.x + offset.x + 'px';
-      element.style.top = mousePosition.y + offset.y + 'px';
     }
-  };
+  }, [viewModel]);
 
   return {
-    onMouseDown,
-    onMouseMove,
-    onMouseUp,
     canvasRef,
-    turnOffDown: () => (isDown = false),
   };
 };

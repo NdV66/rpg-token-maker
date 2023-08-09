@@ -1,79 +1,60 @@
-import {
-  BehaviorSubject,
-  Observable,
-  Subscription,
-  combineLatest,
-  filter,
-  fromEvent,
-  map,
-} from 'rxjs';
+import { BehaviorSubject, Observable, fromEvent, map } from 'rxjs';
 import { TPosition } from 'types';
 
 export interface IImageOnCanvasMoveViewModel {
   elementOffset$: Observable<TPosition>;
 
-  handleMoveElement: (mousemove$: Observable<React.MouseEvent>) => Subscription['unsubscribe'];
-  setCurrentOffset: (elementOffset: TPosition) => void;
   turnOffIsMouseDown: () => void;
   fromMouseEvent: <T extends HTMLElement>(
     element: T,
     trigger: string,
   ) => Observable<React.MouseEvent<Element, MouseEvent>>;
+
+  handleMoveElement: (event: React.MouseEvent) => void;
+  handleMouseDown: <T extends HTMLElement>(element: T, event: React.MouseEvent) => void;
 }
 
 const START_OFFSET: TPosition = { x: 0, y: 0 }; //TODO env
 
 export class ImageOnCanvasMoveViewModel implements IImageOnCanvasMoveViewModel {
-  private _isMouseDown$ = new BehaviorSubject<boolean>(false);
   private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
+  private _isDown = false;
   private _currentOffset = START_OFFSET;
 
-  get elementOffset$() {
-    return this._elementOffset$.asObservable();
-  }
+  public readonly elementOffset$ = this._elementOffset$.asObservable();
 
   public fromMouseEvent<T extends HTMLElement>(element: T, trigger: string) {
-    return fromEvent(element, trigger).pipe(map(this._convertToReactMouseEvent));
+    return fromEvent(element, trigger).pipe(
+      map((event) => {
+        event.preventDefault();
+        return event as any as React.MouseEvent;
+      }),
+    );
   }
-
-  public handleMoveElement = (mousemove$: Observable<React.MouseEvent>) => {
-    const moveElement$ = combineLatest([mousemove$, this._isMouseDown$])
-      .pipe(
-        filter(([_, isMouseDown]) => !!isMouseDown),
-        map(([event]) => {
-          event.preventDefault();
-          return event;
-        }),
-      )
-      .subscribe((event) => {
-        const newMousePosition = this._positionFromEvent(event);
-        this._setNewElementPosition(newMousePosition);
-      });
-
-    return () => moveElement$.unsubscribe();
-  };
 
   public turnOffIsMouseDown = () => {
-    this._isMouseDown$.next(false);
+    this._isDown = false;
   };
 
-  public setCurrentOffset = (elementOffset: TPosition) => {
-    this._isMouseDown$.next(true);
-    this._currentOffset = elementOffset;
+  public handleMoveElement = (event: React.MouseEvent) => {
+    if (this._isDown) {
+      const newMousePosition = this._positionFromEvent(event);
+      const value = {
+        x: newMousePosition.x + this._currentOffset.x,
+        y: newMousePosition.y + this._currentOffset.y,
+      };
+      this._elementOffset$.next(value);
+    }
   };
 
-  private _convertToReactMouseEvent(event: Event) {
-    event.preventDefault();
-    return event as any as React.MouseEvent;
-  }
-
-  private _setNewElementPosition(mousePosition: TPosition) {
-    const value = {
-      x: mousePosition.x + this._currentOffset.x,
-      y: mousePosition.y + this._currentOffset.y,
+  public handleMouseDown = <T extends HTMLElement>(element: T, event: React.MouseEvent) => {
+    this._isDown = true;
+    const offset: TPosition = {
+      x: element.offsetLeft - event.clientX,
+      y: element.offsetTop - event.clientY,
     };
-    this._elementOffset$.next(value);
-  }
+    this._currentOffset = offset;
+  };
 
   private _positionFromEvent(event: React.MouseEvent) {
     return {

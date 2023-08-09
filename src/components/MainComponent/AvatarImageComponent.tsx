@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
 import { IAvatarImageComponentViewModel } from 'viewModels';
 import { useImageOnCanvasViewModel } from './useImageOnCanvasViewModel';
 import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
@@ -9,8 +9,7 @@ type Props = {
 
 export const AvatarImageComponent = ({ viewModel }: Props) => {
   const { drawImageOnCanvas } = useImageOnCanvasViewModel(viewModel.drawImageOnCanvasViewModel);
-  const { onMouseDown, turnOffDown, onMouseMove, onMouseUp, canvasRef } =
-    useImageOnCanvasMoveViewModel(viewModel.imageOnCanvasMoveViewModel);
+  const { canvasRef } = useImageOnCanvasMoveViewModel(viewModel.imageOnCanvasMoveViewModel);
 
   useEffect(() => {
     const context = canvasRef.current?.getContext('2d');
@@ -21,14 +20,13 @@ export const AvatarImageComponent = ({ viewModel }: Props) => {
   }, [canvasRef]); //TODO dependencies
 
   return (
-    <div className="xx" onMouseLeave={turnOffDown}>
-      <canvas
-        ref={canvasRef}
-        className="image-canvas"
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-      />
+    <div
+      className="xx"
+      onMouseLeave={() => {
+        viewModel.imageOnCanvasMoveViewModel.turnOffIsMouseDown();
+      }}
+    >
+      <canvas ref={canvasRef} className="image-canvas" />
     </div>
   );
 };
