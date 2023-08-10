@@ -9,7 +9,7 @@ type Props = {
 export const ExportCanvasComponent = ({ viewModel, imageCanvasRef, frameCanvasRef }: Props) => {
   const exportAsImage = () => {
     const exportData = viewModel.exportToPng(imageCanvasRef.current!, frameCanvasRef.current!);
-    window.open(exportData, '_blank');
+    // window.open(exportData, '_blank');
   };
 
   return <button onClick={exportAsImage}>EXPORT TEST IMAGE</button>;

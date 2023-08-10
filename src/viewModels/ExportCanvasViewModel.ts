@@ -1,5 +1,7 @@
 import { TAppEnv } from 'types';
 
+import frameMask from 'data/frameMask.png';
+
 export interface IExportCanvasViewModel {
   exportToPng: (
     currentImage: HTMLCanvasElement,
@@ -11,20 +13,22 @@ export class ExportCanvasViewModel implements IExportCanvasViewModel {
   constructor(private readonly _appEnv: TAppEnv) {}
 
   //TODO don't draw it. With every frame should come a black-white mask to cut the image (v2)
-  private _drawCircleMask(
-    context: CanvasRenderingContext2D,
-    frameOffsetLeft: number,
-    frameOffsetTop: number,
-  ) {
-    const offsetLeft = frameOffsetLeft / 2;
-    const offsetTop = frameOffsetTop / 2;
-    const radius = this._appEnv.defaultFrameSize / 2;
-
+  private _drawCircleMask(context: CanvasRenderingContext2D) {
     context.save();
     context.globalCompositeOperation = 'destination-in';
-    context.beginPath();
-    context.arc(offsetLeft, offsetTop, radius, 0, 2 * Math.PI, false);
-    context.fill();
+
+    // context.beginPath();
+    // context.arc(offsetLeft, offsetTop, radius, 0, 2 * Math.PI, false);
+    // context.fill();
+
+    const image = new Image();
+    image.src = frameMask;
+
+    image.onload = () => {
+      console.log('LOAD');
+    };
+
+    context.drawImage(image, 0, 0, 200, 200);
     context.restore();
   }
 
@@ -79,7 +83,19 @@ export class ExportCanvasViewModel implements IExportCanvasViewModel {
         FRAME_SIZE,
       );
 
-      this._drawCircleMask(finalContext, currentFrame.offsetLeft, currentFrame.offsetTop);
+      //   this._drawCircleMask(finalContext, currentFrame.offsetLeft, currentFrame.offsetTop);
+
+      finalContext.save();
+      finalContext.globalCompositeOperation = 'destination-in';
+
+      const image = new Image();
+      image.src = frameMask;
+      image.onload = () => {
+        finalContext.drawImage(image, 0, 0, 200, 200);
+        finalContext.restore();
+        const exportedData = finalCanvas.toDataURL('image/png', 1.0);
+        window.open(exportedData, '_blank');
+      };
 
       return finalCanvas.toDataURL('image/png', 1.0);
     }

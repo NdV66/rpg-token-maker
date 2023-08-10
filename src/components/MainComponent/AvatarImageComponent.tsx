@@ -3,7 +3,6 @@ import { IDrawImageOnCanvasViewModel, IImageOnCanvasMoveViewModel } from 'viewMo
 import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
 
 import img from 'data/testImg.jpg'; //TODO load
-
 // import img from 'data/other3.jpeg'; //TODO load
 import { useDrawAnyImageOnCanvas } from './useDrawAnyImageOnCanvas';
 
