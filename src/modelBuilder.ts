@@ -1,4 +1,5 @@
 import { APP_ENV } from 'appEnv';
+import { ImageLoaderModel } from 'models';
 import {
   MainComponentViewModel,
   DrawImageOnCanvasViewModel,
@@ -6,9 +7,11 @@ import {
   ExportCanvasViewModel,
 } from 'viewModels';
 
-const drawImageOnCanvasViewModel = new DrawImageOnCanvasViewModel(APP_ENV);
+const imageLoaderModel = new ImageLoaderModel();
+
+const drawImageOnCanvasViewModel = new DrawImageOnCanvasViewModel(imageLoaderModel);
 const imageOnCanvasMoveViewModel = new ImageOnCanvasMoveViewModel();
-const exportCanvasViewModel = new ExportCanvasViewModel(APP_ENV);
+const exportCanvasViewModel = new ExportCanvasViewModel(APP_ENV, imageLoaderModel);
 
 export const mainComponentViewModel = new MainComponentViewModel(
   APP_ENV,

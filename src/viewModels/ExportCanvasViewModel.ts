@@ -1,4 +1,5 @@
 import { TAppEnv } from 'types';
+import { IImageLoaderModel } from 'models';
 
 import frameMask from 'data/frameMask.png';
 
@@ -6,29 +7,20 @@ export interface IExportCanvasViewModel {
   exportToPng: (
     currentImage: HTMLCanvasElement,
     currentFrame: HTMLCanvasElement,
-  ) => string | undefined;
+  ) => Promise<string | undefined>;
 }
 
 export class ExportCanvasViewModel implements IExportCanvasViewModel {
-  constructor(private readonly _appEnv: TAppEnv) {}
+  constructor(
+    private readonly _appEnv: TAppEnv,
+    private readonly _imageLoader: IImageLoaderModel,
+  ) {}
 
-  //TODO don't draw it. With every frame should come a black-white mask to cut the image (v2)
-  private _drawCircleMask(context: CanvasRenderingContext2D) {
+  private async _drawTokenMask(context: CanvasRenderingContext2D, frameMaskSrc: string) {
+    const image = await this._imageLoader.loadImage(frameMaskSrc);
     context.save();
     context.globalCompositeOperation = 'destination-in';
-
-    // context.beginPath();
-    // context.arc(offsetLeft, offsetTop, radius, 0, 2 * Math.PI, false);
-    // context.fill();
-
-    const image = new Image();
-    image.src = frameMask;
-
-    image.onload = () => {
-      console.log('LOAD');
-    };
-
-    context.drawImage(image, 0, 0, 200, 200);
+    context.drawImage(image, 0, 0, this._appEnv.defaultFrameSize, this._appEnv.defaultFrameSize);
     context.restore();
   }
 
@@ -61,7 +53,7 @@ export class ExportCanvasViewModel implements IExportCanvasViewModel {
    * @param currentFrame
    * @returns string (URL of the exported image)
    */
-  public exportToPng(currentImage: HTMLCanvasElement, currentFrame: HTMLCanvasElement) {
+  public async exportToPng(currentImage: HTMLCanvasElement, currentFrame: HTMLCanvasElement) {
     const FRAME_SIZE = currentFrame.width;
     const mergedLayersCanvas = this._prepareCanvasForMergeLayers();
     const finalCanvas = this._prepareFinalCanvas(FRAME_SIZE);
@@ -82,20 +74,7 @@ export class ExportCanvasViewModel implements IExportCanvasViewModel {
         FRAME_SIZE,
         FRAME_SIZE,
       );
-
-      //   this._drawCircleMask(finalContext, currentFrame.offsetLeft, currentFrame.offsetTop);
-
-      finalContext.save();
-      finalContext.globalCompositeOperation = 'destination-in';
-
-      const image = new Image();
-      image.src = frameMask;
-      image.onload = () => {
-        finalContext.drawImage(image, 0, 0, 200, 200);
-        finalContext.restore();
-        const exportedData = finalCanvas.toDataURL('image/png', 1.0);
-        window.open(exportedData, '_blank');
-      };
+      await this._drawTokenMask(finalContext, frameMask);
 
       return finalCanvas.toDataURL('image/png', 1.0);
     }

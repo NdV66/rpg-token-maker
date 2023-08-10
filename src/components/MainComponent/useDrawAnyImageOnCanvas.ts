@@ -22,14 +22,10 @@ export const useDrawAnyImageOnCanvas = (
   );
 
   const drawImageOnCanvas = useCallback(
-    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
-      const image = new Image();
-      image.src = imgSrc;
-      image.onload = () => {
-        const { drawHeight } = viewModel.prepareImageSize(image, defaultImageWidth);
-        const size = adjustCanvasSizeToScreen(canvas, drawHeight);
-        ctx.drawImage(image, 0, 0, size.width, size.height);
-      };
+    async (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+      const { drawHeight, image } = await viewModel.loadImage(imgSrc, defaultImageWidth);
+      const size = adjustCanvasSizeToScreen(canvas, drawHeight);
+      ctx.drawImage(image, 0, 0, size.width, size.height);
     },
     [imgSrc, adjustCanvasSizeToScreen, viewModel, defaultImageWidth],
   );

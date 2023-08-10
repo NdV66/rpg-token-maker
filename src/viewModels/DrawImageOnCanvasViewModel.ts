@@ -1,9 +1,4 @@
-import { TAppEnv } from 'types';
-
-type TDrawSize = {
-  drawWidth: number;
-  drawHeight: number;
-};
+import { IImageLoaderModel } from 'models';
 
 type TCanvasSize = {
   width: number;
@@ -13,20 +8,24 @@ type TCanvasSize = {
 };
 
 export interface IDrawImageOnCanvasViewModel {
-  prepareImageSize: (image: HTMLImageElement, defaultImageWidth: number) => TDrawSize;
+  loadImage: (
+    imageSrc: string,
+    defaultImageWidth: number,
+  ) => Promise<{ drawHeight: number; image: HTMLImageElement }>;
   calculateCanvasSize: (drawHeight: number, defaultImageWidth: number) => TCanvasSize;
 }
 
 export class DrawImageOnCanvasViewModel implements IDrawImageOnCanvasViewModel {
-  constructor(private readonly _appEnv: TAppEnv) {}
+  constructor(private readonly _imageLoader: IImageLoaderModel) {}
 
-  public prepareImageSize(image: HTMLImageElement, defaultImageWidth: number) {
+  public async loadImage(imageSrc: string, defaultImageWidth: number) {
+    const image = await this._imageLoader.loadImage(imageSrc);
     const { width, height } = image;
     const drawHeight = (defaultImageWidth * height) / width;
 
     return {
       drawHeight,
-      drawWidth: defaultImageWidth,
+      image,
     };
   }
 
