@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { IMainComponentViewModel } from 'viewModels';
 import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
+import { ExportCanvasComponent } from './ExportCanvasComponent';
 
 type Props = {
   mainComponentViewModel: IMainComponentViewModel;
@@ -12,17 +13,14 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
   const frameCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
-  const exportAsImage = () => {
-    const exportData = mainComponentViewModel.exportCanvasViewModel.exportToPng(
-      imageCanvasRef.current!,
-      frameCanvasRef.current!,
-    );
-    window.open(exportData, '_blank');
-  };
-
   return (
     <>
-      <button onClick={exportAsImage}>TEST ME</button>
+      <ExportCanvasComponent
+        viewModel={mainComponentViewModel.exportCanvasViewModel}
+        frameCanvasRef={frameCanvasRef}
+        imageCanvasRef={imageCanvasRef}
+      />
+
       <div
         className="area"
         onMouseLeave={() => {
