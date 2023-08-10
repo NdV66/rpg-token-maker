@@ -13,20 +13,19 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const exportAsImage = () => {
-    const exportCanvas = document.createElement('canvas');
+    const mergedLayersCanvas = document.createElement('canvas');
     const finalCanvas = document.createElement('canvas');
-    const exportContext = exportCanvas.getContext('2d');
+    const exportContext = mergedLayersCanvas.getContext('2d');
     const finalContext = finalCanvas.getContext('2d');
 
     if (exportContext && finalContext) {
       const currentImage = imageCanvasRef.current!;
       const currentFrame = frameCanvasRef.current!;
 
-      //   const FRAME_SIZE = currentFrame.width; //height is the same
-      const FRAME_SIZE = 200; //height is the same
+      const FRAME_SIZE = currentFrame.width;
 
-      exportCanvas.width = 600;
-      exportCanvas.height = 600;
+      mergedLayersCanvas.width = 600;
+      mergedLayersCanvas.height = 600;
 
       exportContext.drawImage(currentImage, currentImage.offsetLeft, currentImage.offsetTop);
       exportContext.drawImage(currentFrame, currentFrame.offsetLeft, currentFrame.offsetTop);
@@ -35,19 +34,17 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
       finalCanvas.height = FRAME_SIZE;
 
       finalContext.drawImage(
-        exportCanvas,
+        mergedLayersCanvas,
         currentFrame.offsetLeft,
         currentFrame.offsetTop,
-        200,
-        200,
+        FRAME_SIZE,
+        FRAME_SIZE,
         0,
         0,
-        200,
-        200,
-      ); //TODO wtf 800
-
+        FRAME_SIZE,
+        FRAME_SIZE,
+      );
       const exportData = finalCanvas.toDataURL('image/png', 1.0);
-      //   const exportData = exportCanvas.toDataURL('image/png', 1.0);
       window.open(exportData, '_blank'); //TODO
     }
   };
