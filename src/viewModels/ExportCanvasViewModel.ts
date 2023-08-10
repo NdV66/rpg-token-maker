@@ -10,6 +10,7 @@ export interface IExportCanvasViewModel {
 export class ExportCanvasViewModel implements IExportCanvasViewModel {
   constructor(private readonly _appEnv: TAppEnv) {}
 
+  //TODO don't draw it. With every frame should come a black-white mask to cut the image (v2)
   private _drawCircleMask(
     context: CanvasRenderingContext2D,
     frameOffsetLeft: number,
