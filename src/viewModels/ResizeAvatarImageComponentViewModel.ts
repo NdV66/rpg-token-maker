@@ -1,4 +1,9 @@
-import { IAvatarImageMoveModel, IDrawImageOnCanvasModel } from 'models';
+import {
+  AMouseHandler,
+  IAMouseHandler,
+  IAvatarImageMoveModel,
+  IDrawImageOnCanvasModel,
+} from 'models';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { TCanvasSize, TPosition } from 'types';
 
@@ -17,18 +22,24 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
   offset: { x: 0, y: 0 },
 };
 
-export interface IResizeAvatarImageComponentViewModel {
+export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   currentSizeWithOffset$: Observable<TCanvasSizeWithOffset>;
   updateTest: (height: number, width: number) => void;
+  handleStartResize: () => void;
+  handleFinishResize: () => void;
 }
 
-export class ResizeAvatarImageComponentViewModel implements IResizeAvatarImageComponentViewModel {
+export class ResizeAvatarImageComponentViewModel
+  extends AMouseHandler
+  implements IResizeAvatarImageComponentViewModel
+{
   private _currentSizeWithOffset$ = new BehaviorSubject<TCanvasSizeWithOffset>(DEFAULT_SIZE);
 
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
     private readonly _moveImageViewModel: IAvatarImageMoveModel,
   ) {
+    super();
     this._updateCurrentSizeWithOffset();
   }
 
@@ -47,6 +58,17 @@ export class ResizeAvatarImageComponentViewModel implements IResizeAvatarImageCo
 
   // TODO only for tests
   public updateTest(height: number, width: number) {
-    this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
+    if (this.isMouseDown) {
+      this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
+      console.log('move');
+    }
   }
+
+  public handleFinishResize = () => {
+    this.turnOffIsMouseDown();
+  };
+
+  public handleStartResize = () => {
+    this.turnOnIsMouseDown();
+  };
 }

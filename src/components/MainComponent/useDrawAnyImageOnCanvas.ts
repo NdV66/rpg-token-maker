@@ -27,6 +27,7 @@ export const useDrawAnyImageOnCanvas = (
 
     if (context && canvas) {
       const image$ = from(viewModel.loadImage(imgSrc, defaultImageWidth));
+
       const handleDrawImage$ = image$
         .pipe(
           tap((value) => {

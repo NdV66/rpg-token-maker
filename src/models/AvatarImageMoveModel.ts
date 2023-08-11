@@ -1,42 +1,24 @@
-import { BehaviorSubject, Observable, fromEvent, map } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { TPosition } from 'types';
+import { AMouseHandler, IAMouseHandler } from './AMouseHandler';
 
-export interface IAvatarImageMoveModel {
+export interface IAvatarImageMoveModel extends IAMouseHandler {
   elementOffset$: Observable<TPosition>;
 
-  turnOffIsMouseDown: () => void;
-  fromMouseEvent: <T extends HTMLElement>(
-    element: T,
-    trigger: string,
-  ) => Observable<React.MouseEvent<Element, MouseEvent>>;
   handleMoveElement: (event: React.MouseEvent) => void;
   handleMouseDown: <T extends HTMLElement>(element: T, event: React.MouseEvent) => void;
 }
 
 const START_OFFSET: TPosition = { x: 0, y: 0 };
 
-export class AvatarImageMoveModel implements IAvatarImageMoveModel {
+export class AvatarImageMoveModel extends AMouseHandler implements IAvatarImageMoveModel {
   private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
-  private _isDown = false;
   private _currentOffset = START_OFFSET;
 
   public readonly elementOffset$ = this._elementOffset$.asObservable();
 
-  public fromMouseEvent<T extends HTMLElement>(element: T, trigger: string) {
-    return fromEvent(element, trigger).pipe(
-      map((event) => {
-        event.preventDefault();
-        return event as any as React.MouseEvent;
-      }),
-    );
-  }
-
-  public turnOffIsMouseDown = () => {
-    this._isDown = false;
-  };
-
   public handleMoveElement = (event: React.MouseEvent) => {
-    if (this._isDown) {
+    if (this.isMouseDown) {
       const newMousePosition = this._positionFromEvent(event);
       const value = {
         x: newMousePosition.x + this._currentOffset.x,
@@ -47,7 +29,7 @@ export class AvatarImageMoveModel implements IAvatarImageMoveModel {
   };
 
   public handleMouseDown = <T extends HTMLElement>(element: T, event: React.MouseEvent) => {
-    this._isDown = true;
+    this.turnOnIsMouseDown();
     const offset: TPosition = {
       x: element.offsetLeft - event.clientX,
       y: element.offsetTop - event.clientY,

@@ -1,9 +1,16 @@
+import { useRef, useEffect, useMemo, useState } from 'react';
 import { useStateObservable } from 'tools';
 import { TPosition } from 'types';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
+import { useResizeImage } from './useResizeImage';
 
 type Props = {
   viewModel: IResizeAvatarImageComponentViewModel;
+};
+
+type TestMeProps = {
+  viewModel: IResizeAvatarImageComponentViewModel;
+  dotsRef: React.MutableRefObject<HTMLDivElement[]>;
 };
 
 type TResizeDot = TPosition & {
@@ -27,7 +34,9 @@ const prepareOffsetsForDots = (
 
 export const ResizeAvatarImageComponent = ({ viewModel }: Props) => {
   const currentSizeWithOffset = useStateObservable(viewModel.currentSizeWithOffset$);
-  let isDown = false;
+  const dotsRef = useRef<HTMLDivElement[]>([]);
+
+  const { onMouseDown, onMouseMove, onMouseUp } = useResizeImage(viewModel);
 
   let dots: TResizeDot[] = [];
 
@@ -36,38 +45,20 @@ export const ResizeAvatarImageComponent = ({ viewModel }: Props) => {
     dots = prepareOffsetsForDots(offset, size.width, size.height);
   }
 
-  //TODO tets only
-  const onMouseDown = () => {
-    console.log('down');
-    isDown = true;
-  };
-
-  const onMouseMove = () => {
-    if (isDown) {
-      console.log('move');
-      viewModel.updateTest(100, 100);
-    }
-  };
-
-  const onMouseUp = () => {
-    console.log('up');
-    isDown = false;
-  };
+  console.log(dotsRef);
 
   return (
-    <>
-      <div className="resize-avatar">
-        {dots.map((dot) => (
-          <div
-            className="resize-dot"
-            key={dot.pointName}
-            style={{ top: dot.y, left: dot.x }}
-            onMouseDown={onMouseDown}
-            onMouseMove={onMouseMove}
-            onMouseUp={onMouseUp}
-          />
-        ))}
-      </div>
-    </>
+    <div className="resize-avatar">
+      {dots.map((dot) => (
+        <div
+          className="resize-dot"
+          key={dot.pointName}
+          style={{ top: dot.y, left: dot.x }}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+        />
+      ))}
+    </div>
   );
 };
