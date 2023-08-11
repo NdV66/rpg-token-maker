@@ -1,6 +1,8 @@
+import { Observable } from 'rxjs';
 import { TCanvasSize } from './TCanvasSize';
 
 export interface IDrawImageOnCanvasViewModel {
+  canvasSize$: Observable<TCanvasSize>;
   loadImage: (
     imageSrc: string,
     defaultImageWidth: number,

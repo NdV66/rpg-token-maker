@@ -1,4 +1,4 @@
-import { IAvatarImageComponentViewModel } from 'viewModels';
+import { IAvatarImageComponentViewModel, IResizeAvatarImageComponentViewModel } from 'viewModels';
 
 import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
 

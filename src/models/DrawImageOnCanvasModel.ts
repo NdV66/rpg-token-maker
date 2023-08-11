@@ -1,4 +1,5 @@
 import { IImageLoaderModel } from 'models';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 type TCanvasSize = {
   width: number;
@@ -8,6 +9,8 @@ type TCanvasSize = {
 };
 
 export interface IDrawImageOnCanvasModel {
+  canvasSize$: Observable<TCanvasSize>;
+
   loadImage: (
     imageSrc: string,
     defaultImageWidth: number,
@@ -15,8 +18,21 @@ export interface IDrawImageOnCanvasModel {
   calculateCanvasSize: (drawHeight: number, defaultImageWidth: number) => TCanvasSize;
 }
 
+const DEFAULT_SIZE: TCanvasSize = {
+  height: 0,
+  styleHeight: 0,
+  width: 0,
+  styleWidth: 0,
+};
+
 export class DrawImageOnCanvasModel implements IDrawImageOnCanvasModel {
+  private _canvasSize$ = new BehaviorSubject<TCanvasSize>(DEFAULT_SIZE);
+
   constructor(private readonly _imageLoader: IImageLoaderModel) {}
+
+  get canvasSize$() {
+    return this._canvasSize$.asObservable();
+  }
 
   public async loadImage(imageSrc: string, defaultImageWidth: number) {
     const image = await this._imageLoader.loadImage(imageSrc);
@@ -31,14 +47,15 @@ export class DrawImageOnCanvasModel implements IDrawImageOnCanvasModel {
   }
 
   public calculateCanvasSize(drawHeight: number, defaultImageWidth: number) {
-    const width = defaultImageWidth;
-    const height = drawHeight;
-
-    return {
-      width,
-      height,
+    const size = {
+      width: defaultImageWidth,
+      height: drawHeight,
       styleHeight: drawHeight,
       styleWidth: defaultImageWidth,
     };
+
+    this._canvasSize$.next(size);
+
+    return size;
   }
 }

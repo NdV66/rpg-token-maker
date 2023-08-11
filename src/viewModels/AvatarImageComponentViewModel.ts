@@ -1,5 +1,5 @@
 import { IAvatarImageMoveModel, IDrawImageOnCanvasModel } from 'models';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IDrawImageOnCanvasViewModel, TCanvasSize, TPosition } from 'types';
 
 export interface IAvatarImageComponentViewModel extends IDrawImageOnCanvasViewModel {
@@ -15,24 +15,14 @@ export interface IAvatarImageComponentViewModel extends IDrawImageOnCanvasViewMo
   handleMouseDown: <T extends HTMLElement>(element: T, event: React.MouseEvent) => void;
 }
 
-//TODO to envs
-const DEFAULT_SIZE: TCanvasSize = {
-  height: 0,
-  styleHeight: 0,
-  width: 0,
-  styleWidth: 0,
-};
-
 export class AvatarImageComponentViewModel implements IAvatarImageComponentViewModel {
-  private _canvasSize$ = new BehaviorSubject<TCanvasSize>(DEFAULT_SIZE);
-
   constructor(
     private readonly _drawImageOnCanvasModel: IDrawImageOnCanvasModel,
     private readonly _imageMoveModel: IAvatarImageMoveModel,
   ) {}
 
   get canvasSize$() {
-    return this._canvasSize$.asObservable();
+    return this._drawImageOnCanvasModel.canvasSize$;
   }
 
   get elementOffset$() {
@@ -40,9 +30,7 @@ export class AvatarImageComponentViewModel implements IAvatarImageComponentViewM
   }
 
   public calculateCanvasSize(drawHeight: number, defaultImageWidth: number) {
-    const size = this._drawImageOnCanvasModel.calculateCanvasSize(drawHeight, defaultImageWidth);
-    this._canvasSize$.next(size);
-    return size;
+    return this._drawImageOnCanvasModel.calculateCanvasSize(drawHeight, defaultImageWidth);
   }
 
   public turnOffIsMouseDown() {

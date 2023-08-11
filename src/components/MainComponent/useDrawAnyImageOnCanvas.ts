@@ -1,4 +1,5 @@
 import { useEffect, useCallback } from 'react';
+import { useStateObservable } from 'tools';
 import { IDrawImageOnCanvasViewModel } from 'types';
 
 export const useDrawAnyImageOnCanvas = (

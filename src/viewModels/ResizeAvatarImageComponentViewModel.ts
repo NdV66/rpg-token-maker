@@ -1,4 +1,4 @@
-import { IAvatarImageMoveModel, IDrawImageOnCanvasModel } from 'models';
+import { IAvatarImageMoveModel } from 'models';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { TCanvasSize, TPosition } from 'types';
 import { IAvatarImageComponentViewModel } from './AvatarImageComponentViewModel';

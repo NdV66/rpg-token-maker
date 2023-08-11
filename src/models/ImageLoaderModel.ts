@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 export interface IImageLoaderModel {
   loadImage: (imageSrc: string) => Promise<HTMLImageElement>;
 }
@@ -11,4 +13,13 @@ export class ImageLoaderModel implements IImageLoaderModel {
       image.onerror = reject;
     });
   }
+
+  //   public loadImage(imageSrc: string) () {
+  //     return new Observable<HTMLImageElement>((subscriber) => {
+  //         const image = new Image();
+  //         image.src = imageSrc;
+  //         image.onload = () => resolve(image);
+  //         image.onerror = reject;
+  //     })
+  //   }
 }

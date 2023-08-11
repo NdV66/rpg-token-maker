@@ -6,6 +6,10 @@ export interface IAvatarFrameComponentViewModel extends IDrawImageOnCanvasViewMo
 export class AvatarFrameComponentViewModel implements IAvatarFrameComponentViewModel {
   constructor(private readonly _drawImageOnCanvasModel: IDrawImageOnCanvasModel) {}
 
+  get canvasSize$() {
+    return this._drawImageOnCanvasModel.canvasSize$;
+  }
+
   public async loadImage(imageSrc: string, defaultImageWidth: number) {
     return this._drawImageOnCanvasModel.loadImage(imageSrc, defaultImageWidth);
   }
