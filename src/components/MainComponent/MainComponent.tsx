@@ -4,6 +4,7 @@ import { IMainComponentViewModel } from 'viewModels';
 import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
 import { ExportCanvasComponent } from './ExportCanvasComponent';
+import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
 
 type Props = {
   mainComponentViewModel: IMainComponentViewModel;
@@ -33,6 +34,7 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
           drawImageViewModel={mainComponentViewModel.drawImageOnCanvasViewModel}
           moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
         />
+        <ResizeAvatarImageComponent />
         <AvatarFrameComponent
           canvasRef={frameCanvasRef}
           size={mainComponentViewModel.avatarFrameSize}
