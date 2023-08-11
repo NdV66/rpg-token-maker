@@ -1,11 +1,5 @@
 import { IImageLoaderModel } from 'models';
-
-type TCanvasSize = {
-  width: number;
-  height: number;
-  styleHeight: number;
-  styleWidth: number;
-};
+import { TCanvasSize } from 'types';
 
 export interface IDrawImageOnCanvasViewModel {
   loadImage: (
