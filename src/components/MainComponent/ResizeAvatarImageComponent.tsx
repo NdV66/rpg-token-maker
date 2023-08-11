@@ -1,10 +1,9 @@
 import { useStateObservable } from 'tools';
 import { TPosition } from 'types';
-import { IAvatarImageOnCanvasMoveViewModel } from 'viewModels';
+import { IAvatarImageOnCanvasMoveViewModel, IDrawAvatarOnCanvasViewModel } from 'viewModels';
 
 type Props = {
-  imageWidth: number;
-  imageHeight: number;
+  drawAvatarViewModel: IDrawAvatarOnCanvasViewModel;
   moveImageViewModel: IAvatarImageOnCanvasMoveViewModel;
 };
 
@@ -27,14 +26,14 @@ const prepareOffsetsForDots = (
   ];
 };
 
-export const ResizeAvatarImageComponent = ({
-  moveImageViewModel,
-  imageHeight,
-  imageWidth,
-}: Props) => {
+export const ResizeAvatarImageComponent = ({ moveImageViewModel, drawAvatarViewModel }: Props) => {
   const offset = useStateObservable(moveImageViewModel.elementOffset$);
+  const size = useStateObservable(drawAvatarViewModel.canvasSize$);
 
-  const dots = offset ? prepareOffsetsForDots(offset, imageWidth, imageHeight) : [];
+  //TODO show dots only after mousedown and move? not always
+  const dots = offset && size ? prepareOffsetsForDots(offset, size.width, size.height) : [];
+
+  console.log(size);
 
   return (
     <>

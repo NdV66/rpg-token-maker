@@ -1,5 +1,11 @@
 import { IImageLoaderModel } from 'models';
-import { TCanvasSize } from 'types';
+
+type TCanvasSize = {
+  width: number;
+  height: number;
+  styleHeight: number;
+  styleWidth: number;
+};
 
 export interface IDrawImageOnCanvasViewModel {
   loadImage: (
@@ -15,7 +21,8 @@ export class DrawImageOnCanvasViewModel implements IDrawImageOnCanvasViewModel {
   public async loadImage(imageSrc: string, defaultImageWidth: number) {
     const image = await this._imageLoader.loadImage(imageSrc);
     const { width, height } = image;
-    const drawHeight = (defaultImageWidth * height) / width;
+    const drawHeightRaw = (defaultImageWidth * height) / width;
+    const drawHeight = Math.floor(drawHeightRaw);
 
     return {
       drawHeight,

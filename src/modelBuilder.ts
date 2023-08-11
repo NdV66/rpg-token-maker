@@ -5,17 +5,21 @@ import {
   DrawImageOnCanvasViewModel,
   AvatarImageOnCanvasMoveViewModel,
   ExportCanvasViewModel,
+  DrawAvatarOnCanvasViewModel,
 } from 'viewModels';
 
 const imageLoaderModel = new ImageLoaderModel();
 
-const drawImageOnCanvasViewModel = new DrawImageOnCanvasViewModel(imageLoaderModel);
+const drawAvatarOnCanvasViewModel = new DrawAvatarOnCanvasViewModel(imageLoaderModel);
+const drawFrameCanvasViewModel = new DrawImageOnCanvasViewModel(imageLoaderModel);
+
 const imageOnCanvasMoveViewModel = new AvatarImageOnCanvasMoveViewModel();
 const exportCanvasViewModel = new ExportCanvasViewModel(APP_ENV, imageLoaderModel);
 
 export const mainComponentViewModel = new MainComponentViewModel(
   APP_ENV,
-  drawImageOnCanvasViewModel,
+  drawAvatarOnCanvasViewModel,
+  drawFrameCanvasViewModel,
   imageOnCanvasMoveViewModel,
   exportCanvasViewModel,
 );

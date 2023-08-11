@@ -41,8 +41,11 @@
     position: relative;
 }
 
+//TODO: add space/ $size/2 for nth etc
 .resize-dot {
     $size: 16px;
+    $space: $size/2;
+
     background-color: yellow;
     display: block;
     width: $size;
@@ -52,6 +55,9 @@
     top: 0;
     left: 0;
     z-index: 30;
+
+    margin-left: -1 * $space;
+    margin-top: -1 * $space;
 }
 
 .x {

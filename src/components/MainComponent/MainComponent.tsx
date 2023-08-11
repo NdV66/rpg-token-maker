@@ -5,7 +5,6 @@ import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
 import { ExportCanvasComponent } from './ExportCanvasComponent';
 import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
-import { TPosition, TSize } from 'types';
 
 type Props = {
   mainComponentViewModel: IMainComponentViewModel;
@@ -14,8 +13,6 @@ type Props = {
 export const MainComponent = ({ mainComponentViewModel }: Props) => {
   const frameCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
-
-  const [size, setSize] = useState<TSize>({ width: 0, height: 0 });
 
   return (
     <>
@@ -34,19 +31,18 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
         <AvatarImageComponent
           canvasRef={imageCanvasRef}
           defaultWidth={mainComponentViewModel.defaultAvatarImageWidth}
-          drawImageViewModel={mainComponentViewModel.drawImageOnCanvasViewModel}
+          drawImageViewModel={mainComponentViewModel.drawAvatarOnCanvasViewModel}
           moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
         />
         <ResizeAvatarImageComponent
-          imageHeight={100}
-          imageWidth={200}
+          drawAvatarViewModel={mainComponentViewModel.drawAvatarOnCanvasViewModel}
           moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
         />
 
         <AvatarFrameComponent
           canvasRef={frameCanvasRef}
           size={mainComponentViewModel.avatarFrameSize}
-          viewModel={mainComponentViewModel.drawImageOnCanvasViewModel}
+          viewModel={mainComponentViewModel.drawFrameOnCanvasViewModel}
         />
       </div>
     </>
