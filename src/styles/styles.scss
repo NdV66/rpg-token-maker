@@ -43,14 +43,14 @@
 
 //TODO: add space/ $size/2 for nth etc
 .resize-dot {
-    $size: 16px;
+    $size: 12px;
     $space: $size/2;
 
     background-color: yellow;
     display: block;
     width: $size;
     height: $size;
-    border-radius: 50%;
+    // border-radius: 50%;
     position: absolute;
     top: 0;
     left: 0;
