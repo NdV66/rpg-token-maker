@@ -3,7 +3,7 @@ import { TPosition } from 'types';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
 
 type Props = {
-  resizeAvatarViewModel: IResizeAvatarImageComponentViewModel;
+  viewModel: IResizeAvatarImageComponentViewModel;
 };
 
 type TResizeDot = TPosition & {
@@ -25,8 +25,8 @@ const prepareOffsetsForDots = (
   ];
 };
 
-export const ResizeAvatarImageComponent = ({ resizeAvatarViewModel }: Props) => {
-  const currentSizeWithOffset = useStateObservable(resizeAvatarViewModel.currentSizeWithOffset$);
+export const ResizeAvatarImageComponent = ({ viewModel }: Props) => {
+  const currentSizeWithOffset = useStateObservable(viewModel.currentSizeWithOffset$);
 
   let dots: TResizeDot[] = [];
 
@@ -36,7 +36,18 @@ export const ResizeAvatarImageComponent = ({ resizeAvatarViewModel }: Props) => 
   }
 
   //TODO tets only
-  const onClickDot = () => {};
+  const onMouseDown = () => {
+    console.log('down');
+  };
+
+  const onMouseMove = () => {
+    console.log('move');
+    // viewModel.
+  };
+
+  const onMouseUp = () => {
+    console.log('up');
+  };
 
   return (
     <>
@@ -46,7 +57,9 @@ export const ResizeAvatarImageComponent = ({ resizeAvatarViewModel }: Props) => 
             className="resize-dot"
             key={dot.pointName}
             style={{ top: dot.y, left: dot.x }}
-            onClick={onClickDot}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseUp}
           />
         ))}
       </div>

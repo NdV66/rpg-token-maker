@@ -1,7 +1,6 @@
-import { IAvatarImageMoveModel } from 'models';
+import { IAvatarImageMoveModel, IDrawImageOnCanvasModel } from 'models';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { TCanvasSize, TPosition } from 'types';
-import { IAvatarImageComponentViewModel } from './AvatarImageComponentViewModel';
 
 type TCanvasSizeWithOffset = {
   size: TCanvasSize;
@@ -26,7 +25,7 @@ export class ResizeAvatarImageComponentViewModel implements IResizeAvatarImageCo
   private _currentSizeWithOffset$ = new BehaviorSubject<TCanvasSizeWithOffset>(DEFAULT_SIZE);
 
   constructor(
-    private readonly _avatarImageComponentViewModel: IAvatarImageComponentViewModel,
+    private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
     private readonly _moveImageViewModel: IAvatarImageMoveModel,
   ) {
     this._updateCurrentSizeWithOffset();
@@ -34,7 +33,7 @@ export class ResizeAvatarImageComponentViewModel implements IResizeAvatarImageCo
 
   private _updateCurrentSizeWithOffset() {
     combineLatest([
-      this._avatarImageComponentViewModel.canvasSize$,
+      this._drawAvatarOnCanvasModel.canvasSize$,
       this._moveImageViewModel.elementOffset$,
     ]).subscribe(([size, offset]) => {
       this._currentSizeWithOffset$.next({ size, offset });

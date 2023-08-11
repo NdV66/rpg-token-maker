@@ -35,9 +35,7 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
           defaultWidth={mainComponentViewModel.defaultAvatarImageWidth}
           viewModel={mainComponentViewModel.avatarImageComponentViewModel}
         />
-        <ResizeAvatarImageComponent
-          resizeAvatarViewModel={mainComponentViewModel.resizeAvatarViewModel}
-        />
+        <ResizeAvatarImageComponent viewModel={mainComponentViewModel.resizeAvatarViewModel} />
 
         <AvatarFrameComponent
           canvasRef={frameCanvasRef}
