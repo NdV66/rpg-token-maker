@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { from, map } from 'rxjs';
-import { IDrawImageOnCanvasViewModel } from 'types';
+import { from, identity, map, mergeMap, tap } from 'rxjs';
+import { IDrawImageOnCanvasViewModel, TCanvasSize } from 'types';
 
 export const useDrawAnyImageOnCanvas = (
   imgSrc: string,
@@ -8,26 +8,36 @@ export const useDrawAnyImageOnCanvas = (
   viewModel: IDrawImageOnCanvasViewModel,
   canvasRef: React.RefObject<HTMLCanvasElement>,
 ) => {
+  const drawImageOnCanvas = (
+    canvas: HTMLCanvasElement,
+    size: TCanvasSize,
+    context: CanvasRenderingContext2D,
+    image: HTMLImageElement,
+  ) => {
+    canvas.width = size.width;
+    canvas.height = size.height;
+    canvas.style.width = `${size.styleWidth}px`;
+    canvas.style.height = `${size.styleHeight}px`;
+    context.drawImage(image, 0, 0, size.width, size.height);
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
+
+    const mergeSizeAndImagePipe = (image: HTMLImageElement) =>
+      viewModel.canvasSize$.pipe(map((size) => ({ size, image })));
 
     if (context && canvas) {
       const image$ = from(viewModel.loadImage(imgSrc, defaultImageWidth));
       const handleDrawImage$ = image$
         .pipe(
-          map((value) => ({
-            size: viewModel.calculateCanvasSize(value.drawHeight, defaultImageWidth),
-            image: value.image,
-          })),
+          tap((value) => viewModel.calculateCanvasSize(value.drawHeight, defaultImageWidth)),
+          map((value) => mergeSizeAndImagePipe(value.image)),
+          mergeMap(identity),
         )
         .subscribe(({ size, image }) => {
-          canvas.width = size.width;
-          canvas.height = size.height;
-          canvas.style.width = `${size.styleWidth}px`;
-          canvas.style.height = `${size.styleHeight}px`;
-
-          context.drawImage(image, 0, 0, size.width, size.height);
+          drawImageOnCanvas(canvas, size, context, image);
         });
 
       return () => {

@@ -30,7 +30,7 @@ export class AvatarImageComponentViewModel implements IAvatarImageComponentViewM
   }
 
   public calculateCanvasSize(drawHeight: number, defaultImageWidth: number) {
-    return this._drawImageOnCanvasModel.calculateCanvasSize(drawHeight, defaultImageWidth);
+    this._drawImageOnCanvasModel.calculateCanvasSize(drawHeight, defaultImageWidth);
   }
 
   public turnOffIsMouseDown() {
