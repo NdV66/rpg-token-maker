@@ -18,11 +18,11 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
   offset: { x: 0, y: 0 },
 };
 
-export interface IResizeAvatarViewModel {
+export interface IResizeAvatarImageComponentViewModel {
   currentSizeWithOffset$: Observable<TCanvasSizeWithOffset>;
 }
 
-export class ResizeAvatarViewModel implements IResizeAvatarViewModel {
+export class ResizeAvatarImageComponentViewModel implements IResizeAvatarImageComponentViewModel {
   private _currentSizeWithOffset$ = new BehaviorSubject<TCanvasSizeWithOffset>(DEFAULT_SIZE);
 
   constructor(

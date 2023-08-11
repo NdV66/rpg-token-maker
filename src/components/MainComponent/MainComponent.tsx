@@ -38,8 +38,6 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
           resizeAvatarViewModel={mainComponentViewModel.resizeAvatarViewModel}
         />
         <ResizeAvatarImageComponent
-          drawAvatarViewModel={mainComponentViewModel.drawAvatarOnCanvasViewModel}
-          moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
           resizeAvatarViewModel={mainComponentViewModel.resizeAvatarViewModel}
         />
 

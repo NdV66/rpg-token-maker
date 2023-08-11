@@ -1,15 +1,9 @@
 import { useStateObservable } from 'tools';
 import { TPosition } from 'types';
-import {
-  IAvatarImageOnCanvasMoveViewModel,
-  IDrawAvatarOnCanvasViewModel,
-  IResizeAvatarViewModel,
-} from 'viewModels';
+import { IResizeAvatarImageComponentViewModel } from 'viewModels';
 
 type Props = {
-  drawAvatarViewModel: IDrawAvatarOnCanvasViewModel;
-  moveImageViewModel: IAvatarImageOnCanvasMoveViewModel;
-  resizeAvatarViewModel: IResizeAvatarViewModel;
+  resizeAvatarViewModel: IResizeAvatarImageComponentViewModel;
 };
 
 type TResizeDot = TPosition & {

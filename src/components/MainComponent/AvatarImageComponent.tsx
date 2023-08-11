@@ -1,7 +1,7 @@
 import {
   IAvatarImageOnCanvasMoveViewModel,
   IDrawAvatarOnCanvasViewModel,
-  IResizeAvatarViewModel,
+  IResizeAvatarImageComponentViewModel,
 } from 'viewModels';
 
 import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
@@ -16,7 +16,7 @@ type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   moveImageViewModel: IAvatarImageOnCanvasMoveViewModel;
   drawImageViewModel: IDrawAvatarOnCanvasViewModel;
-  resizeAvatarViewModel: IResizeAvatarViewModel;
+  resizeAvatarViewModel: IResizeAvatarImageComponentViewModel;
 };
 
 export const AvatarImageComponent = ({

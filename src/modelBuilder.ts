@@ -5,7 +5,7 @@ import {
   DrawImageOnCanvasViewModel,
   AvatarImageOnCanvasMoveViewModel,
   DrawAvatarOnCanvasViewModel,
-  ResizeAvatarViewModel,
+  ResizeAvatarImageComponentViewModel,
 } from 'viewModels';
 
 const imageLoaderModel = new ImageLoaderModel();
@@ -16,7 +16,7 @@ const drawFrameCanvasViewModel = new DrawImageOnCanvasViewModel(imageLoaderModel
 
 const avatarOnCanvasMoveViewModel = new AvatarImageOnCanvasMoveViewModel();
 
-const resizeAvatarViewModel = new ResizeAvatarViewModel(
+const resizeAvatarViewModel = new ResizeAvatarImageComponentViewModel(
   drawAvatarOnCanvasViewModel,
   avatarOnCanvasMoveViewModel,
 );

@@ -3,13 +3,13 @@ import { IDrawImageOnCanvasViewModel } from './DrawImageOnCanvasViewModel';
 import { IAvatarImageOnCanvasMoveViewModel } from './AvatarImageOnCanvasMoveViewModel';
 import { IExportCanvasModel } from '../models/ExportCanvasModel';
 import { IDrawAvatarOnCanvasViewModel } from './DrawAvatarOnCanvasViewModel';
-import { IResizeAvatarViewModel } from './ResizeAvatarViewModel';
+import { IResizeAvatarImageComponentViewModel } from './ResizeAvatarImageComponentViewModel';
 
 export interface IMainComponentViewModel {
   drawAvatarOnCanvasViewModel: IDrawAvatarOnCanvasViewModel;
   drawFrameOnCanvasViewModel: IDrawImageOnCanvasViewModel;
   imageOnCanvasMoveViewModel: IAvatarImageOnCanvasMoveViewModel;
-  resizeAvatarViewModel: IResizeAvatarViewModel;
+  resizeAvatarViewModel: IResizeAvatarImageComponentViewModel;
 
   avatarFrameSize: number;
   defaultAvatarImageWidth: number;
@@ -22,7 +22,7 @@ export class MainComponentViewModel implements IMainComponentViewModel {
     public readonly drawAvatarOnCanvasViewModel: IDrawAvatarOnCanvasViewModel,
     public readonly drawFrameOnCanvasViewModel: IDrawImageOnCanvasViewModel,
     public readonly imageOnCanvasMoveViewModel: IAvatarImageOnCanvasMoveViewModel,
-    public readonly resizeAvatarViewModel: IResizeAvatarViewModel,
+    public readonly resizeAvatarViewModel: IResizeAvatarImageComponentViewModel,
 
     private readonly _exportCanvasModel: IExportCanvasModel,
   ) {}

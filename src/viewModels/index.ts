@@ -4,4 +4,4 @@ export * from './DrawImageOnCanvasViewModel';
 export * from './AvatarImageOnCanvasMoveViewModel';
 export * from '../models/ExportCanvasModel';
 export * from './DrawAvatarOnCanvasViewModel';
-export * from './ResizeAvatarViewModel';
+export * from './ResizeAvatarImageComponentViewModel';
