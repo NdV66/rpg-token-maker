@@ -24,8 +24,8 @@ export const useResizeImage = (
 
     if (dots.length) {
       const mouseMoveActions$ = dots.map((dot) =>
-        viewModel.fromMouseEvent(dot!, 'mousemove').subscribe(() => {
-          viewModel.updateTest(200, 200);
+        viewModel.fromMouseEvent(dot!, 'mousemove').subscribe((event) => {
+          viewModel.calcResize(200, 200);
         }),
       );
 
