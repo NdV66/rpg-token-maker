@@ -25,6 +25,7 @@ const DEFAULT_SIZE: TCanvasSize = {
   styleWidth: 0,
 };
 
+//TODO: maybe handle it with device ratio?
 export class DrawImageOnCanvasModel implements IDrawImageOnCanvasModel {
   private _canvasSize$ = new BehaviorSubject<TCanvasSize>(DEFAULT_SIZE);
 

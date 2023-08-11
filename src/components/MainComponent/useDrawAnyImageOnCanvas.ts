@@ -1,5 +1,5 @@
-import { useEffect, useCallback } from 'react';
-import { useStateObservable } from 'tools';
+import { useEffect } from 'react';
+import { from, map } from 'rxjs';
 import { IDrawImageOnCanvasViewModel } from 'types';
 
 export const useDrawAnyImageOnCanvas = (
@@ -8,24 +8,31 @@ export const useDrawAnyImageOnCanvas = (
   viewModel: IDrawImageOnCanvasViewModel,
   canvasRef: React.RefObject<HTMLCanvasElement>,
 ) => {
-  //TODO: maybe handle it with device ratio?
-  const drawImageOnCanvas = useCallback(
-    async (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, width: number) => {
-      const { drawHeight, image } = await viewModel.loadImage(imgSrc, width);
-      const sizes = viewModel.calculateCanvasSize(drawHeight, width);
-
-      canvas.width = sizes.width;
-      canvas.height = sizes.height;
-      canvas.style.width = `${sizes.styleWidth}px`;
-      canvas.style.height = `${sizes.styleHeight}px`;
-
-      ctx.drawImage(image, 0, 0, sizes.width, sizes.height);
-    },
-    [viewModel, imgSrc],
-  );
-
   useEffect(() => {
-    const context = canvasRef.current?.getContext('2d');
-    if (context) drawImageOnCanvas(context, canvasRef.current!, defaultImageWidth);
-  }, [canvasRef, drawImageOnCanvas, defaultImageWidth]);
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext('2d');
+
+    if (context && canvas) {
+      const image$ = from(viewModel.loadImage(imgSrc, defaultImageWidth));
+      const handleDrawImage$ = image$
+        .pipe(
+          map((value) => ({
+            size: viewModel.calculateCanvasSize(value.drawHeight, defaultImageWidth),
+            image: value.image,
+          })),
+        )
+        .subscribe(({ size, image }) => {
+          canvas.width = size.width;
+          canvas.height = size.height;
+          canvas.style.width = `${size.styleWidth}px`;
+          canvas.style.height = `${size.styleHeight}px`;
+
+          context.drawImage(image, 0, 0, size.width, size.height);
+        });
+
+      return () => {
+        handleDrawImage$.unsubscribe();
+      };
+    }
+  }, [canvasRef, defaultImageWidth, imgSrc, viewModel]);
 };
