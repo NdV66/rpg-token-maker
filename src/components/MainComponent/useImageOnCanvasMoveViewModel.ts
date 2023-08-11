@@ -34,8 +34,4 @@ export const useImageOnCanvasMoveViewModel = (
       };
     }
   }, [viewModel, canvasRef]);
-
-  return {
-    canvasRef,
-  };
 };
