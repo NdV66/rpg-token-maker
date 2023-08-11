@@ -1,4 +1,4 @@
-import { IDrawImageOnCanvasViewModel, IImageOnCanvasMoveViewModel } from 'viewModels';
+import { IDrawImageOnCanvasViewModel, IAvatarImageOnCanvasMoveViewModel } from 'viewModels';
 
 import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
 
@@ -9,7 +9,7 @@ import { useDrawAnyImageOnCanvas } from './useDrawAnyImageOnCanvas';
 type Props = {
   defaultWidth: number;
   canvasRef: React.RefObject<HTMLCanvasElement>;
-  moveImageViewModel: IImageOnCanvasMoveViewModel;
+  moveImageViewModel: IAvatarImageOnCanvasMoveViewModel;
   drawImageViewModel: IDrawImageOnCanvasViewModel;
 };
 

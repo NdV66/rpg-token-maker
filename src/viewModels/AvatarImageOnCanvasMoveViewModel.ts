@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable, fromEvent, map } from 'rxjs';
 import { TPosition } from 'types';
 
-export interface IImageOnCanvasMoveViewModel {
+export interface IAvatarImageOnCanvasMoveViewModel {
   elementOffset$: Observable<TPosition>;
 
   turnOffIsMouseDown: () => void;
@@ -16,7 +16,7 @@ export interface IImageOnCanvasMoveViewModel {
 
 const START_OFFSET: TPosition = { x: 0, y: 0 }; //TODO env
 
-export class ImageOnCanvasMoveViewModel implements IImageOnCanvasMoveViewModel {
+export class AvatarImageOnCanvasMoveViewModel implements IAvatarImageOnCanvasMoveViewModel {
   private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
   private _isDown = false;
   private _currentOffset = START_OFFSET;

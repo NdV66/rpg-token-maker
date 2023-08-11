@@ -1,11 +1,11 @@
 import { TAppEnv } from 'types';
 import { IDrawImageOnCanvasViewModel } from './DrawImageOnCanvasViewModel';
-import { IImageOnCanvasMoveViewModel } from './ImageOnCanvasMoveViewModel';
+import { IAvatarImageOnCanvasMoveViewModel } from './AvatarImageOnCanvasMoveViewModel';
 import { IExportCanvasViewModel } from './ExportCanvasViewModel';
 
 export interface IMainComponentViewModel {
   drawImageOnCanvasViewModel: IDrawImageOnCanvasViewModel;
-  imageOnCanvasMoveViewModel: IImageOnCanvasMoveViewModel;
+  imageOnCanvasMoveViewModel: IAvatarImageOnCanvasMoveViewModel;
   exportCanvasViewModel: IExportCanvasViewModel;
 
   avatarFrameSize: number;
@@ -16,7 +16,7 @@ export class MainComponentViewModel implements IMainComponentViewModel {
   constructor(
     private _appEnv: TAppEnv,
     public readonly drawImageOnCanvasViewModel: IDrawImageOnCanvasViewModel,
-    public readonly imageOnCanvasMoveViewModel: IImageOnCanvasMoveViewModel,
+    public readonly imageOnCanvasMoveViewModel: IAvatarImageOnCanvasMoveViewModel,
     public readonly exportCanvasViewModel: IExportCanvasViewModel,
   ) {}
 

@@ -43,7 +43,7 @@
 
 .resize-dot {
     $size: 16px;
-    background-color: black;
+    background-color: yellow;
     display: block;
     width: $size;
     height: $size;
@@ -52,4 +52,8 @@
     top: 0;
     left: 0;
     z-index: 30;
+}
+
+.x {
+    background: green;
 }
