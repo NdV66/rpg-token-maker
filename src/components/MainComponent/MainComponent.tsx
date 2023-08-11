@@ -34,7 +34,12 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
           drawImageViewModel={mainComponentViewModel.drawImageOnCanvasViewModel}
           moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
         />
-        <ResizeAvatarImageComponent />
+        <ResizeAvatarImageComponent
+          imageHeight={100}
+          imageWidth={200}
+          imageTopLeft={{ x: 50, y: 50 }}
+        />
+
         <AvatarFrameComponent
           canvasRef={frameCanvasRef}
           size={mainComponentViewModel.avatarFrameSize}
