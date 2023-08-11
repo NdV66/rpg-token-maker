@@ -4,3 +4,6 @@ export * from './TPosition';
 export * from './TSize';
 export * from './TCanvasSize';
 export * from './IDrawImageOnCanvasViewModel';
+export * from './TDotsRef';
+export * from './EDotsNames';
+export * from './TResizeDots';

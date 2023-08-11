@@ -5,7 +5,7 @@ import {
   IDrawImageOnCanvasModel,
 } from 'models';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { TCanvasSize, TPosition } from 'types';
+import { EDotsNames, TCanvasSize, TPosition, TResizeDots } from 'types';
 
 type TCanvasSizeWithOffset = {
   size: TCanvasSize;
@@ -27,6 +27,11 @@ export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   updateTest: (height: number, width: number) => void;
   handleStartResize: () => void;
   handleFinishResize: () => void;
+  prepareOffsetsForDots: (
+    imageTopLeft: TPosition,
+    imageWidth: number,
+    imageHeight: number,
+  ) => TResizeDots;
 }
 
 export class ResizeAvatarImageComponentViewModel
@@ -71,4 +76,15 @@ export class ResizeAvatarImageComponentViewModel
   public handleStartResize = () => {
     this.turnOnIsMouseDown();
   };
+
+  public prepareOffsetsForDots(imageTopLeft: TPosition, imageWidth: number, imageHeight: number) {
+    const { x, y } = imageTopLeft;
+
+    return {
+      [EDotsNames.A]: { x, y },
+      [EDotsNames.B]: { x: x + imageWidth, y },
+      [EDotsNames.C]: { x: x + imageWidth, y: y + imageHeight },
+      [EDotsNames.D]: { x, y: y + imageHeight },
+    };
+  }
 }
