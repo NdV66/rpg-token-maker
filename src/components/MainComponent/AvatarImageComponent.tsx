@@ -29,8 +29,8 @@ export const AvatarImageComponent = ({
   useDrawAnyImageOnCanvas(img, defaultWidth, drawImageViewModel, canvasRef);
   useImageOnCanvasMoveViewModel(moveImageViewModel, canvasRef);
 
-  const sizeAfterResize = useStateObservable(resizeAvatarViewModel.sizeAfterResize$);
-  console.log('>>>', sizeAfterResize);
+  const sizeAfterResize = useStateObservable(resizeAvatarViewModel.currentSizeWithOffset$);
+  console.log('>>> sizeAfterResize', sizeAfterResize);
 
   return <canvas ref={canvasRef} className="image-canvas" />;
 };

@@ -1,28 +1,47 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { TCanvasSize } from 'types';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { TCanvasSize, TPosition } from 'types';
+import { IDrawAvatarOnCanvasViewModel } from './DrawAvatarOnCanvasViewModel';
+import { IAvatarImageOnCanvasMoveViewModel } from './AvatarImageOnCanvasMoveViewModel';
 
-//TODO to envs
-const DEFAULT_SIZE: TCanvasSize = {
-  height: 0,
-  styleHeight: 0,
-  width: 0,
-  styleWidth: 0,
+type TCanvasSizeWithOffset = {
+  size: TCanvasSize;
+  offset: TPosition;
+};
+
+const DEFAULT_SIZE: TCanvasSizeWithOffset = {
+  size: {
+    height: 0,
+    styleHeight: 0,
+    width: 0,
+    styleWidth: 0,
+  },
+  offset: { x: 0, y: 0 },
 };
 
 export interface IResizeAvatarViewModel {
-  sizeAfterResize$: Observable<TCanvasSize>;
-  setNewSize: (size: TCanvasSize) => void;
+  currentSizeWithOffset$: Observable<TCanvasSizeWithOffset>;
 }
 
 export class ResizeAvatarViewModel implements IResizeAvatarViewModel {
-  private _sizeAfterResize$ = new BehaviorSubject<TCanvasSize>(DEFAULT_SIZE);
+  private _currentSizeWithOffset$ = new BehaviorSubject<TCanvasSizeWithOffset>(DEFAULT_SIZE);
 
-  get sizeAfterResize$() {
-    return this._sizeAfterResize$.asObservable();
+  constructor(
+    private readonly _drawAvatarViewModel: IDrawAvatarOnCanvasViewModel,
+    private readonly _moveImageViewModel: IAvatarImageOnCanvasMoveViewModel,
+  ) {
+    this._updateCurrentSizeWithOffset();
   }
 
-  //TODO test only
-  public setNewSize(size: TCanvasSize) {
-    this._sizeAfterResize$.next(size);
+  private _updateCurrentSizeWithOffset() {
+    combineLatest([
+      this._drawAvatarViewModel.canvasSize$,
+      this._moveImageViewModel.elementOffset$,
+    ]).subscribe(([size, offset]) => {
+      this._currentSizeWithOffset$.next({ size, offset });
+    });
+  }
+
+  get currentSizeWithOffset$() {
+    return this._currentSizeWithOffset$.asObservable();
   }
 }

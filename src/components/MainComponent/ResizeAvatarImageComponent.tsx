@@ -31,24 +31,18 @@ const prepareOffsetsForDots = (
   ];
 };
 
-export const ResizeAvatarImageComponent = ({
-  moveImageViewModel,
-  drawAvatarViewModel,
-  resizeAvatarViewModel,
-}: Props) => {
-  const offset = useStateObservable(moveImageViewModel.elementOffset$);
-  const size = useStateObservable(drawAvatarViewModel.canvasSize$);
+export const ResizeAvatarImageComponent = ({ resizeAvatarViewModel }: Props) => {
+  const currentSizeWithOffset = useStateObservable(resizeAvatarViewModel.currentSizeWithOffset$);
 
-  const dots = offset && size ? prepareOffsetsForDots(offset, size.width, size.height) : [];
+  let dots: TResizeDot[] = [];
+
+  if (currentSizeWithOffset) {
+    const { offset, size } = currentSizeWithOffset;
+    dots = prepareOffsetsForDots(offset, size.width, size.height);
+  }
+
   //TODO tets only
-  const onClickDot = () => {
-    resizeAvatarViewModel.setNewSize({
-      height: 200,
-      width: 100,
-      styleHeight: 200,
-      styleWidth: 100,
-    });
-  };
+  const onClickDot = () => {};
 
   return (
     <>

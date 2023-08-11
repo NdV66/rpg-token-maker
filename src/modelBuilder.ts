@@ -13,15 +13,19 @@ const exportCanvasModel = new ExportCanvasModel(APP_ENV, imageLoaderModel);
 
 const drawAvatarOnCanvasViewModel = new DrawAvatarOnCanvasViewModel(imageLoaderModel);
 const drawFrameCanvasViewModel = new DrawImageOnCanvasViewModel(imageLoaderModel);
-const resizeAvatarViewModel = new ResizeAvatarViewModel();
 
-const imageOnCanvasMoveViewModel = new AvatarImageOnCanvasMoveViewModel();
+const avatarOnCanvasMoveViewModel = new AvatarImageOnCanvasMoveViewModel();
+
+const resizeAvatarViewModel = new ResizeAvatarViewModel(
+  drawAvatarOnCanvasViewModel,
+  avatarOnCanvasMoveViewModel,
+);
 
 export const mainComponentViewModel = new MainComponentViewModel(
   APP_ENV,
   drawAvatarOnCanvasViewModel,
   drawFrameCanvasViewModel,
-  imageOnCanvasMoveViewModel,
+  avatarOnCanvasMoveViewModel,
   resizeAvatarViewModel,
 
   exportCanvasModel,
