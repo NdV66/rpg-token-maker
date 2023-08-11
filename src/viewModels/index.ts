@@ -1,2 +1,5 @@
 export * from './SettingsContext';
-export * from './MoveImageAreaViewModel';
+export * from './MainComponentViewModel';
+export * from './DrawImageOnCanvasViewModel';
+export * from './ImageOnCanvasMoveViewModel';
+export * from './ExportCanvasViewModel';
