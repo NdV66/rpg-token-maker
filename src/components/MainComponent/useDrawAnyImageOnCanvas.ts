@@ -25,15 +25,14 @@ export const useDrawAnyImageOnCanvas = (
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
 
-    const mergeSizeAndImagePipe = (image: HTMLImageElement) =>
-      viewModel.canvasSize$.pipe(map((size) => ({ size, image })));
-
     if (context && canvas) {
       const image$ = from(viewModel.loadImage(imgSrc, defaultImageWidth));
       const handleDrawImage$ = image$
         .pipe(
-          tap((value) => viewModel.calculateCanvasSize(value.drawHeight, defaultImageWidth)),
-          map((value) => mergeSizeAndImagePipe(value.image)),
+          tap((value) => {
+            viewModel.calculateCanvasSize(value.drawHeight, defaultImageWidth);
+          }),
+          map((value) => viewModel.canvasSize$.pipe(map((size) => ({ size, image: value.image })))),
           mergeMap(identity),
         )
         .subscribe(({ size, image }) => {

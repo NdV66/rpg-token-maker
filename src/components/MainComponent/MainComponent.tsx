@@ -6,8 +6,6 @@ import { AvatarImageComponent } from './AvatarImageComponent';
 import { ExportCanvasComponent } from './ExportCanvasComponent';
 import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
 
-//TODO every component should have its own view model to make together all of them xD
-
 type Props = {
   mainComponentViewModel: IMainComponentViewModel;
 };
