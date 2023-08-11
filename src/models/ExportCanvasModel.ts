@@ -3,14 +3,14 @@ import { IImageLoaderModel } from 'models';
 
 import frameMask from 'data/frameMask.png';
 
-export interface IExportCanvasViewModel {
+export interface IExportCanvasModel {
   exportToPng: (
     currentImage: HTMLCanvasElement,
     currentFrame: HTMLCanvasElement,
   ) => Promise<string | undefined>;
 }
 
-export class ExportCanvasViewModel implements IExportCanvasViewModel {
+export class ExportCanvasModel implements IExportCanvasModel {
   constructor(
     private readonly _appEnv: TAppEnv,
     private readonly _imageLoader: IImageLoaderModel,

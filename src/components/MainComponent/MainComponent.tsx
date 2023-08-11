@@ -19,7 +19,7 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
   return (
     <>
       <ExportCanvasComponent
-        viewModel={mainComponentViewModel.exportCanvasViewModel}
+        exportToPng={mainComponentViewModel.exportToPng}
         frameCanvasRef={frameCanvasRef}
         imageCanvasRef={imageCanvasRef}
       />

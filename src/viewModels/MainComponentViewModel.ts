@@ -1,7 +1,7 @@
 import { TAppEnv } from 'types';
 import { IDrawImageOnCanvasViewModel } from './DrawImageOnCanvasViewModel';
 import { IAvatarImageOnCanvasMoveViewModel } from './AvatarImageOnCanvasMoveViewModel';
-import { IExportCanvasViewModel } from './ExportCanvasViewModel';
+import { IExportCanvasModel } from '../models/ExportCanvasModel';
 import { IDrawAvatarOnCanvasViewModel } from './DrawAvatarOnCanvasViewModel';
 import { IResizeAvatarViewModel } from './ResizeAvatarViewModel';
 
@@ -9,11 +9,11 @@ export interface IMainComponentViewModel {
   drawAvatarOnCanvasViewModel: IDrawAvatarOnCanvasViewModel;
   drawFrameOnCanvasViewModel: IDrawImageOnCanvasViewModel;
   imageOnCanvasMoveViewModel: IAvatarImageOnCanvasMoveViewModel;
-  exportCanvasViewModel: IExportCanvasViewModel;
   resizeAvatarViewModel: IResizeAvatarViewModel;
 
   avatarFrameSize: number;
   defaultAvatarImageWidth: number;
+  exportToPng: IExportCanvasModel['exportToPng'];
 }
 
 export class MainComponentViewModel implements IMainComponentViewModel {
@@ -22,8 +22,9 @@ export class MainComponentViewModel implements IMainComponentViewModel {
     public readonly drawAvatarOnCanvasViewModel: IDrawAvatarOnCanvasViewModel,
     public readonly drawFrameOnCanvasViewModel: IDrawImageOnCanvasViewModel,
     public readonly imageOnCanvasMoveViewModel: IAvatarImageOnCanvasMoveViewModel,
-    public readonly exportCanvasViewModel: IExportCanvasViewModel,
     public readonly resizeAvatarViewModel: IResizeAvatarViewModel,
+
+    private readonly _exportCanvasModel: IExportCanvasModel,
   ) {}
 
   get avatarFrameSize() {
@@ -33,4 +34,8 @@ export class MainComponentViewModel implements IMainComponentViewModel {
   get defaultAvatarImageWidth() {
     return this._appEnv.defaultImageWidth;
   }
+
+  public exportToPng = (currentImage: HTMLCanvasElement, currentFrame: HTMLCanvasElement) => {
+    return this._exportCanvasModel.exportToPng(currentImage, currentFrame);
+  };
 }
