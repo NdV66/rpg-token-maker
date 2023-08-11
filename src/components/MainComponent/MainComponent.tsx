@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { IMainComponentViewModel } from 'viewModels';
 import { AvatarFrameComponent } from './AvatarFrameComponent';
@@ -34,6 +34,7 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
           drawImageViewModel={mainComponentViewModel.drawImageOnCanvasViewModel}
           moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
         />
+
         <ResizeAvatarImageComponent
           imageHeight={100}
           imageWidth={200}

@@ -28,8 +28,6 @@ const prepareOffsetsForDots = (
 export const ResizeAvatarImageComponent = ({ imageTopLeft, imageHeight, imageWidth }: Props) => {
   const dots = prepareOffsetsForDots(imageTopLeft, imageWidth, imageHeight);
 
-  console.log(dots);
-
   return (
     <>
       <div className="resize-avatar" />
