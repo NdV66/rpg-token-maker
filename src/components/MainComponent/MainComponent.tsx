@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import { IMainComponentViewModel } from 'viewModels';
 import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
 import { ExportCanvasComponent } from './ExportCanvasComponent';
 import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
+
+//TODO every component should have its own view model to make together all of them xD
 
 type Props = {
   mainComponentViewModel: IMainComponentViewModel;
@@ -33,10 +35,12 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
           defaultWidth={mainComponentViewModel.defaultAvatarImageWidth}
           drawImageViewModel={mainComponentViewModel.drawAvatarOnCanvasViewModel}
           moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
+          resizeAvatarViewModel={mainComponentViewModel.resizeAvatarViewModel}
         />
         <ResizeAvatarImageComponent
           drawAvatarViewModel={mainComponentViewModel.drawAvatarOnCanvasViewModel}
           moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
+          resizeAvatarViewModel={mainComponentViewModel.resizeAvatarViewModel}
         />
 
         <AvatarFrameComponent

@@ -1,10 +1,15 @@
 import { useStateObservable } from 'tools';
 import { TPosition } from 'types';
-import { IAvatarImageOnCanvasMoveViewModel, IDrawAvatarOnCanvasViewModel } from 'viewModels';
+import {
+  IAvatarImageOnCanvasMoveViewModel,
+  IDrawAvatarOnCanvasViewModel,
+  IResizeAvatarViewModel,
+} from 'viewModels';
 
 type Props = {
   drawAvatarViewModel: IDrawAvatarOnCanvasViewModel;
   moveImageViewModel: IAvatarImageOnCanvasMoveViewModel;
+  resizeAvatarViewModel: IResizeAvatarViewModel;
 };
 
 type TResizeDot = TPosition & {
@@ -19,27 +24,42 @@ const prepareOffsetsForDots = (
   const { x, y } = imageTopLeft;
 
   return [
-    { pointName: 'A', x, y }, //A
-    { pointName: 'B', x: x + imageWidth, y }, //B
-    { pointName: 'C', x: x + imageWidth, y: y + imageHeight }, //C
-    { pointName: 'D', x, y: y + imageHeight }, //D
+    { pointName: 'A', x, y },
+    { pointName: 'B', x: x + imageWidth, y },
+    { pointName: 'C', x: x + imageWidth, y: y + imageHeight },
+    { pointName: 'D', x, y: y + imageHeight },
   ];
 };
 
-export const ResizeAvatarImageComponent = ({ moveImageViewModel, drawAvatarViewModel }: Props) => {
+export const ResizeAvatarImageComponent = ({
+  moveImageViewModel,
+  drawAvatarViewModel,
+  resizeAvatarViewModel,
+}: Props) => {
   const offset = useStateObservable(moveImageViewModel.elementOffset$);
   const size = useStateObservable(drawAvatarViewModel.canvasSize$);
 
-  //TODO show dots only after mousedown and move? not always
   const dots = offset && size ? prepareOffsetsForDots(offset, size.width, size.height) : [];
-
-  console.log(size);
+  //TODO tets only
+  const onClickDot = () => {
+    resizeAvatarViewModel.setNewSize({
+      height: 200,
+      width: 100,
+      styleHeight: 200,
+      styleWidth: 100,
+    });
+  };
 
   return (
     <>
       <div className="resize-avatar">
         {dots.map((dot) => (
-          <div className="resize-dot" key={dot.pointName} style={{ top: dot.y, left: dot.x }} />
+          <div
+            className="resize-dot"
+            key={dot.pointName}
+            style={{ top: dot.y, left: dot.x }}
+            onClick={onClickDot}
+          />
         ))}
       </div>
     </>

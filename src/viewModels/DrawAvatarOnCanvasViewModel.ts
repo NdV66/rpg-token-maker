@@ -9,6 +9,7 @@ export interface IDrawAvatarOnCanvasViewModel extends IDrawImageOnCanvasViewMode
   canvasSize$: Observable<TCanvasSize>;
 }
 
+//TODO to envs
 const DEFAULT_SIZE: TCanvasSize = {
   height: 0,
   styleHeight: 0,
