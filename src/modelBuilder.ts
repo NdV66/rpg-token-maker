@@ -1,32 +1,39 @@
 import { APP_ENV } from 'appEnv';
-import { ExportCanvasModel, ImageLoaderModel } from 'models';
+import {
+  AvatarImageMoveModel,
+  DrawImageOnCanvasModel,
+  ExportCanvasModel,
+  ImageLoaderModel,
+} from 'models';
+
 import {
   MainComponentViewModel,
-  DrawImageOnCanvasViewModel,
-  AvatarImageOnCanvasMoveViewModel,
-  DrawAvatarOnCanvasViewModel,
   ResizeAvatarImageComponentViewModel,
+  AvatarFrameComponentViewModel,
+  AvatarImageComponentViewModel,
 } from 'viewModels';
 
 const imageLoaderModel = new ImageLoaderModel();
 const exportCanvasModel = new ExportCanvasModel(APP_ENV, imageLoaderModel);
+const drawAvatarFrameModel = new DrawImageOnCanvasModel(imageLoaderModel);
+const drawAvatarImageModel = new DrawImageOnCanvasModel(imageLoaderModel);
 
-const drawAvatarOnCanvasViewModel = new DrawAvatarOnCanvasViewModel(imageLoaderModel);
-const drawFrameCanvasViewModel = new DrawImageOnCanvasViewModel(imageLoaderModel);
+const avatarImageMoveModel = new AvatarImageMoveModel();
 
-const avatarOnCanvasMoveViewModel = new AvatarImageOnCanvasMoveViewModel();
-
+const avatarFrameComponentViewModel = new AvatarFrameComponentViewModel(drawAvatarFrameModel);
+const avatarImageComponentViewModel = new AvatarImageComponentViewModel(
+  drawAvatarImageModel,
+  avatarImageMoveModel,
+);
 const resizeAvatarViewModel = new ResizeAvatarImageComponentViewModel(
-  drawAvatarOnCanvasViewModel,
-  avatarOnCanvasMoveViewModel,
+  avatarImageComponentViewModel,
+  avatarImageMoveModel,
 );
 
 export const mainComponentViewModel = new MainComponentViewModel(
   APP_ENV,
-  drawAvatarOnCanvasViewModel,
-  drawFrameCanvasViewModel,
-  avatarOnCanvasMoveViewModel,
   resizeAvatarViewModel,
-
+  avatarFrameComponentViewModel,
+  avatarImageComponentViewModel,
   exportCanvasModel,
 );

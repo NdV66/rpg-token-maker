@@ -1,8 +1,4 @@
-import {
-  IAvatarImageOnCanvasMoveViewModel,
-  IDrawAvatarOnCanvasViewModel,
-  IResizeAvatarImageComponentViewModel,
-} from 'viewModels';
+import { IAvatarImageComponentViewModel } from 'viewModels';
 
 import { useImageOnCanvasMoveViewModel } from './useImageOnCanvasMoveViewModel';
 
@@ -14,23 +10,15 @@ import { useStateObservable } from 'tools';
 type Props = {
   defaultWidth: number;
   canvasRef: React.RefObject<HTMLCanvasElement>;
-  moveImageViewModel: IAvatarImageOnCanvasMoveViewModel;
-  drawImageViewModel: IDrawAvatarOnCanvasViewModel;
-  resizeAvatarViewModel: IResizeAvatarImageComponentViewModel;
+  viewModel: IAvatarImageComponentViewModel;
 };
 
-export const AvatarImageComponent = ({
-  drawImageViewModel,
-  moveImageViewModel,
-  defaultWidth,
-  canvasRef,
-  resizeAvatarViewModel,
-}: Props) => {
-  useDrawAnyImageOnCanvas(img, defaultWidth, drawImageViewModel, canvasRef);
-  useImageOnCanvasMoveViewModel(moveImageViewModel, canvasRef);
+export const AvatarImageComponent = ({ defaultWidth, canvasRef, viewModel }: Props) => {
+  useDrawAnyImageOnCanvas(img, defaultWidth, viewModel, canvasRef);
+  useImageOnCanvasMoveViewModel(viewModel, canvasRef);
 
-  const sizeAfterResize = useStateObservable(resizeAvatarViewModel.currentSizeWithOffset$);
-  console.log('>>> sizeAfterResize', sizeAfterResize);
+  //   const sizeAfterResize = useStateObservable(resizeAvatarViewModel.currentSizeWithOffset$);
+  //   console.log('>>> sizeAfterResize', sizeAfterResize);
 
   return <canvas ref={canvasRef} className="image-canvas" />;
 };

@@ -1,10 +1,10 @@
-import { IDrawImageOnCanvasViewModel } from 'viewModels';
+import { IAvatarFrameComponentViewModel } from 'viewModels';
 import { useDrawAnyImageOnCanvas } from './useDrawAnyImageOnCanvas';
 
 import frame from 'data/frame.png'; //TODO load
 
 type Props = {
-  viewModel: IDrawImageOnCanvasViewModel;
+  viewModel: IAvatarFrameComponentViewModel;
   size: number;
   canvasRef: React.RefObject<HTMLCanvasElement>;
 };

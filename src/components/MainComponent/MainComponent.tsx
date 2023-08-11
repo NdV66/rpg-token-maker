@@ -27,15 +27,13 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
       <div
         className="area"
         onMouseLeave={() => {
-          mainComponentViewModel.imageOnCanvasMoveViewModel.turnOffIsMouseDown();
+          mainComponentViewModel.avatarImageComponentViewModel.turnOffIsMouseDown();
         }}
       >
         <AvatarImageComponent
           canvasRef={imageCanvasRef}
           defaultWidth={mainComponentViewModel.defaultAvatarImageWidth}
-          drawImageViewModel={mainComponentViewModel.drawAvatarOnCanvasViewModel}
-          moveImageViewModel={mainComponentViewModel.imageOnCanvasMoveViewModel}
-          resizeAvatarViewModel={mainComponentViewModel.resizeAvatarViewModel}
+          viewModel={mainComponentViewModel.avatarImageComponentViewModel}
         />
         <ResizeAvatarImageComponent
           resizeAvatarViewModel={mainComponentViewModel.resizeAvatarViewModel}
@@ -44,7 +42,7 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
         <AvatarFrameComponent
           canvasRef={frameCanvasRef}
           size={mainComponentViewModel.avatarFrameSize}
-          viewModel={mainComponentViewModel.drawFrameOnCanvasViewModel}
+          viewModel={mainComponentViewModel.avatarFrameComponentViewModel}
         />
       </div>
     </>

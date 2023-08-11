@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { IAvatarImageOnCanvasMoveViewModel } from 'viewModels';
+import { IAvatarImageComponentViewModel } from 'viewModels';
 
 export const useImageOnCanvasMoveViewModel = (
-  viewModel: IAvatarImageOnCanvasMoveViewModel,
+  viewModel: IAvatarImageComponentViewModel,
   canvasRef: React.RefObject<HTMLCanvasElement>,
 ) => {
   useEffect(() => {

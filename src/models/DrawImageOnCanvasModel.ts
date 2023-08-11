@@ -7,7 +7,7 @@ type TCanvasSize = {
   styleWidth: number;
 };
 
-export interface IDrawImageOnCanvasViewModel {
+export interface IDrawImageOnCanvasModel {
   loadImage: (
     imageSrc: string,
     defaultImageWidth: number,
@@ -15,7 +15,7 @@ export interface IDrawImageOnCanvasViewModel {
   calculateCanvasSize: (drawHeight: number, defaultImageWidth: number) => TCanvasSize;
 }
 
-export class DrawImageOnCanvasViewModel implements IDrawImageOnCanvasViewModel {
+export class DrawImageOnCanvasModel implements IDrawImageOnCanvasModel {
   constructor(private readonly _imageLoader: IImageLoaderModel) {}
 
   public async loadImage(imageSrc: string, defaultImageWidth: number) {

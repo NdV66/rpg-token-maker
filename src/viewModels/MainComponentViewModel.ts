@@ -1,15 +1,14 @@
 import { TAppEnv } from 'types';
-import { IDrawImageOnCanvasViewModel } from './DrawImageOnCanvasViewModel';
-import { IAvatarImageOnCanvasMoveViewModel } from './AvatarImageOnCanvasMoveViewModel';
-import { IExportCanvasModel } from '../models/ExportCanvasModel';
-import { IDrawAvatarOnCanvasViewModel } from './DrawAvatarOnCanvasViewModel';
+import { IAvatarFrameComponentViewModel } from './AvatarFrameComponentViewModel';
+import { IAvatarImageComponentViewModel } from './AvatarImageComponentViewModel';
 import { IResizeAvatarImageComponentViewModel } from './ResizeAvatarImageComponentViewModel';
 
+import { IExportCanvasModel } from 'models';
+
 export interface IMainComponentViewModel {
-  drawAvatarOnCanvasViewModel: IDrawAvatarOnCanvasViewModel;
-  drawFrameOnCanvasViewModel: IDrawImageOnCanvasViewModel;
-  imageOnCanvasMoveViewModel: IAvatarImageOnCanvasMoveViewModel;
   resizeAvatarViewModel: IResizeAvatarImageComponentViewModel;
+  avatarFrameComponentViewModel: IAvatarFrameComponentViewModel;
+  avatarImageComponentViewModel: IAvatarImageComponentViewModel;
 
   avatarFrameSize: number;
   defaultAvatarImageWidth: number;
@@ -19,10 +18,9 @@ export interface IMainComponentViewModel {
 export class MainComponentViewModel implements IMainComponentViewModel {
   constructor(
     private _appEnv: TAppEnv,
-    public readonly drawAvatarOnCanvasViewModel: IDrawAvatarOnCanvasViewModel,
-    public readonly drawFrameOnCanvasViewModel: IDrawImageOnCanvasViewModel,
-    public readonly imageOnCanvasMoveViewModel: IAvatarImageOnCanvasMoveViewModel,
     public readonly resizeAvatarViewModel: IResizeAvatarImageComponentViewModel,
+    public readonly avatarFrameComponentViewModel: IAvatarFrameComponentViewModel,
+    public readonly avatarImageComponentViewModel: IAvatarImageComponentViewModel,
 
     private readonly _exportCanvasModel: IExportCanvasModel,
   ) {}
