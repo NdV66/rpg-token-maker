@@ -19,6 +19,7 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
 
 export interface IResizeAvatarImageComponentViewModel {
   currentSizeWithOffset$: Observable<TCanvasSizeWithOffset>;
+  updateTest: (height: number, width: number) => void;
 }
 
 export class ResizeAvatarImageComponentViewModel implements IResizeAvatarImageComponentViewModel {
@@ -42,5 +43,10 @@ export class ResizeAvatarImageComponentViewModel implements IResizeAvatarImageCo
 
   get currentSizeWithOffset$() {
     return this._currentSizeWithOffset$.asObservable();
+  }
+
+  // TODO only for tests
+  public updateTest(height: number, width: number) {
+    this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
   }
 }

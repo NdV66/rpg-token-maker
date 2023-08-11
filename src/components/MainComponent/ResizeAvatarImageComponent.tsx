@@ -27,6 +27,7 @@ const prepareOffsetsForDots = (
 
 export const ResizeAvatarImageComponent = ({ viewModel }: Props) => {
   const currentSizeWithOffset = useStateObservable(viewModel.currentSizeWithOffset$);
+  let isDown = false;
 
   let dots: TResizeDot[] = [];
 
@@ -38,15 +39,19 @@ export const ResizeAvatarImageComponent = ({ viewModel }: Props) => {
   //TODO tets only
   const onMouseDown = () => {
     console.log('down');
+    isDown = true;
   };
 
   const onMouseMove = () => {
-    console.log('move');
-    // viewModel.
+    if (isDown) {
+      console.log('move');
+      viewModel.updateTest(100, 100);
+    }
   };
 
   const onMouseUp = () => {
     console.log('up');
+    isDown = false;
   };
 
   return (

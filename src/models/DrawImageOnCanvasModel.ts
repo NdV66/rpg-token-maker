@@ -15,7 +15,7 @@ export interface IDrawImageOnCanvasModel {
     imageSrc: string,
     defaultImageWidth: number,
   ) => Promise<{ drawHeight: number; image: HTMLImageElement }>;
-  calculateCanvasSize: (drawHeight: number, defaultImageWidth: number) => TCanvasSize;
+  calculateCanvasSize: (drawHeight: number, width: number) => TCanvasSize;
 }
 
 const DEFAULT_SIZE: TCanvasSize = {
@@ -47,12 +47,12 @@ export class DrawImageOnCanvasModel implements IDrawImageOnCanvasModel {
     };
   }
 
-  public calculateCanvasSize(drawHeight: number, defaultImageWidth: number) {
+  public calculateCanvasSize(drawHeight: number, width: number) {
     const size = {
-      width: defaultImageWidth,
+      width,
       height: drawHeight,
       styleHeight: drawHeight,
-      styleWidth: defaultImageWidth,
+      styleWidth: width,
     };
 
     this._canvasSize$.next(size);
