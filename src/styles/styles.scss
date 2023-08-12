@@ -43,7 +43,7 @@
 
 //TODO: add space/ $size/2 for nth etc
 .resize-dot {
-    $size: 12px;
+    $size: 20px;
     $space: $size/2;
 
     background-color: yellow;
@@ -62,4 +62,5 @@
 
 .x {
     background: green;
+    padding: 10px;
 }

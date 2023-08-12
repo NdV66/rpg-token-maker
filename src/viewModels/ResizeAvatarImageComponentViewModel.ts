@@ -65,7 +65,6 @@ export class ResizeAvatarImageComponentViewModel
   public calcResize(height: number, width: number) {
     if (this.isMouseDown) {
       this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
-      console.log('move');
     }
   }
 

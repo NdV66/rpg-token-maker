@@ -19,7 +19,12 @@ export const ResizeAvatarImageComponent = ({ viewModel }: Props) => {
   return (
     <div className="resize-avatar">
       {keys.map((key) => (
-        <div className="resize-dot" key={key} ref={(element) => addRef(element, key)} />
+        <div
+          className="resize-dot"
+          key={key}
+          ref={(element) => addRef(element, key)}
+          onMouseLeave={() => viewModel.turnOffIsMouseDown()} //maybe turn off after time?
+        />
       ))}
     </div>
   );

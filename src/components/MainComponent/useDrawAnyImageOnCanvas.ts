@@ -14,10 +14,13 @@ export const useDrawAnyImageOnCanvas = (
     context: CanvasRenderingContext2D,
     image: HTMLImageElement,
   ) => {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
     canvas.width = size.width;
     canvas.height = size.height;
     canvas.style.width = `${size.styleWidth}px`;
     canvas.style.height = `${size.styleHeight}px`;
+
     context.drawImage(image, 0, 0, size.width, size.height);
   };
 
