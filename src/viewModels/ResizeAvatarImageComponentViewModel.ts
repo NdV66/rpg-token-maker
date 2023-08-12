@@ -83,7 +83,7 @@ export class ResizeAvatarImageComponentViewModel
   ) {
     if (this.isMouseDown) {
       this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
-      // this._moveImageViewModel.updateElementPosition({ x: newTop, y: newLeft });
+      //   this._moveImageViewModel.updateElementPosition({ x: newTop, y: newLeft });
       this._moveImageViewModel.handleMouseMove(event);
     }
   }

@@ -54,13 +54,27 @@ export const useResizeImage = (
 
               switch (key) {
                 case EDotsNames.A:
-                  //TODO
-                  newHeight = size.height + newLeftYDifference;
-                  newWidth = size.width - newLeftXDifference;
+                  let differenceY = summaryTop - event.pageY;
+                  let differenceX = summaryLeft - event.pageX;
+
+                  if (differenceY < 0) {
+                    newHeight = size.height - Math.abs(differenceY);
+                  } else {
+                    newHeight = size.height + differenceY;
+                  }
+
+                  if (differenceX < 0) {
+                    newWidth = size.width + Math.abs(differenceX);
+                  } else {
+                    newWidth = size.width + differenceX;
+                  }
+
                   break;
                 case EDotsNames.B:
-                  // newHeight = size.height + newLeftYDifference;
-                  // newWidth = size.width - newLeftXDifference;
+                  //TODO
+                  //   const bx = event.pageX + size.width;
+                  //   newHeight = summaryTop - event.pageY + size.height;
+                  //   newWidth = summaryLeft - bx + size.width;
                   break;
                 case EDotsNames.C:
                   break;
