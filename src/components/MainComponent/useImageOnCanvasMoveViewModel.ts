@@ -18,7 +18,7 @@ export const useImageOnCanvasMoveViewModel = (
       });
 
       const mouseMove$ = viewModel.fromMouseEvent(element, 'mousemove').subscribe((event) => {
-        viewModel.handleMoveElement(event);
+        viewModel.handleMouseMove(event);
       });
 
       const subscribeToOffset$ = viewModel.elementOffset$.subscribe((offset) => {

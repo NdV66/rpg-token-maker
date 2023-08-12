@@ -12,5 +12,9 @@ export const ExportCanvasComponent = ({ exportToPng, imageCanvasRef, frameCanvas
     window.open(exportData, '_blank');
   };
 
-  return <button onClick={exportAsImage}>EXPORT TEST IMAGE</button>;
+  return (
+    <button onClick={exportAsImage} className="export-button ">
+      EXPORT TEST IMAGE
+    </button>
+  );
 };

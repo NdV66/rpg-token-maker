@@ -11,7 +11,7 @@ export interface IAvatarImageComponentViewModel extends IDrawImageOnCanvasViewMo
     element: T,
     trigger: string,
   ) => Observable<React.MouseEvent<Element, MouseEvent>>;
-  handleMoveElement: (event: React.MouseEvent) => void;
+  handleMouseMove: (event: React.MouseEvent) => void;
   handleMouseDown: <T extends HTMLElement>(element: T, event: React.MouseEvent) => void;
 }
 
@@ -41,8 +41,8 @@ export class AvatarImageComponentViewModel implements IAvatarImageComponentViewM
     return this._imageMoveModel.fromMouseEvent(element, trigger);
   };
 
-  public handleMoveElement: IAvatarImageMoveModel['handleMoveElement'] = (event) => {
-    this._imageMoveModel.handleMoveElement(event);
+  public handleMouseMove: IAvatarImageMoveModel['handleMouseMove'] = (event) => {
+    this._imageMoveModel.handleMouseMove(event);
   };
 
   public handleMouseDown: IAvatarImageMoveModel['handleMouseDown'] = (element, event) => {

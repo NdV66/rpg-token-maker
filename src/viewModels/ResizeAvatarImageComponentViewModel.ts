@@ -24,14 +24,22 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
 
 export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   currentSizeWithOffset$: Observable<TCanvasSizeWithOffset>;
-  calcResize: (height: number, width: number) => void;
-  handleStartResize: () => void;
+  calcResize: (
+    width: number,
+    height: number,
+    newTop: number,
+    newLeft: number,
+    event: React.MouseEvent,
+  ) => void;
+  handleStartResize: (element: any, event: React.MouseEvent) => void;
   handleFinishResize: () => void;
   prepareOffsetsForDots: (
     imageTopLeft: TPosition,
     imageWidth: number,
     imageHeight: number,
   ) => TResizeDots;
+
+  testMouseDown: boolean;
 }
 
 export class ResizeAvatarImageComponentViewModel
@@ -48,6 +56,10 @@ export class ResizeAvatarImageComponentViewModel
     this._updateCurrentSizeWithOffset();
   }
 
+  get testMouseDown() {
+    return this.isMouseDown;
+  }
+
   private _updateCurrentSizeWithOffset() {
     combineLatest([
       this._drawAvatarOnCanvasModel.canvasSize$,
@@ -62,18 +74,29 @@ export class ResizeAvatarImageComponentViewModel
   }
 
   // TODO only for tests
-  public calcResize(height: number, width: number) {
+  public calcResize(
+    width: number,
+    height: number,
+    newTop: number,
+    newLeft: number,
+    event: React.MouseEvent,
+  ) {
     if (this.isMouseDown) {
       this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
+      // this._moveImageViewModel.updateElementPosition({ x: newTop, y: newLeft });
+      this._moveImageViewModel.handleMouseMove(event);
     }
   }
 
   public handleFinishResize = () => {
     this.turnOffIsMouseDown();
+    this._moveImageViewModel.handleMouseUp();
   };
 
-  public handleStartResize = () => {
+  public handleStartResize = (element: any, event: React.MouseEvent) => {
     this.turnOnIsMouseDown();
+
+    this._moveImageViewModel.handleMouseDown(element, event);
   };
 
   public prepareOffsetsForDots(imageTopLeft: TPosition, imageWidth: number, imageHeight: number) {

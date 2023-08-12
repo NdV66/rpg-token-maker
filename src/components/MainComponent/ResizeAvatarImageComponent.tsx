@@ -5,12 +5,13 @@ import { EDotsNames, TDotsRef } from 'types';
 
 type Props = {
   viewModel: IResizeAvatarImageComponentViewModel;
+  imageRef: React.RefObject<HTMLCanvasElement>;
 };
 
-export const ResizeAvatarImageComponent = ({ viewModel }: Props) => {
+export const ResizeAvatarImageComponent = ({ viewModel, imageRef }: Props) => {
   const keys = Object.keys(EDotsNames).map((key) => key as EDotsNames);
   const dotsRef = useRef<TDotsRef>({} as TDotsRef);
-  useResizeImage(viewModel, dotsRef);
+  useResizeImage(viewModel, dotsRef, imageRef);
 
   const addRef = (element: HTMLDivElement | null, key: EDotsNames) => {
     if (element && dotsRef.current) dotsRef.current = { ...dotsRef.current, [key]: element };

@@ -6,6 +6,7 @@ import { IResizeAvatarImageComponentViewModel } from 'viewModels';
 export const useResizeImage = (
   viewModel: IResizeAvatarImageComponentViewModel,
   dotsRefs: React.MutableRefObject<TDotsRef>,
+  imageRef: React.RefObject<HTMLCanvasElement>,
 ) => {
   const updateDotsPositions = (elements: TDotsRef, dotsPositions: TResizeDots) => {
     const keys = Object.keys(EDotsNames);
@@ -23,42 +24,58 @@ export const useResizeImage = (
     const elements = dotsRefs.current;
     const dots = Object.values(dotsRefs.current);
     const keys = Object.keys(dotsRefs.current);
+    const image = imageRef.current;
 
-    if (keys.length && dots.length) {
+    if (keys.length && dots.length && image) {
       const mouseMoveActions$ = keys.map((key) => {
         return viewModel
           .fromMouseEvent(elements[key as EDotsNames], 'mousemove')
           .subscribe(async (event) => {
-            const { size, offset } = await firstValueFrom(viewModel.currentSizeWithOffset$);
-            //TODO xD not this way
+            if (viewModel.testMouseDown) {
+              const { size, offset } = await firstValueFrom(viewModel.currentSizeWithOffset$);
+              //TODO xD not this way
+              console.log('OFFSET', offset); //by pageXY
 
-            const mouseX = event.clientX - offset.x;
-            const mouseY = event.clientY - offset.y;
-            const imageX = 0;
-            const imageY = 0;
+              let newWidth = 0;
+              let newHeight = 0;
+              let newImageTop = 0;
+              let newImageLeft = 0;
 
-            switch (key) {
-              case EDotsNames.A:
-                console.log('top left');
-                break;
-              case EDotsNames.B:
-                console.log('top right');
-                break;
-              case EDotsNames.C:
-                console.log('bottom right');
-                break;
-              case EDotsNames.D:
-                console.log('bottom left');
-                break;
+              const imageRect = image.getBoundingClientRect();
+              const parentRect = image.parentElement!.getBoundingClientRect();
+
+              const summaryTop = imageRect.top + parentRect.top; //TODO maybe save and use last parentXY from resize image
+              const summaryLeft = imageRect.left + parentRect.left;
+
+              const newLeftYDifference = summaryTop - event.pageY;
+              const newLeftXDifference = summaryLeft - event.pageX;
+
+              console.log({ newLeftYDifference, newLeftXDifference });
+
+              switch (key) {
+                case EDotsNames.A:
+                  //TODO
+                  newHeight = size.height + newLeftYDifference;
+                  newWidth = size.width - newLeftXDifference;
+                  break;
+                case EDotsNames.B:
+                  // newHeight = size.height + newLeftYDifference;
+                  // newWidth = size.width - newLeftXDifference;
+                  break;
+                case EDotsNames.C:
+                  break;
+                case EDotsNames.D:
+                  console.log('bottom left');
+                  break;
+              }
+
+              newHeight = newHeight < 100 ? 100 : newHeight;
+              newWidth = newWidth < 100 ? 100 : newWidth;
+
+              console.log({ newWidth, newHeight });
+              console.log({ newImageLeft, newImageTop });
+              viewModel.calcResize(newWidth, newHeight, newImageTop, newImageLeft, event);
             }
-
-            //bottom-right
-            const newWidth = mouseX - imageX;
-            const newHeight = mouseY - imageY;
-
-            console.log(newWidth, newHeight);
-
-            viewModel.calcResize(size.height + 1, size.width + 1);
           });
       });
 
@@ -69,8 +86,8 @@ export const useResizeImage = (
       );
 
       const mouseDownActions$ = dots.map((dot) =>
-        viewModel.fromMouseEvent(dot!, 'mousedown').subscribe(() => {
-          viewModel.handleStartResize();
+        viewModel.fromMouseEvent(dot!, 'mousedown').subscribe((event) => {
+          viewModel.handleStartResize(image, event);
         }),
       );
 

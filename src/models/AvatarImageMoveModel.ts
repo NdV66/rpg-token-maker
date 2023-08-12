@@ -5,8 +5,10 @@ import { AMouseHandler, IAMouseHandler } from './AMouseHandler';
 export interface IAvatarImageMoveModel extends IAMouseHandler {
   elementOffset$: Observable<TPosition>;
 
-  handleMoveElement: (event: React.MouseEvent) => void;
+  handleMouseUp: () => void;
+  handleMouseMove: (event: React.MouseEvent) => void;
   handleMouseDown: <T extends HTMLElement>(element: T, event: React.MouseEvent) => void;
+  updateElementPosition: (newPosition: TPosition) => void;
 }
 
 const START_OFFSET: TPosition = { x: 0, y: 0 };
@@ -17,30 +19,30 @@ export class AvatarImageMoveModel extends AMouseHandler implements IAvatarImageM
 
   public readonly elementOffset$ = this._elementOffset$.asObservable();
 
-  public handleMoveElement = (event: React.MouseEvent) => {
+  public handleMouseMove = (event: React.MouseEvent) => {
     if (this.isMouseDown) {
-      const newMousePosition = this._positionFromEvent(event);
       const value = {
-        x: newMousePosition.x + this._currentOffset.x,
-        y: newMousePosition.y + this._currentOffset.y,
+        x: event.pageX + this._currentOffset.x,
+        y: event.pageY + this._currentOffset.y,
       };
-      this._elementOffset$.next(value);
+      this.updateElementPosition(value);
     }
   };
+
+  public updateElementPosition = (newPosition: TPosition) => {
+    this._elementOffset$.next(newPosition);
+  };
+
+  public handleMouseUp() {
+    this.turnOffIsMouseDown();
+  }
 
   public handleMouseDown = <T extends HTMLElement>(element: T, event: React.MouseEvent) => {
     this.turnOnIsMouseDown();
     const offset: TPosition = {
-      x: element.offsetLeft - event.clientX,
-      y: element.offsetTop - event.clientY,
+      x: element.offsetLeft - event.pageX,
+      y: element.offsetTop - event.pageY,
     };
     this._currentOffset = offset;
   };
-
-  private _positionFromEvent(event: React.MouseEvent) {
-    return {
-      x: event.pageX,
-      y: event.pageY,
-    };
-  }
 }

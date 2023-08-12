@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { from, identity, map, mergeMap, tap } from 'rxjs';
 import { IDrawImageOnCanvasViewModel, TCanvasSize } from 'types';
 
+//https://github.com/Automattic/node-canvas/issues/1271
+
 export const useDrawAnyImageOnCanvas = (
   imgSrc: string,
   defaultImageWidth: number,
