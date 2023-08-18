@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
 import { firstValueFrom } from 'rxjs';
-import { EDotsNames, TDotsRef, TResizeDots } from 'types';
+import { EDotsNames, TDotsRef, TPosition, TResizeDots } from 'types';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
+
+const MIN_WIDTH = 100;
+const MIN_HEIGHT = 100;
 
 export const useResizeImage = (
   viewModel: IResizeAvatarImageComponentViewModel,
@@ -30,65 +33,70 @@ export const useResizeImage = (
       const mouseMoveActions$ = keys.map((key) => {
         return viewModel
           .fromMouseEvent(elements[key as EDotsNames], 'mousemove')
-          .subscribe(async (event) => {
+          .subscribe((event) => {
             if (viewModel.testMouseDown) {
-              const { size, offset } = await firstValueFrom(viewModel.currentSizeWithOffset$);
-              //TODO xD not this way
-              console.log('OFFSET', offset); //by pageXY
-
-              let newWidth = 0;
-              let newHeight = 0;
-              let newImageTop = 0;
-              let newImageLeft = 0;
-
               const imageRect = image.getBoundingClientRect();
               const parentRect = image.parentElement!.getBoundingClientRect();
 
-              const summaryTop = imageRect.top + parentRect.top; //TODO maybe save and use last parentXY from resize image
-              const summaryLeft = imageRect.left + parentRect.left;
+              let width = imageRect.width;
+              let height = imageRect.height;
 
-              const newLeftYDifference = summaryTop - event.pageY;
-              const newLeftXDifference = summaryLeft - event.pageX;
+              console.log({ width, height });
 
-              console.log({ newLeftYDifference, newLeftXDifference });
+              const M: TPosition = {
+                x: event.pageX,
+                y: event.pageY,
+              };
+
+              const A: TPosition = {
+                x: imageRect.left + parentRect.left,
+                y: imageRect.top + parentRect.top - height,
+              };
+              console.log('A: ', A);
+              console.log('IMAGE', imageRect.left, imageRect.top);
+
+              const ratio = width / height;
 
               switch (key) {
                 case EDotsNames.A:
-                  let differenceY = summaryTop - event.pageY;
-                  let differenceX = summaryLeft - event.pageX;
+                  const x = Math.abs(M.x - A.x);
+                  const y = Math.abs(M.y - A.y);
 
-                  if (differenceY < 0) {
-                    newHeight = size.height - Math.abs(differenceY);
+                  console.log({ x, y });
+                  console.log(A, M);
+
+                  if (M.x < A.x) {
+                    console.log('Rozszerzam width');
+                    width = 2 * x;
                   } else {
-                    newHeight = size.height + differenceY;
+                    console.log('Zmiejszam width');
+                    width -= 2 * x;
                   }
 
-                  if (differenceX < 0) {
-                    newWidth = size.width + Math.abs(differenceX);
+                  if (M.y < A.y) {
+                    console.log('Zwiększam height');
+                    height += 2 * y;
                   } else {
-                    newWidth = size.width + differenceX;
+                    console.log('Zmiejszam height');
+                    height -= 2 * y;
                   }
 
                   break;
                 case EDotsNames.B:
-                  //TODO
-                  //   const bx = event.pageX + size.width;
-                  //   newHeight = summaryTop - event.pageY + size.height;
-                  //   newWidth = summaryLeft - bx + size.width;
                   break;
                 case EDotsNames.C:
                   break;
                 case EDotsNames.D:
-                  console.log('bottom left');
                   break;
               }
 
-              newHeight = newHeight < 100 ? 100 : newHeight;
-              newWidth = newWidth < 100 ? 100 : newWidth;
+              width = width < MIN_WIDTH ? MIN_WIDTH : width;
+              height = height < MIN_HEIGHT ? MIN_HEIGHT : height;
 
-              console.log({ newWidth, newHeight });
-              console.log({ newImageLeft, newImageTop });
-              viewModel.calcResize(newWidth, newHeight, newImageTop, newImageLeft, event);
+              height = (width * imageRect.height) / imageRect.width; //ratio;
+              height = Math.floor(height);
+
+              viewModel.calcResize(width, height, event);
             }
           });
       });
