@@ -41,8 +41,6 @@ export const useResizeImage = (
               let width = imageRect.width;
               let height = imageRect.height;
 
-              console.log({ width, height });
-
               const M: TPosition = {
                 x: event.pageX,
                 y: event.pageY,
@@ -53,44 +51,55 @@ export const useResizeImage = (
                 y: imageRect.top + parentRect.top - height,
               };
 
-              switch (key) {
-                case EDotsNames.A:
-                  const x = Math.abs(M.x - A.x);
-                  const y = Math.abs(M.y - A.y);
+              if (key === EDotsNames.A) {
+                const x = Math.abs(M.x - A.x);
+                const y = Math.abs(M.y - A.y);
 
-                  if (M.x < A.x) {
-                    console.log('Rozszerzam width');
-                    width += 2 * x;
-                  } else {
-                    console.log('Zmiejszam width');
-                    width -= 2 * x;
-                  }
+                if (M.x < A.x) {
+                  width += 2 * x;
+                } else {
+                  width -= 2 * x;
+                }
 
-                  if (M.y < A.y) {
-                    console.log('Zwiększam height');
-                    height += 2 * y;
-                  } else {
-                    console.log('Zmiejszam height');
-                    height -= 2 * y;
-                  }
+                if (M.y < A.y) {
+                  height += 2 * y;
+                } else {
+                  height -= 2 * y;
+                }
+              } else if (key === EDotsNames.B) {
+                const B: TPosition = {
+                  x: A.x + imageRect.width,
+                  y: A.y,
+                };
+                const x = Math.abs(M.x - B.x);
+                const y = Math.abs(M.y - B.y);
 
-                  break;
-                case EDotsNames.B:
-                  break;
-                case EDotsNames.C:
-                  break;
-                case EDotsNames.D:
-                  break;
+                if (M.x < B.x) {
+                  width -= 2 * x;
+                } else {
+                  width += 2 * x;
+                }
+
+                if (M.y < B.y) {
+                  height -= 2 * y;
+                } else {
+                  height += 2 * y;
+                }
               }
 
-              const ratio = imageRect.width / imageRect.height;
+              //   if (width < MIN_WIDTH) {
+              //     width = MIN_WIDTH;
+              //     const minHeightWithRatio = (width * imageRect.height) / imageRect.width; //use ratio;
+              //     height = height < minHeightWithRatio ? minHeightWithRatio : height;
+              //   } else {
+              //     height = (width * imageRect.height) / imageRect.width; //use ratio;
+              //   }
 
+              height = height < MIN_HEIGHT ? MIN_HEIGHT : height; //TODO ratio
               width = width < MIN_WIDTH ? MIN_WIDTH : width;
 
-              const minHeightWithRatio = (width * imageRect.height) / imageRect.width; //use ratio;
-              height = height < minHeightWithRatio ? minHeightWithRatio : height;
-
-              height = (width * imageRect.height) / imageRect.width; //use ratio;
+              //TODO better with ratio
+              height = (width * imageRect.height) / imageRect.width;
               height = Math.floor(height);
 
               viewModel.calcResize(width, height, event);
