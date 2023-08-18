@@ -52,22 +52,15 @@ export const useResizeImage = (
                 x: imageRect.left + parentRect.left,
                 y: imageRect.top + parentRect.top - height,
               };
-              console.log('A: ', A);
-              console.log('IMAGE', imageRect.left, imageRect.top);
-
-              const ratio = width / height;
 
               switch (key) {
                 case EDotsNames.A:
                   const x = Math.abs(M.x - A.x);
                   const y = Math.abs(M.y - A.y);
 
-                  console.log({ x, y });
-                  console.log(A, M);
-
                   if (M.x < A.x) {
                     console.log('Rozszerzam width');
-                    width = 2 * x;
+                    width += 2 * x;
                   } else {
                     console.log('Zmiejszam width');
                     width -= 2 * x;
@@ -90,10 +83,14 @@ export const useResizeImage = (
                   break;
               }
 
-              width = width < MIN_WIDTH ? MIN_WIDTH : width;
-              height = height < MIN_HEIGHT ? MIN_HEIGHT : height;
+              const ratio = imageRect.width / imageRect.height;
 
-              height = (width * imageRect.height) / imageRect.width; //ratio;
+              width = width < MIN_WIDTH ? MIN_WIDTH : width;
+
+              const minHeightWithRatio = (width * imageRect.height) / imageRect.width; //use ratio;
+              height = height < minHeightWithRatio ? minHeightWithRatio : height;
+
+              height = (width * imageRect.height) / imageRect.width; //use ratio;
               height = Math.floor(height);
 
               viewModel.calcResize(width, height, event);
