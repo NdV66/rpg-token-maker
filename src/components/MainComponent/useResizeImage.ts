@@ -6,23 +6,23 @@ import { IResizeAvatarImageComponentViewModel } from 'viewModels';
 const MIN_WIDTH = 100;
 const MIN_HEIGHT = 100;
 
+const updateDotsPositions = (elements: TDotsRef, dotsPositions: TResizeDots) => {
+  const keys = Object.keys(EDotsNames);
+  keys.forEach((key) => {
+    elements[key as EDotsNames].setAttribute(
+      'style',
+      ` top: ${dotsPositions[key as EDotsNames].y}px; left: ${
+        dotsPositions[key as EDotsNames].x
+      }px;`,
+    );
+  });
+};
+
 export const useResizeImage = (
   viewModel: IResizeAvatarImageComponentViewModel,
   dotsRefs: React.MutableRefObject<TDotsRef>,
   imageRef: React.RefObject<HTMLCanvasElement>,
 ) => {
-  const updateDotsPositions = (elements: TDotsRef, dotsPositions: TResizeDots) => {
-    const keys = Object.keys(EDotsNames);
-    keys.forEach((key) => {
-      elements[key as EDotsNames].setAttribute(
-        'style',
-        ` top: ${dotsPositions[key as EDotsNames].y}px; left: ${
-          dotsPositions[key as EDotsNames].x
-        }px;`,
-      );
-    });
-  };
-
   useEffect(() => {
     const elements = dotsRefs.current;
     const dots = Object.values(dotsRefs.current);
@@ -33,76 +33,53 @@ export const useResizeImage = (
       const mouseMoveActions$ = keys.map((key) => {
         return viewModel
           .fromMouseEvent(elements[key as EDotsNames], 'mousemove')
-          .subscribe((event) => {
+          .subscribe(async (event) => {
             if (viewModel.testMouseDown) {
               const imageRect = image.getBoundingClientRect();
               const parentRect = image.parentElement!.getBoundingClientRect();
+              const { offset } = await firstValueFrom(viewModel.currentSizeWithOffset$);
 
               let width = imageRect.width;
               let height = imageRect.height;
+              const topLeftOffset = viewModel.topLeftOffset;
 
               const M: TPosition = {
                 x: event.pageX,
                 y: event.pageY,
               };
 
-              const A: TPosition = {
-                x: imageRect.left + parentRect.left,
-                y: imageRect.top + parentRect.top - height,
-              };
+              const A: TPosition = { x: 0, y: 0 };
+              const newA = { x: 0, y: 0 };
 
               if (key === EDotsNames.A) {
                 const x = Math.abs(M.x - A.x);
                 const y = Math.abs(M.y - A.y);
 
                 if (M.x < A.x) {
+                  // zwieksz width
                   width += 2 * x;
                 } else {
                   width -= 2 * x;
                 }
 
                 if (M.y < A.y) {
+                  //zwieksz height
                   height += 2 * y;
                 } else {
                   height -= 2 * y;
                 }
-              } else if (key === EDotsNames.B) {
-                const B: TPosition = {
-                  x: A.x + imageRect.width,
-                  y: A.y,
-                };
-                const x = Math.abs(M.x - B.x);
-                const y = Math.abs(M.y - B.y);
 
-                if (M.x < B.x) {
-                  width -= 2 * x;
-                } else {
-                  width += 2 * x;
-                }
+                newA.x = M.x - topLeftOffset.x;
+                newA.y = M.y - topLeftOffset.y;
 
-                if (M.y < B.y) {
-                  height -= 2 * y;
-                } else {
-                  height += 2 * y;
-                }
+                console.log('NEW A: ', newA, 'OLD A: ', A);
               }
 
-              //   if (width < MIN_WIDTH) {
-              //     width = MIN_WIDTH;
-              //     const minHeightWithRatio = (width * imageRect.height) / imageRect.width; //use ratio;
-              //     height = height < minHeightWithRatio ? minHeightWithRatio : height;
-              //   } else {
-              //     height = (width * imageRect.height) / imageRect.width; //use ratio;
-              //   }
-
-              height = height < MIN_HEIGHT ? MIN_HEIGHT : height; //TODO ratio
               width = width < MIN_WIDTH ? MIN_WIDTH : width;
-
-              //TODO better with ratio
-              height = (width * imageRect.height) / imageRect.width;
+              height = (width * imageRect.height) / imageRect.width; //TODO better with ratio
               height = Math.floor(height);
 
-              viewModel.calcResize(width, height, event);
+              viewModel.calcResize(width, height, event, newA);
             }
           });
       });
@@ -116,6 +93,21 @@ export const useResizeImage = (
       const mouseDownActions$ = dots.map((dot) =>
         viewModel.fromMouseEvent(dot!, 'mousedown').subscribe((event) => {
           viewModel.handleStartResize(image, event);
+
+          viewModel.topLeftOffset = {
+            //odniesienie do tego, ze teraz to left top jest 0, 0 obrazka
+            x: imageRef.current!.offsetLeft - event.pageX,
+            y: imageRef.current!.offsetTop - event.pageY,
+          };
+          console.log(
+            ' viewModel.currentTopLeft',
+            viewModel.topLeftOffset,
+            imageRef.current!.offsetLeft,
+            {
+              pageX: event.pageX,
+              pageY: event.pageY,
+            },
+          );
         }),
       );
 

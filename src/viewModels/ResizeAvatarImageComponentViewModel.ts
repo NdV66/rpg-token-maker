@@ -24,7 +24,7 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
 
 export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   currentSizeWithOffset$: Observable<TCanvasSizeWithOffset>;
-  calcResize: (width: number, height: number, event: React.MouseEvent) => void;
+  calcResize: (width: number, height: number, event: React.MouseEvent, topLeft: TPosition) => void;
   handleStartResize: (element: any, event: React.MouseEvent) => void;
   handleFinishResize: () => void;
   prepareOffsetsForDots: (
@@ -33,7 +33,8 @@ export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
     imageHeight: number,
   ) => TResizeDots;
 
-  testMouseDown: boolean;
+  testMouseDown: boolean; //TODO tmp
+  topLeftOffset: TPosition; //TODO tmp
 }
 
 export class ResizeAvatarImageComponentViewModel
@@ -41,6 +42,9 @@ export class ResizeAvatarImageComponentViewModel
   implements IResizeAvatarImageComponentViewModel
 {
   private _currentSizeWithOffset$ = new BehaviorSubject<TCanvasSizeWithOffset>(DEFAULT_SIZE);
+  public readonly currentSizeWithOffset$ = this._currentSizeWithOffset$.asObservable();
+
+  public topLeftOffset: TPosition = { x: 0, y: 0 };
 
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
@@ -63,18 +67,15 @@ export class ResizeAvatarImageComponentViewModel
     });
   }
 
-  get currentSizeWithOffset$() {
-    return this._currentSizeWithOffset$.asObservable();
-  }
-
   // TODO only for tests
-  public calcResize(width: number, height: number, event: React.MouseEvent) {
+  public calcResize(width: number, height: number, event: React.MouseEvent, topLeft: TPosition) {
     if (this.isMouseDown) {
+      this._moveImageViewModel.turnOffIsMouseDown();
+
       this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
       //   this._moveImageViewModel.updateElementPosition(topLeft);
-      this._moveImageViewModel.turnOnIsMouseDown();
-      this._moveImageViewModel.handleMouseMove(event);
-      this._moveImageViewModel.turnOffIsMouseDown();
+      //   this._moveImageViewModel.turnOnIsMouseDown();
+      //   this._moveImageViewModel.handleMouseMove2(event);
     }
   }
 
