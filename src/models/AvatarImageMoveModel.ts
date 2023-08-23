@@ -10,6 +10,7 @@ export interface IAvatarImageMoveModel extends IAMouseHandler {
   handleMouseMove2: (event: React.MouseEvent) => void;
   handleMouseDown: <T extends HTMLElement>(element: T, event: React.MouseEvent) => void;
   updateElementPosition: (newPosition: TPosition) => void;
+  updateElementPosition2: (newPosition: TPosition) => void;
 }
 
 const START_OFFSET: TPosition = { x: 50, y: 50 };
@@ -39,6 +40,11 @@ export class AvatarImageMoveModel extends AMouseHandler implements IAvatarImageM
   };
 
   public updateElementPosition = (newPosition: TPosition) => {
+    this._elementOffset$.next(newPosition);
+  };
+
+  public updateElementPosition2 = (newPosition: TPosition) => {
+    this._currentOffset = { x: 0, y: 0 };
     this._elementOffset$.next(newPosition);
   };
 

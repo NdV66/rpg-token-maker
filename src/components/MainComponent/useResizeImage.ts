@@ -36,41 +36,40 @@ export const useResizeImage = (
           .subscribe(async (event) => {
             if (viewModel.testMouseDown) {
               const imageRect = image.getBoundingClientRect();
-              const parentRect = image.parentElement!.getBoundingClientRect();
-              const { offset } = await firstValueFrom(viewModel.currentSizeWithOffset$);
 
               let width = imageRect.width;
               let height = imageRect.height;
-              const topLeftOffset = viewModel.topLeftOffset;
 
               const M: TPosition = {
                 x: event.pageX,
                 y: event.pageY,
               };
 
-              const A: TPosition = { x: 0, y: 0 };
+              const A: TPosition = viewModel.topLeftOffset;
               const newA = { x: 0, y: 0 };
 
               if (key === EDotsNames.A) {
-                const x = Math.abs(M.x - A.x);
-                const y = Math.abs(M.y - A.y);
+                const offset: TPosition = {
+                  x: Math.abs(M.x - A.x),
+                  y: Math.abs(M.y - A.y),
+                };
 
                 if (M.x < A.x) {
                   // zwieksz width
-                  width += 2 * x;
+                  width += 2 * offset.x;
                 } else {
-                  width -= 2 * x;
+                  width -= 2 * offset.x;
                 }
 
                 if (M.y < A.y) {
                   //zwieksz height
-                  height += 2 * y;
+                  height += 2 * offset.y;
                 } else {
-                  height -= 2 * y;
+                  height -= 2 * offset.y;
                 }
 
-                newA.x = M.x - topLeftOffset.x;
-                newA.y = M.y - topLeftOffset.y;
+                newA.x = event.pageX - offset.x;
+                newA.y = event.pageY - offset.y;
 
                 console.log('NEW A: ', newA, 'OLD A: ', A);
               }
@@ -95,19 +94,10 @@ export const useResizeImage = (
           viewModel.handleStartResize(image, event);
 
           viewModel.topLeftOffset = {
-            //odniesienie do tego, ze teraz to left top jest 0, 0 obrazka
-            x: imageRef.current!.offsetLeft - event.pageX,
-            y: imageRef.current!.offsetTop - event.pageY,
+            x: imageRef.current!.offsetLeft,
+            y: imageRef.current!.offsetTop,
           };
-          console.log(
-            ' viewModel.currentTopLeft',
-            viewModel.topLeftOffset,
-            imageRef.current!.offsetLeft,
-            {
-              pageX: event.pageX,
-              pageY: event.pageY,
-            },
-          );
+          console.log(' viewModel.currentTopLeft', viewModel.topLeftOffset);
         }),
       );
 
