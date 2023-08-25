@@ -39,6 +39,7 @@ export const useResizeImage = (
 
               let width = imageRect.width;
               let height = imageRect.height;
+              const ratio = width / height;
 
               const M: TPosition = {
                 x: event.pageX,
@@ -75,8 +76,7 @@ export const useResizeImage = (
               }
 
               width = width < MIN_WIDTH ? MIN_WIDTH : width;
-              height = (width * imageRect.height) / imageRect.width; //TODO better with ratio
-              height = Math.floor(height);
+              height = width / ratio;
 
               viewModel.calcResize(width, height, event, newA);
             }
