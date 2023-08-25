@@ -6,6 +6,10 @@ import { IResizeAvatarImageComponentViewModel } from 'viewModels';
 const MIN_WIDTH = 100;
 const MIN_HEIGHT = 100;
 
+// A *** B
+// *     *
+// D *** C
+
 const updateDotsPositions = (elements: TDotsRef, dotsPositions: TResizeDots) => {
   const keys = Object.keys(EDotsNames);
   keys.forEach((key) => {
@@ -48,13 +52,13 @@ export const useResizeImage = (
 
               const A: TPosition = viewModel.topLeftOffset;
               const newA = { x: 0, y: 0 };
+              const offsetFromA: TPosition = {
+                x: Math.abs(M.x - A.x),
+                y: Math.abs(M.y - A.y),
+              };
 
               if (key === EDotsNames.A) {
-                const offset: TPosition = {
-                  x: Math.abs(M.x - A.x),
-                  y: Math.abs(M.y - A.y),
-                };
-
+                const offset = offsetFromA;
                 if (M.x < A.x) {
                   // zwieksz width
                   width += 2 * offset.x;
@@ -71,8 +75,32 @@ export const useResizeImage = (
 
                 newA.x = event.pageX - offset.x;
                 newA.y = event.pageY - offset.y;
+              } else if (key === EDotsNames.B) {
+                const B: TPosition = {
+                  x: A.x + imageRect.width,
+                  y: A.y,
+                };
 
-                console.log('NEW A: ', newA, 'OLD A: ', A);
+                const AMx = Math.abs(M.x - A.x);
+                const AMy = Math.abs(M.y - A.y);
+
+                if (M.x < B.x) {
+                  const b = width - AMx;
+                  width -= 2 * b;
+                  newA.x = A.x - b;
+                } else {
+                  console.log('TODO w');
+                }
+
+                if (M.y < B.y) {
+                  console.log('TODO h');
+                } else {
+                  const a = height - AMy;
+                  height -= 2 * a;
+                  newA.y = A.y - a;
+                }
+
+                // console.log('newA', newA, offset, 'B', B, 'M', M);
               }
 
               width = width < MIN_WIDTH ? MIN_WIDTH : width;
