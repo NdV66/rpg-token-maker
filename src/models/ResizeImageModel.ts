@@ -7,6 +7,7 @@ export interface IResizeImageModel {
     imageSize: TSize,
     topLeftOffset: TPosition,
     A_pageXY: TPosition,
+    ratio: number,
   ) => TSize & { cssA: TPosition };
 }
 
@@ -41,8 +42,9 @@ export class ResizeImageModel implements IResizeImageModel {
     imageSize: TSize,
     topLeftOffset: TPosition,
     A: TPosition,
+    ratio: number,
   ) {
-    const ratio = imageSize.width / imageSize.height;
+    // const ratio = imageSize.width / imageSize.height;
     const cssA = topLeftOffset; //TODO calc in the viewModel
     let width = imageSize.width;
 

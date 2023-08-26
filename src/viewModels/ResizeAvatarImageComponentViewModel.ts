@@ -45,6 +45,8 @@ export class ResizeAvatarImageComponentViewModel
   public readonly currentSizeWithTopLeftPosition$ =
     this._currentSizeWithTopLeftPosition$.asObservable();
 
+  private _ratio: number = 0;
+
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
     private readonly _moveImageViewModel: IAvatarImageMoveModel,
@@ -79,12 +81,15 @@ export class ResizeAvatarImageComponentViewModel
       const A: TPosition = { x: imageRect.left, y: imageRect.top }; //pageX and pageY for HTML element
       const topLeft = { x: image.offsetLeft, y: image.offsetTop };
 
+      if (!this._ratio) this._ratio = image.width / image.height; //TODO better
+
       const { width, height, cssA } = this._resizeImageModel.calcResize(
         currentDot,
         mousePosition,
         image,
         topLeft,
         A,
+        this._ratio,
       );
 
       this._moveImageViewModel.turnOffIsMouseDown();
