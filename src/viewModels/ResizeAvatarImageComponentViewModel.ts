@@ -24,7 +24,12 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
 
 export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   currentSizeWithOffset$: Observable<TCanvasSizeWithOffset>;
-  calcResize: (width: number, height: number, event: React.MouseEvent, topLeft: TPosition) => void;
+  calcResize: (
+    width: number,
+    event: React.MouseEvent,
+    topLeft: TPosition,
+    imgRect: DOMRect,
+  ) => void;
   handleStartResize: (element: any, event: React.MouseEvent) => void;
   handleFinishResize: () => void;
   prepareOffsetsForDots: (
@@ -34,7 +39,6 @@ export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   ) => TResizeDots;
 
   testMouseDown: boolean; //TODO tmp
-  topLeftOffset: TPosition; //TODO tmp
 }
 
 export class ResizeAvatarImageComponentViewModel
@@ -43,8 +47,6 @@ export class ResizeAvatarImageComponentViewModel
 {
   private _currentSizeWithOffset$ = new BehaviorSubject<TCanvasSizeWithOffset>(DEFAULT_SIZE);
   public readonly currentSizeWithOffset$ = this._currentSizeWithOffset$.asObservable();
-
-  public topLeftOffset: TPosition = { x: 0, y: 0 };
 
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
@@ -67,11 +69,26 @@ export class ResizeAvatarImageComponentViewModel
     });
   }
 
+  private _prepareSizesWithRatio = (currentWidth: number, ratio: number) => {
+    const MIN_WIDTH = 100; //todo env
+    const width = currentWidth < MIN_WIDTH ? MIN_WIDTH : currentWidth;
+    const height = width / ratio;
+    return { width, height };
+  };
+
   // TODO only for tests
-  public calcResize(width: number, height: number, event: React.MouseEvent, topLeft: TPosition) {
+  public calcResize(
+    width: number,
+    event: React.MouseEvent,
+    topLeft: TPosition,
+    imageRect: DOMRect,
+  ) {
     if (this.isMouseDown) {
+      const ratio = imageRect.width / imageRect.height;
+      const size = this._prepareSizesWithRatio(width, ratio);
+
       this._moveImageViewModel.turnOffIsMouseDown();
-      this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
+      this._drawAvatarOnCanvasModel.calculateCanvasSize(size.height, size.width);
       this._moveImageViewModel.updateElementPosition2(topLeft);
     }
   }

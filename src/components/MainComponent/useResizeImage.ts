@@ -3,9 +3,6 @@ import { firstValueFrom } from 'rxjs';
 import { EDotsNames, TDotsRef, TPosition, TResizeDots } from 'types';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
 
-const MIN_WIDTH = 100;
-const MIN_HEIGHT = 100;
-
 // A *** B
 // *     *
 // D *** C
@@ -27,12 +24,6 @@ export const useResizeImage = (
   dotsRefs: React.MutableRefObject<TDotsRef>,
   imageRef: React.RefObject<HTMLCanvasElement>,
 ) => {
-  const prepareSizesWithRatio = (currentWidth: number, ratio: number) => {
-    const width = currentWidth < MIN_WIDTH ? MIN_WIDTH : currentWidth;
-    const height = width / ratio;
-    return { width, height };
-  };
-
   useEffect(() => {
     const elements = dotsRefs.current;
     const dots = Object.values(dotsRefs.current);
@@ -83,18 +74,14 @@ export const useResizeImage = (
 
                 if (M.x < B.x) {
                 } else {
-                  console.log('TODO w');
                 }
 
                 if (M.y < B.y) {
-                  console.log('TODO h');
                 } else {
                 }
               }
 
-              const ratio = imageRect.width / imageRect.height;
-              const size = prepareSizesWithRatio(width, ratio);
-              viewModel.calcResize(size.width, size.height, event, cssA);
+              viewModel.calcResize(width, event, cssA, imageRect);
             }
           });
       });
