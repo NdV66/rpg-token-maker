@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { firstValueFrom } from 'rxjs';
 import { EDotsNames, TDotsRef, TPosition, TResizeDots } from 'types';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
 
@@ -98,7 +97,7 @@ export const useResizeImage = (
         }),
       );
 
-      const styleDots$ = viewModel.currentSizeWithOffset$.subscribe(({ offset, size }) => {
+      const styleDots$ = viewModel.currentSizeWithTopLeftPosition$.subscribe(({ offset, size }) => {
         const dotsPositions = viewModel.prepareOffsetsForDots(offset, size.width, size.height);
         updateDotsPositions(elements, dotsPositions);
       });

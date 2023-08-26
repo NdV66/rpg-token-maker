@@ -23,7 +23,7 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
 };
 
 export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
-  currentSizeWithOffset$: Observable<TCanvasSizeWithOffset>;
+  currentSizeWithTopLeftPosition$: Observable<TCanvasSizeWithOffset>;
   calcResize: (
     width: number,
     event: React.MouseEvent,
@@ -45,27 +45,30 @@ export class ResizeAvatarImageComponentViewModel
   extends AMouseHandler
   implements IResizeAvatarImageComponentViewModel
 {
-  private _currentSizeWithOffset$ = new BehaviorSubject<TCanvasSizeWithOffset>(DEFAULT_SIZE);
-  public readonly currentSizeWithOffset$ = this._currentSizeWithOffset$.asObservable();
+  private _currentSizeWithTopLeftPosition$ = new BehaviorSubject<TCanvasSizeWithOffset>(
+    DEFAULT_SIZE,
+  );
+  public readonly currentSizeWithTopLeftPosition$ =
+    this._currentSizeWithTopLeftPosition$.asObservable();
 
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
     private readonly _moveImageViewModel: IAvatarImageMoveModel,
   ) {
     super();
-    this._updateCurrentSizeWithOffset();
+    this._updateCurrentSizeWithTopLeftPosition();
   }
 
   get testMouseDown() {
     return this.isMouseDown;
   }
 
-  private _updateCurrentSizeWithOffset() {
+  private _updateCurrentSizeWithTopLeftPosition() {
     combineLatest([
       this._drawAvatarOnCanvasModel.canvasSize$,
       this._moveImageViewModel.elementOffset$,
     ]).subscribe(([size, offset]) => {
-      this._currentSizeWithOffset$.next({ size, offset });
+      this._currentSizeWithTopLeftPosition$.next({ size, offset });
     });
   }
 
@@ -85,6 +88,7 @@ export class ResizeAvatarImageComponentViewModel
   ) {
     if (this.isMouseDown) {
       const ratio = imageRect.width / imageRect.height;
+
       const size = this._prepareSizesWithRatio(width, ratio);
 
       this._moveImageViewModel.turnOffIsMouseDown();
