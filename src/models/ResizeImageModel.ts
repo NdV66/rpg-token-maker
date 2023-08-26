@@ -1,4 +1,4 @@
-import { EDotsNames, TPosition, TSize } from 'types';
+import { EDotsNames, TAppEnv, TPosition, TSize } from 'types';
 
 // A *** B
 // *     *
@@ -12,11 +12,18 @@ export interface IResizeImageModel {
   ) => TSize & { cssA: TPosition };
 }
 
-const MIN_WIDTH = 100; //todo env
-
 export class ResizeImageModel implements IResizeImageModel {
+  constructor(private readonly _appEnv: TAppEnv) {}
+
+  /**
+   * It prepare image size based on ratio and current width.
+   * @param currentWidth current image width
+   * @param ratio imageWidth / imageHeight
+   * @returns
+   */
   private _prepareSizesWithRatio = (currentWidth: number, ratio: number) => {
-    const width = currentWidth < MIN_WIDTH ? MIN_WIDTH : currentWidth;
+    const width =
+      currentWidth < this._appEnv.minAvatarWidth ? this._appEnv.minAvatarWidth : currentWidth;
     const height = width / ratio;
     return { width, height };
   };

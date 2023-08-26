@@ -18,8 +18,7 @@ const imageLoaderModel = new ImageLoaderModel();
 const exportCanvasModel = new ExportCanvasModel(APP_ENV, imageLoaderModel);
 const drawAvatarFrameModel = new DrawImageOnCanvasModel(imageLoaderModel);
 const drawAvatarImageModel = new DrawImageOnCanvasModel(imageLoaderModel);
-const resizeImageModel = new ResizeImageModel();
-
+const resizeImageModel = new ResizeImageModel(APP_ENV);
 const avatarImageMoveModel = new AvatarImageMoveModel();
 
 const avatarFrameComponentViewModel = new AvatarFrameComponentViewModel(drawAvatarFrameModel);
