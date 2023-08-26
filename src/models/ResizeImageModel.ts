@@ -7,12 +7,11 @@ export interface IResizeImageModel {
     imageSize: TSize,
     topLeftOffset: TPosition,
     A_pageXY: TPosition,
-    ratio: number,
   ) => TSize & { cssA: TPosition };
 }
 
 export class ResizeImageModel implements IResizeImageModel {
-  constructor(private readonly _appEnv: TAppEnv) {}
+  constructor(private readonly _appEnv: TAppEnv, private readonly _ratio: number) {}
 
   /**
    * It prepare image size based on ratio and current width.
@@ -42,13 +41,10 @@ export class ResizeImageModel implements IResizeImageModel {
     imageSize: TSize,
     topLeftOffset: TPosition,
     A: TPosition,
-    ratio: number,
   ) {
     // const ratio = imageSize.width / imageSize.height;
     const cssA = topLeftOffset; //TODO calc in the viewModel
     let width = imageSize.width;
-
-    console.log(ratio);
 
     if (currentDot === EDotsNames.A) {
       const offset: TPosition = {
@@ -84,7 +80,13 @@ export class ResizeImageModel implements IResizeImageModel {
       }
     }
 
-    const size = this._prepareSizesWithRatio(width, ratio);
+    const size = this._prepareSizesWithRatio(width, this._ratio);
     return { ...size, cssA };
   }
 }
+
+// FABRIC
+export type IImageResizeModelFabric = (ratio: number) => ResizeImageModel;
+
+export const imageResizeModelFabric = (APP_ENV: TAppEnv) => (ratio: number) =>
+  new ResizeImageModel(APP_ENV, ratio);

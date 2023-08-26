@@ -3,10 +3,11 @@ import {
   IAMouseHandler,
   IAvatarImageMoveModel,
   IDrawImageOnCanvasModel,
+  IImageResizeModelFabric,
   IResizeImageModel,
 } from 'models';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { EDotsNames, TCanvasSize, TPosition, TResizeDots, TSize } from 'types';
+import { EDotsNames, TCanvasSize, TPosition, TResizeDots } from 'types';
 
 type TCanvasSizeWithOffset = {
   size: TCanvasSize;
@@ -26,7 +27,7 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
 export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   currentSizeWithTopLeftPosition$: Observable<TCanvasSizeWithOffset>;
   handleResize: (currentDot: EDotsNames, event: React.MouseEvent, image: HTMLCanvasElement) => void;
-  handleStartResize: (element: any, event: React.MouseEvent) => void;
+  handleStartResize: (element: any, event: React.MouseEvent, image: HTMLCanvasElement) => void;
   handleFinishResize: () => void;
   prepareOffsetsForDots: (
     imageTopLeft: TPosition,
@@ -45,12 +46,12 @@ export class ResizeAvatarImageComponentViewModel
   public readonly currentSizeWithTopLeftPosition$ =
     this._currentSizeWithTopLeftPosition$.asObservable();
 
-  private _ratio: number = 0;
+  private _currentImageResizeModel: IResizeImageModel | null = null;
 
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
     private readonly _moveImageViewModel: IAvatarImageMoveModel,
-    private readonly _resizeImageModel: IResizeImageModel,
+    private readonly _imageResizeModelFabric: IImageResizeModelFabric,
   ) {
     super();
     this._updateCurrentSizeWithTopLeftPosition();
@@ -72,7 +73,7 @@ export class ResizeAvatarImageComponentViewModel
    * @param image
    */
   public handleResize(currentDot: EDotsNames, event: React.MouseEvent, image: HTMLCanvasElement) {
-    if (this.isMouseDown) {
+    if (this.isMouseDown && this._currentImageResizeModel) {
       const imageRect = image.getBoundingClientRect();
       const mousePosition: TPosition = {
         x: event.pageX,
@@ -81,15 +82,12 @@ export class ResizeAvatarImageComponentViewModel
       const A: TPosition = { x: imageRect.left, y: imageRect.top }; //pageX and pageY for HTML element
       const topLeft = { x: image.offsetLeft, y: image.offsetTop };
 
-      if (!this._ratio) this._ratio = image.width / image.height; //TODO better
-
-      const { width, height, cssA } = this._resizeImageModel.calcResize(
+      const { width, height, cssA } = this._currentImageResizeModel.calcResize(
         currentDot,
         mousePosition,
         image,
         topLeft,
         A,
-        this._ratio,
       );
 
       this._moveImageViewModel.turnOffIsMouseDown();
@@ -99,11 +97,14 @@ export class ResizeAvatarImageComponentViewModel
   }
 
   public handleFinishResize = () => {
+    this._currentImageResizeModel = null;
     this.turnOffIsMouseDown();
     this._moveImageViewModel.handleMouseUp();
   };
 
-  public handleStartResize = (element: any, event: React.MouseEvent) => {
+  public handleStartResize = (element: any, event: React.MouseEvent, image: HTMLCanvasElement) => {
+    const ratio = image.width / image.height;
+    this._currentImageResizeModel = this._imageResizeModelFabric(ratio);
     this.turnOnIsMouseDown();
     this._moveImageViewModel.handleMouseDown(element, event);
   };
