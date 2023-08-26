@@ -3,6 +3,7 @@ import {
   IAMouseHandler,
   IAvatarImageMoveModel,
   IDrawImageOnCanvasModel,
+  IResizeImageModel,
 } from 'models';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { EDotsNames, TCanvasSize, TPosition, TResizeDots } from 'types';
@@ -24,12 +25,7 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
 
 export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   currentSizeWithTopLeftPosition$: Observable<TCanvasSizeWithOffset>;
-  calcResize: (
-    width: number,
-    event: React.MouseEvent,
-    topLeft: TPosition,
-    imgRect: DOMRect,
-  ) => void;
+  handleResize: (currentDot: EDotsNames, event: React.MouseEvent, image: HTMLCanvasElement) => void;
   handleStartResize: (element: any, event: React.MouseEvent) => void;
   handleFinishResize: () => void;
   prepareOffsetsForDots: (
@@ -37,8 +33,6 @@ export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
     imageWidth: number,
     imageHeight: number,
   ) => TResizeDots;
-
-  testMouseDown: boolean; //TODO tmp
 }
 
 export class ResizeAvatarImageComponentViewModel
@@ -54,13 +48,10 @@ export class ResizeAvatarImageComponentViewModel
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
     private readonly _moveImageViewModel: IAvatarImageMoveModel,
+    private readonly _resizeImageModel: IResizeImageModel,
   ) {
     super();
     this._updateCurrentSizeWithTopLeftPosition();
-  }
-
-  get testMouseDown() {
-    return this.isMouseDown;
   }
 
   private _updateCurrentSizeWithTopLeftPosition() {
@@ -72,28 +63,13 @@ export class ResizeAvatarImageComponentViewModel
     });
   }
 
-  private _prepareSizesWithRatio = (currentWidth: number, ratio: number) => {
-    const MIN_WIDTH = 100; //todo env
-    const width = currentWidth < MIN_WIDTH ? MIN_WIDTH : currentWidth;
-    const height = width / ratio;
-    return { width, height };
-  };
-
-  // TODO only for tests
-  public calcResize(
-    width: number,
-    event: React.MouseEvent,
-    topLeft: TPosition,
-    imageRect: DOMRect,
-  ) {
+  public handleResize(currentDot: EDotsNames, event: React.MouseEvent, image: HTMLCanvasElement) {
     if (this.isMouseDown) {
-      const ratio = imageRect.width / imageRect.height;
-
-      const size = this._prepareSizesWithRatio(width, ratio);
+      const { width, height, cssA } = this._resizeImageModel.calcResize(currentDot, event, image);
 
       this._moveImageViewModel.turnOffIsMouseDown();
-      this._drawAvatarOnCanvasModel.calculateCanvasSize(size.height, size.width);
-      this._moveImageViewModel.updateElementPosition2(topLeft);
+      this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
+      this._moveImageViewModel.updateElementPosition2(cssA);
     }
   }
 

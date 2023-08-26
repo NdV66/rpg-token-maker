@@ -1,10 +1,6 @@
 import { useEffect } from 'react';
-import { EDotsNames, TDotsRef, TPosition, TResizeDots } from 'types';
+import { EDotsNames, TDotsRef, TResizeDots } from 'types';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
-
-// A *** B
-// *     *
-// D *** C
 
 const updateDotsPositions = (elements: TDotsRef, dotsPositions: TResizeDots) => {
   const keys = Object.keys(EDotsNames);
@@ -33,55 +29,8 @@ export const useResizeImage = (
       const mouseMoveActions$ = keys.map((key) => {
         return viewModel
           .fromMouseEvent(elements[key as EDotsNames], 'mousemove')
-          .subscribe(async (event) => {
-            if (viewModel.testMouseDown) {
-              const imageRect = image.getBoundingClientRect();
-              let width = imageRect.width;
-
-              const M: TPosition = {
-                x: event.pageX,
-                y: event.pageY,
-              };
-
-              const A: TPosition = { x: imageRect.left, y: imageRect.top }; //page X and page y
-              const cssA = { x: imageRef.current!.offsetLeft, y: imageRef.current!.offsetTop };
-
-              if (key === EDotsNames.A) {
-                const offset: TPosition = {
-                  x: Math.abs(M.x - A.x),
-                  y: Math.abs(M.y - A.y),
-                };
-
-                if (M.x < A.x) {
-                  width += 2 * offset.x;
-                  cssA.x -= offset.x;
-                } else {
-                  width -= 2 * offset.x;
-                  cssA.x += offset.x;
-                }
-
-                if (M.y < A.y) {
-                  cssA.y -= offset.y;
-                } else {
-                  cssA.y += offset.y;
-                }
-              } else if (key === EDotsNames.B) {
-                const B: TPosition = {
-                  x: A.x + imageRect.width,
-                  y: A.y,
-                };
-
-                if (M.x < B.x) {
-                } else {
-                }
-
-                if (M.y < B.y) {
-                } else {
-                }
-              }
-
-              viewModel.calcResize(width, event, cssA, imageRect);
-            }
+          .subscribe((event) => {
+            viewModel.handleResize(key as EDotsNames, event, image);
           });
       });
 

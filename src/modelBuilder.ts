@@ -4,6 +4,7 @@ import {
   DrawImageOnCanvasModel,
   ExportCanvasModel,
   ImageLoaderModel,
+  ResizeImageModel,
 } from 'models';
 
 import {
@@ -17,6 +18,7 @@ const imageLoaderModel = new ImageLoaderModel();
 const exportCanvasModel = new ExportCanvasModel(APP_ENV, imageLoaderModel);
 const drawAvatarFrameModel = new DrawImageOnCanvasModel(imageLoaderModel);
 const drawAvatarImageModel = new DrawImageOnCanvasModel(imageLoaderModel);
+const resizeImageModel = new ResizeImageModel();
 
 const avatarImageMoveModel = new AvatarImageMoveModel();
 
@@ -28,6 +30,7 @@ const avatarImageComponentViewModel = new AvatarImageComponentViewModel(
 const resizeAvatarViewModel = new ResizeAvatarImageComponentViewModel(
   avatarImageComponentViewModel,
   avatarImageMoveModel,
+  resizeImageModel,
 );
 
 export const mainComponentViewModel = new MainComponentViewModel(
