@@ -6,7 +6,7 @@ import {
   IResizeImageModel,
 } from 'models';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { EDotsNames, TCanvasSize, TPosition, TResizeDots } from 'types';
+import { EDotsNames, TCanvasSize, TPosition, TResizeDots, TSize } from 'types';
 
 type TCanvasSizeWithOffset = {
   size: TCanvasSize;
@@ -63,9 +63,29 @@ export class ResizeAvatarImageComponentViewModel
     });
   }
 
+  /**
+   * This calculation is based on pageY and pageX.
+   * @param currentDot
+   * @param event
+   * @param image
+   */
   public handleResize(currentDot: EDotsNames, event: React.MouseEvent, image: HTMLCanvasElement) {
     if (this.isMouseDown) {
-      const { width, height, cssA } = this._resizeImageModel.calcResize(currentDot, event, image);
+      const imageRect = image.getBoundingClientRect();
+      const mousePosition: TPosition = {
+        x: event.pageX,
+        y: event.pageY,
+      };
+      const A: TPosition = { x: imageRect.left, y: imageRect.top }; //pageX and pageY for HTML element
+      const topLeft = { x: image.offsetLeft, y: image.offsetTop };
+
+      const { width, height, cssA } = this._resizeImageModel.calcResize(
+        currentDot,
+        mousePosition,
+        image,
+        topLeft,
+        A,
+      );
 
       this._moveImageViewModel.turnOffIsMouseDown();
       this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);

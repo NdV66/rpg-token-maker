@@ -9,17 +9,18 @@ type Props = {
 };
 
 export const ResizeAvatarImageComponent = ({ viewModel, imageRef }: Props) => {
-  const keys = Object.keys(EDotsNames).map((key) => key as EDotsNames);
+  const values = Object.values(EDotsNames).map((key) => key as EDotsNames);
   const dotsRef = useRef<TDotsRef>({} as TDotsRef);
   useResizeImage(viewModel, dotsRef, imageRef);
 
   const addRef = (element: HTMLDivElement | null, key: EDotsNames) => {
-    if (element && dotsRef.current) dotsRef.current = { ...dotsRef.current, [key]: element };
+    const finalKey = key;
+    if (element && dotsRef.current) dotsRef.current = { ...dotsRef.current, [finalKey]: element };
   };
 
   return (
     <div className="resize-avatar">
-      {keys.map((key) => (
+      {values.map((key) => (
         <div
           className="resize-dot"
           key={key}

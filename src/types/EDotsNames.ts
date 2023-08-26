@@ -1,6 +1,12 @@
 export enum EDotsNames {
-  A = 'A',
-  B = 'B',
-  C = 'C',
-  D = 'D',
+  A = 'topLeft',
+  B = 'topRight', //
+  C = 'bottomRight',
+  D = 'bottomLeft',
 }
+
+// A **** B
+// *     *
+// *     *
+// *     *
+// D **** C

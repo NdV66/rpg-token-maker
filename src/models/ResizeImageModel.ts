@@ -1,14 +1,12 @@
 import { EDotsNames, TAppEnv, TPosition, TSize } from 'types';
 
-// A *** B
-// *     *
-// D *** C
-
 export interface IResizeImageModel {
   calcResize: (
     currentDot: EDotsNames,
-    event: React.MouseEvent,
-    image: HTMLCanvasElement,
+    mousePosition: TPosition,
+    imageSize: TSize,
+    topLeftOffset: TPosition,
+    A_pageXY: TPosition,
   ) => TSize & { cssA: TPosition };
 }
 
@@ -28,25 +26,35 @@ export class ResizeImageModel implements IResizeImageModel {
     return { width, height };
   };
 
-  public calcResize(currentDot: EDotsNames, event: React.MouseEvent, image: HTMLCanvasElement) {
-    const imageRect = image.getBoundingClientRect();
-    let width = imageRect.width;
+  /**
+   * This calculation is based on pageY and pageX.
+   * @param currentDot
+   * @param mousePosition
+   * @param imageSize
+   * @param topLeftOffset
+   * @param A_pageXY
+   * @returns
+   */
+  public calcResize(
+    currentDot: EDotsNames,
+    mousePosition: TPosition,
+    imageSize: TSize,
+    topLeftOffset: TPosition,
+    A: TPosition,
+  ) {
+    const ratio = imageSize.width / imageSize.height;
+    const cssA = topLeftOffset; //TODO calc in the viewModel
+    let width = imageSize.width;
 
-    const M: TPosition = {
-      x: event.pageX,
-      y: event.pageY,
-    };
-
-    const A: TPosition = { x: imageRect.left, y: imageRect.top }; //page X and page y
-    const cssA = { x: image.offsetLeft, y: image.offsetTop };
+    console.log(ratio);
 
     if (currentDot === EDotsNames.A) {
       const offset: TPosition = {
-        x: Math.abs(M.x - A.x),
-        y: Math.abs(M.y - A.y),
+        x: Math.abs(mousePosition.x - A.x),
+        y: Math.abs(mousePosition.y - A.y),
       };
 
-      if (M.x < A.x) {
+      if (mousePosition.x < A.x) {
         width += 2 * offset.x;
         cssA.x -= offset.x;
       } else {
@@ -54,29 +62,27 @@ export class ResizeImageModel implements IResizeImageModel {
         cssA.x += offset.x;
       }
 
-      if (M.y < A.y) {
+      if (mousePosition.y < A.y) {
         cssA.y -= offset.y;
       } else {
         cssA.y += offset.y;
       }
     } else if (currentDot === EDotsNames.B) {
       const B: TPosition = {
-        x: A.x + imageRect.width,
+        x: A.x + imageSize.width,
         y: A.y,
       };
 
-      if (M.x < B.x) {
+      if (mousePosition.x < B.x) {
       } else {
       }
 
-      if (M.y < B.y) {
+      if (mousePosition.y < B.y) {
       } else {
       }
     }
 
-    const ratio = imageRect.width / imageRect.height;
     const size = this._prepareSizesWithRatio(width, ratio);
-
     return { ...size, cssA };
   }
 }

@@ -3,13 +3,11 @@ import { EDotsNames, TDotsRef, TResizeDots } from 'types';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
 
 const updateDotsPositions = (elements: TDotsRef, dotsPositions: TResizeDots) => {
-  const keys = Object.keys(EDotsNames);
-  keys.forEach((key) => {
+  const values = Object.values(EDotsNames);
+  values.forEach((key) => {
     elements[key as EDotsNames].setAttribute(
       'style',
-      ` top: ${dotsPositions[key as EDotsNames].y}px; left: ${
-        dotsPositions[key as EDotsNames].x
-      }px;`,
+      ` top: ${dotsPositions[key].y}px; left: ${dotsPositions[key as EDotsNames].x}px;`,
     );
   });
 };
