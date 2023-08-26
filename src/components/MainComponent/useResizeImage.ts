@@ -50,44 +50,44 @@ export const useResizeImage = (
                 y: event.pageY,
               };
 
-              const A: TPosition = viewModel.topLeftOffset;
+              const A: TPosition = { x: imageRect.left, y: imageRect.top }; //page X and page y
               const newA = { x: 0, y: 0 };
-              const offsetFromA: TPosition = {
-                x: Math.abs(M.x - A.x),
-                y: Math.abs(M.y - A.y),
-              };
+
+              const cssA = { x: imageRef.current!.offsetLeft, y: imageRef.current!.offsetTop };
 
               if (key === EDotsNames.A) {
-                const offset = offsetFromA;
+                const offset: TPosition = {
+                  x: Math.abs(M.x - A.x),
+                  y: Math.abs(M.y - A.y),
+                };
+
                 if (M.x < A.x) {
-                  // zwieksz width
                   width += 2 * offset.x;
+                  cssA.x -= offset.x;
                 } else {
                   width -= 2 * offset.x;
+                  cssA.x += offset.x;
                 }
 
                 if (M.y < A.y) {
-                  //zwieksz height
                   height += 2 * offset.y;
+                  cssA.y -= offset.y;
                 } else {
                   height -= 2 * offset.y;
+                  cssA.y += offset.y;
                 }
 
-                newA.x = event.pageX - offset.x;
-                newA.y = event.pageY - offset.y;
+                console.log('A', A, 'newA', newA, 'M', M, {
+                  width: imageRect.width,
+                  height: imageRect.height,
+                });
               } else if (key === EDotsNames.B) {
                 const B: TPosition = {
                   x: A.x + imageRect.width,
                   y: A.y,
                 };
 
-                const AMx = Math.abs(M.x - A.x);
-                const AMy = Math.abs(M.y - A.y);
-
                 if (M.x < B.x) {
-                  const b = width - AMx;
-                  width -= 2 * b;
-                  newA.x = A.x - b;
                 } else {
                   console.log('TODO w');
                 }
@@ -95,18 +95,21 @@ export const useResizeImage = (
                 if (M.y < B.y) {
                   console.log('TODO h');
                 } else {
-                  const a = height - AMy;
-                  height -= 2 * a;
-                  newA.y = A.y - a;
+                  const offset = M.y - B.y;
+                  height -= 2 * offset;
+                  newA.y = A.y + offset;
                 }
 
-                // console.log('newA', newA, offset, 'B', B, 'M', M);
+                console.log('A', A, 'B', B, 'newA', newA, 'M', M, {
+                  width: imageRect.width,
+                  height: imageRect.height,
+                });
               }
 
               width = width < MIN_WIDTH ? MIN_WIDTH : width;
               height = width / ratio;
 
-              viewModel.calcResize(width, height, event, newA);
+              viewModel.calcResize(width, height, event, cssA);
             }
           });
       });
@@ -120,12 +123,6 @@ export const useResizeImage = (
       const mouseDownActions$ = dots.map((dot) =>
         viewModel.fromMouseEvent(dot!, 'mousedown').subscribe((event) => {
           viewModel.handleStartResize(image, event);
-
-          viewModel.topLeftOffset = {
-            x: imageRef.current!.offsetLeft,
-            y: imageRef.current!.offsetTop,
-          };
-          console.log(' viewModel.currentTopLeft', viewModel.topLeftOffset);
         }),
       );
 

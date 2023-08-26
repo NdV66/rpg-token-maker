@@ -71,7 +71,6 @@ export class ResizeAvatarImageComponentViewModel
   public calcResize(width: number, height: number, event: React.MouseEvent, topLeft: TPosition) {
     if (this.isMouseDown) {
       this._moveImageViewModel.turnOffIsMouseDown();
-
       this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
       this._moveImageViewModel.updateElementPosition2(topLeft);
     }
@@ -84,7 +83,6 @@ export class ResizeAvatarImageComponentViewModel
 
   public handleStartResize = (element: any, event: React.MouseEvent) => {
     this.turnOnIsMouseDown();
-
     this._moveImageViewModel.handleMouseDown(element, event);
   };
 
