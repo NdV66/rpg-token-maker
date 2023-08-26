@@ -27,6 +27,12 @@ export const useResizeImage = (
   dotsRefs: React.MutableRefObject<TDotsRef>,
   imageRef: React.RefObject<HTMLCanvasElement>,
 ) => {
+  const prepareSizesWithRatio = (currentWidth: number, ratio: number) => {
+    const width = currentWidth < MIN_WIDTH ? MIN_WIDTH : currentWidth;
+    const height = width / ratio;
+    return { width, height };
+  };
+
   useEffect(() => {
     const elements = dotsRefs.current;
     const dots = Object.values(dotsRefs.current);
@@ -40,10 +46,7 @@ export const useResizeImage = (
           .subscribe(async (event) => {
             if (viewModel.testMouseDown) {
               const imageRect = image.getBoundingClientRect();
-
               let width = imageRect.width;
-              let height = imageRect.height;
-              const ratio = width / height;
 
               const M: TPosition = {
                 x: event.pageX,
@@ -51,8 +54,6 @@ export const useResizeImage = (
               };
 
               const A: TPosition = { x: imageRect.left, y: imageRect.top }; //page X and page y
-              const newA = { x: 0, y: 0 };
-
               const cssA = { x: imageRef.current!.offsetLeft, y: imageRef.current!.offsetTop };
 
               if (key === EDotsNames.A) {
@@ -70,17 +71,10 @@ export const useResizeImage = (
                 }
 
                 if (M.y < A.y) {
-                  height += 2 * offset.y;
                   cssA.y -= offset.y;
                 } else {
-                  height -= 2 * offset.y;
                   cssA.y += offset.y;
                 }
-
-                console.log('A', A, 'newA', newA, 'M', M, {
-                  width: imageRect.width,
-                  height: imageRect.height,
-                });
               } else if (key === EDotsNames.B) {
                 const B: TPosition = {
                   x: A.x + imageRect.width,
@@ -95,21 +89,12 @@ export const useResizeImage = (
                 if (M.y < B.y) {
                   console.log('TODO h');
                 } else {
-                  const offset = M.y - B.y;
-                  height -= 2 * offset;
-                  newA.y = A.y + offset;
                 }
-
-                console.log('A', A, 'B', B, 'newA', newA, 'M', M, {
-                  width: imageRect.width,
-                  height: imageRect.height,
-                });
               }
 
-              width = width < MIN_WIDTH ? MIN_WIDTH : width;
-              height = width / ratio;
-
-              viewModel.calcResize(width, height, event, cssA);
+              const ratio = imageRect.width / imageRect.height;
+              const size = prepareSizesWithRatio(width, ratio);
+              viewModel.calcResize(size.width, size.height, event, cssA);
             }
           });
       });
