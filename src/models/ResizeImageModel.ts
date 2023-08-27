@@ -39,96 +39,121 @@ export class ResizeImageModel implements IResizeImageModel {
     A: TPosition,
   ) {
     const cssA = { ...topLeftOffset }; //TODO calc in the viewModel
-    const newImageSize: TSize = {
-      width: imageSize.width,
-      height: imageSize.height,
+
+    const commands = {
+      [EDotsNames.A]: () => {
+        const newImageSize: TSize = {
+          width: imageSize.width,
+          height: imageSize.height,
+        };
+        const offset = this._calcOffset(mousePosition, A);
+
+        if (mousePosition.x < A.x) {
+          newImageSize.width += 2 * offset.x;
+          cssA.x -= offset.x;
+        } else {
+          newImageSize.width -= 2 * offset.x;
+          cssA.x += offset.x;
+        }
+
+        if (mousePosition.y < A.y) {
+          cssA.y -= offset.y;
+          newImageSize.height += 2 * offset.y;
+        } else {
+          cssA.y += offset.y;
+          newImageSize.height -= 2 * offset.y;
+        }
+
+        return newImageSize;
+      },
+      [EDotsNames.B]: () => {
+        const newImageSize: TSize = {
+          width: imageSize.width,
+          height: imageSize.height,
+        };
+        const B: TPosition = {
+          x: A.x + imageSize.width,
+          y: A.y,
+        };
+        const offset = this._calcOffset(mousePosition, B);
+
+        if (mousePosition.x < B.x) {
+          newImageSize.width -= 2 * offset.x;
+          cssA.x += offset.x;
+        } else {
+          newImageSize.width += 2 * offset.x;
+          cssA.x -= offset.x;
+        }
+
+        if (mousePosition.y < B.y) {
+          cssA.y -= offset.y;
+          newImageSize.height += 2 * offset.y;
+        } else {
+          cssA.y += offset.y;
+          newImageSize.height -= 2 * offset.y;
+        }
+        return newImageSize;
+      },
+      [EDotsNames.C]: () => {
+        const newImageSize: TSize = {
+          width: imageSize.width,
+          height: imageSize.height,
+        };
+        const C: TPosition = {
+          x: A.x + imageSize.width,
+          y: A.y + imageSize.height,
+        };
+        const offset = this._calcOffset(mousePosition, C);
+
+        if (mousePosition.x < C.x) {
+          newImageSize.width -= 2 * offset.x;
+          cssA.x += offset.x;
+        } else {
+          newImageSize.width += 2 * offset.x;
+          cssA.x -= offset.x;
+        }
+
+        if (mousePosition.y < C.y) {
+          cssA.y += offset.y;
+          newImageSize.height -= 2 * offset.y;
+        } else {
+          cssA.y -= offset.y;
+          newImageSize.height += 2 * offset.y;
+        }
+        return newImageSize;
+      },
+      [EDotsNames.D]: () => {
+        const newImageSize: TSize = {
+          width: imageSize.width,
+          height: imageSize.height,
+        };
+        const D: TPosition = {
+          x: A.x,
+          y: A.y + imageSize.height,
+        };
+        const offset = this._calcOffset(mousePosition, D);
+
+        if (mousePosition.x < D.x) {
+          newImageSize.width += 2 * offset.x;
+          cssA.x -= offset.x;
+        } else {
+          newImageSize.width -= 2 * offset.x;
+          cssA.x += offset.x;
+        }
+
+        if (mousePosition.y < D.y) {
+          cssA.y += offset.y;
+          newImageSize.height -= 2 * offset.y;
+        } else {
+          cssA.y -= offset.y;
+          newImageSize.height += 2 * offset.y;
+        }
+        return newImageSize;
+      },
     };
 
-    if (currentDot === EDotsNames.A) {
-      const offset = this._calcOffset(mousePosition, A);
-
-      if (mousePosition.x < A.x) {
-        newImageSize.width += 2 * offset.x;
-        cssA.x -= offset.x;
-      } else {
-        newImageSize.width -= 2 * offset.x;
-        cssA.x += offset.x;
-      }
-
-      if (mousePosition.y < A.y) {
-        cssA.y -= offset.y;
-        newImageSize.height += 2 * offset.y;
-      } else {
-        cssA.y += offset.y;
-        newImageSize.height -= 2 * offset.y;
-      }
-    } else if (currentDot === EDotsNames.B) {
-      const B: TPosition = {
-        x: A.x + imageSize.width,
-        y: A.y,
-      };
-      const offset = this._calcOffset(mousePosition, B);
-
-      if (mousePosition.x < B.x) {
-        newImageSize.width -= 2 * offset.x;
-        cssA.x += offset.x;
-      } else {
-        newImageSize.width += 2 * offset.x;
-        cssA.x -= offset.x;
-      }
-
-      if (mousePosition.y < B.y) {
-        cssA.y -= offset.y;
-        newImageSize.height += 2 * offset.y;
-      } else {
-        cssA.y += offset.y;
-        newImageSize.height -= 2 * offset.y;
-      }
-    } else if (currentDot === EDotsNames.C) {
-      const C: TPosition = {
-        x: A.x + imageSize.width,
-        y: A.y + imageSize.height,
-      };
-      const offset = this._calcOffset(mousePosition, C);
-
-      if (mousePosition.x < C.x) {
-        newImageSize.width -= 2 * offset.x;
-        cssA.x += offset.x;
-      } else {
-        newImageSize.width += 2 * offset.x;
-        cssA.x -= offset.x;
-      }
-
-      if (mousePosition.y < C.y) {
-        cssA.y += offset.y;
-        newImageSize.height -= 2 * offset.y;
-      } else {
-        cssA.y -= offset.y;
-        newImageSize.height += 2 * offset.y;
-      }
-    } else {
-      const D: TPosition = {
-        x: A.x,
-        y: A.y + imageSize.height,
-      };
-      const offset = this._calcOffset(mousePosition, D);
-
-      if (mousePosition.x < D.x) {
-        newImageSize.width += 2 * offset.x;
-        cssA.x -= offset.x;
-      } else {
-        newImageSize.width -= 2 * offset.x;
-        cssA.x += offset.x;
-      }
-
-      if (mousePosition.y < D.y) {
-        cssA.y += offset.y;
-        newImageSize.height -= 2 * offset.y;
-      } else {
-        cssA.y -= offset.y;
-        newImageSize.height += 2 * offset.y;
-      }
-    }
+    const action = commands[currentDot];
+    const newImageSize = action();
 
     return { ...newImageSize, cssA };
   }
