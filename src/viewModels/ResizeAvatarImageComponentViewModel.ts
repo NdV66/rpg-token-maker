@@ -92,7 +92,7 @@ export class ResizeAvatarImageComponentViewModel
 
       this._moveImageViewModel.turnOffIsMouseDown();
       this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
-      this._moveImageViewModel.updateElementPosition2(cssA);
+      this._moveImageViewModel.updateElementPositionRaw(cssA);
     }
   }
 

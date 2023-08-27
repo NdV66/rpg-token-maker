@@ -7,10 +7,9 @@ export interface IImageMoveModel extends IAMouseHandler {
 
   handleMouseUp: () => void;
   handleMouseMove: (event: React.MouseEvent) => void;
-  handleMouseMove2: (event: React.MouseEvent) => void;
-  handleMouseDown: <T extends HTMLElement>(element: T, event: React.MouseEvent) => void;
+  handleMouseDown: (topLeftOffset: TPosition, event: React.MouseEvent) => void;
   updateElementPosition: (newPosition: TPosition) => void;
-  updateElementPosition2: (newPosition: TPosition) => void;
+  updateElementPositionRaw: (newPosition: TPosition) => void;
 }
 
 const START_OFFSET: TPosition = { x: 50, y: 50 };
@@ -31,19 +30,11 @@ export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
     }
   };
 
-  public handleMouseMove2 = (event: React.MouseEvent) => {
-    const value = {
-      x: event.pageX + this._currentOffset.x,
-      y: event.pageY + this._currentOffset.y,
-    };
-    this.updateElementPosition(value);
-  };
-
   public updateElementPosition = (newPosition: TPosition) => {
     this._elementOffset$.next(newPosition);
   };
 
-  public updateElementPosition2 = (newPosition: TPosition) => {
+  public updateElementPositionRaw = (newPosition: TPosition) => {
     this._currentOffset = { x: 0, y: 0 };
     this._elementOffset$.next(newPosition);
   };
@@ -52,12 +43,15 @@ export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
     this.turnOffIsMouseDown();
   }
 
-  public handleMouseDown = <T extends HTMLElement>(element: T, event: React.MouseEvent) => {
+  public handleMouseDown = (topLeftOffset: TPosition, event: React.MouseEvent) => {
     this.turnOnIsMouseDown();
     const offset: TPosition = {
-      x: element.offsetLeft - event.pageX, //is this A point? topLeft
-      y: element.offsetTop - event.pageY,
+      x: topLeftOffset.x - event.pageX,
+      y: topLeftOffset.y - event.pageY,
     };
     this._currentOffset = offset;
   };
 }
+
+// x: element.offsetLeft - event.pageX,
+// y: element.offsetTop - event.pageY,
