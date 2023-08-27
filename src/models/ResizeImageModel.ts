@@ -10,8 +10,17 @@ export interface IResizeImageModel {
   ) => TSize & { cssA: TPosition };
 }
 
+//TODO add ratio
+//TODO add min width and/or min height
 export class ResizeImageModel implements IResizeImageModel {
   constructor(private readonly _appEnv: TAppEnv, private readonly _ratio: number) {}
+
+  private _calcOffset(mousePosition: TPosition, point: TPosition) {
+    return {
+      x: Math.abs(mousePosition.x - point.x),
+      y: Math.abs(mousePosition.y - point.y),
+    };
+  }
 
   /**
    * This calculation is based on pageY and pageX.
@@ -36,10 +45,7 @@ export class ResizeImageModel implements IResizeImageModel {
     };
 
     if (currentDot === EDotsNames.A) {
-      const offset: TPosition = {
-        x: Math.abs(mousePosition.x - A.x),
-        y: Math.abs(mousePosition.y - A.y),
-      };
+      const offset = this._calcOffset(mousePosition, A);
 
       if (mousePosition.x < A.x) {
         newImageSize.width += 2 * offset.x;
@@ -61,10 +67,7 @@ export class ResizeImageModel implements IResizeImageModel {
         x: A.x + imageSize.width,
         y: A.y,
       };
-      const offset: TPosition = {
-        x: Math.abs(mousePosition.x - B.x),
-        y: Math.abs(mousePosition.y - B.y),
-      };
+      const offset = this._calcOffset(mousePosition, B);
 
       if (mousePosition.x < B.x) {
         newImageSize.width -= 2 * offset.x;
@@ -86,10 +89,7 @@ export class ResizeImageModel implements IResizeImageModel {
         x: A.x + imageSize.width,
         y: A.y + imageSize.height,
       };
-      const offset: TPosition = {
-        x: Math.abs(mousePosition.x - C.x),
-        y: Math.abs(mousePosition.y - C.y),
-      };
+      const offset = this._calcOffset(mousePosition, C);
 
       if (mousePosition.x < C.x) {
         newImageSize.width -= 2 * offset.x;
@@ -107,6 +107,27 @@ export class ResizeImageModel implements IResizeImageModel {
         newImageSize.height += 2 * offset.y;
       }
     } else {
+      const D: TPosition = {
+        x: A.x,
+        y: A.y + imageSize.height,
+      };
+      const offset = this._calcOffset(mousePosition, D);
+
+      if (mousePosition.x < D.x) {
+        newImageSize.width += 2 * offset.x;
+        cssA.x -= offset.x;
+      } else {
+        newImageSize.width -= 2 * offset.x;
+        cssA.x += offset.x;
+      }
+
+      if (mousePosition.y < D.y) {
+        cssA.y += offset.y;
+        newImageSize.height -= 2 * offset.y;
+      } else {
+        cssA.y -= offset.y;
+        newImageSize.height += 2 * offset.y;
+      }
     }
 
     return { ...newImageSize, cssA };
