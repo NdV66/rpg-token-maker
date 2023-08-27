@@ -40,13 +40,11 @@ export class ResizeAvatarImageComponentViewModel
   extends AMouseHandler
   implements IResizeAvatarImageComponentViewModel
 {
-  private _currentSizeWithTopLeftPosition$ = new BehaviorSubject<TCanvasSizeWithOffset>(
-    DEFAULT_SIZE,
-  );
+  private _currentSizeWithTopLeftPosition$ = new BehaviorSubject(DEFAULT_SIZE);
+  private _currentImageResizeModel: IResizeImageModel | null = null;
+
   public readonly currentSizeWithTopLeftPosition$ =
     this._currentSizeWithTopLeftPosition$.asObservable();
-
-  private _currentImageResizeModel: IResizeImageModel | null = null;
 
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
@@ -113,9 +111,7 @@ export class ResizeAvatarImageComponentViewModel
     this._moveImageViewModel.handleMouseDown(element, event);
   };
 
-  public prepareOffsetsForDots(imageTopLeft: TPosition, imageWidth: number, imageHeight: number) {
-    const { x, y } = imageTopLeft;
-
+  public prepareOffsetsForDots({ x, y }: TPosition, imageWidth: number, imageHeight: number) {
     return {
       [EDotsNames.A]: { x, y },
       [EDotsNames.B]: { x: x + imageWidth, y },
