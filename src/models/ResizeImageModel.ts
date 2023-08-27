@@ -32,7 +32,7 @@ export class ResizeImageModel implements IResizeImageModel {
    * @param mousePosition
    * @param imageSize
    * @param topLeftOffset
-   * @param A_pageXY
+   * @param A
    * @returns
    */
   public calcResize(
@@ -42,8 +42,7 @@ export class ResizeImageModel implements IResizeImageModel {
     topLeftOffset: TPosition,
     A: TPosition,
   ) {
-    // const ratio = imageSize.width / imageSize.height;
-    const cssA = topLeftOffset; //TODO calc in the viewModel
+    const cssA = { ...topLeftOffset }; //TODO calc in the viewModel
     let width = imageSize.width;
 
     if (currentDot === EDotsNames.A) {
@@ -70,17 +69,70 @@ export class ResizeImageModel implements IResizeImageModel {
         x: A.x + imageSize.width,
         y: A.y,
       };
+      const offset: TPosition = {
+        x: Math.abs(mousePosition.x - B.x),
+        y: Math.abs(mousePosition.y - B.y),
+      };
 
       if (mousePosition.x < B.x) {
+        width -= 2 * offset.x;
+        cssA.x += offset.x;
       } else {
+        width += 2 * offset.x;
+        cssA.x -= offset.x;
       }
 
       if (mousePosition.y < B.y) {
+        cssA.y -= offset.y;
       } else {
+        cssA.y += offset.y;
       }
+    } else if (currentDot === EDotsNames.C) {
+      const C: TPosition = {
+        x: A.x + imageSize.width,
+        y: A.y + imageSize.height,
+      };
+      const offset: TPosition = {
+        x: Math.abs(mousePosition.x - C.x),
+        y: Math.abs(mousePosition.y - C.y),
+      };
+
+      if (mousePosition.x < C.x) {
+        console.log('zmniejszam width');
+        width -= 2 * offset.x;
+        cssA.x += offset.x;
+      } else {
+        console.log('zwiekszam width');
+        width += 2 * offset.x;
+        cssA.x -= offset.x;
+      }
+
+      if (mousePosition.y < C.y) {
+        console.log('zmniejszam height');
+        cssA.y += offset.y;
+      } else {
+        console.log('zwiekszam height');
+        cssA.y -= offset.y;
+      }
+
+      console.log(
+        // 'A',
+        // A,
+        'topLeftOffset',
+        topLeftOffset,
+        'cssA',
+        cssA,
+        'offset',
+        offset,
+        'mouse',
+        mousePosition,
+      );
+    } else {
     }
 
     const size = this._prepareSizesWithRatio(width, this._ratio);
+    // const heightOffset = imageSize.height - size.height;
+    // cssA.y += heightOffset;
     return { ...size, cssA };
   }
 }
