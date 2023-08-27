@@ -56,5 +56,5 @@ export const useResizeImage = (
         styleDots$.unsubscribe();
       };
     }
-  }, [viewModel, dotsRefs]);
+  }, [viewModel, dotsRefs, imageRef]);
 };
