@@ -102,7 +102,11 @@ export class ResizeAvatarImageComponentViewModel
     this._moveImageViewModel.handleMouseUp();
   };
 
-  public handleStartResize = (element: any, event: React.MouseEvent, image: HTMLCanvasElement) => {
+  public handleStartResize = (
+    element: TPosition,
+    event: React.MouseEvent,
+    image: HTMLCanvasElement,
+  ) => {
     const ratio = image.width / image.height;
     this._currentImageResizeModel = this._imageResizeModelFabric(ratio);
     this.turnOnIsMouseDown();

@@ -28,12 +28,9 @@ const DEFAULT_SIZE: TCanvasSize = {
 //TODO: maybe handle it with device ratio?
 export class DrawImageOnCanvasModel implements IDrawImageOnCanvasModel {
   private _canvasSize$ = new BehaviorSubject<TCanvasSize>(DEFAULT_SIZE);
+  public readonly canvasSize$ = this._canvasSize$.asObservable();
 
   constructor(private readonly _imageLoader: IImageLoaderModel) {}
-
-  get canvasSize$() {
-    return this._canvasSize$.asObservable();
-  }
 
   public async loadImage(imageSrc: string, defaultImageWidth: number) {
     const image = await this._imageLoader.loadImage(imageSrc);

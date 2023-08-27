@@ -18,13 +18,8 @@ export class AvatarImageComponentViewModel implements IAvatarImageComponentViewM
     private readonly _imageMoveModel: IImageMoveModel,
   ) {}
 
-  get canvasSize$() {
-    return this._drawImageOnCanvasModel.canvasSize$;
-  }
-
-  get elementOffset$() {
-    return this._imageMoveModel.elementOffset$;
-  }
+  public elementOffset$ = this._imageMoveModel.elementOffset$;
+  public canvasSize$ = this._drawImageOnCanvasModel.canvasSize$;
 
   public calculateCanvasSize(drawHeight: number, defaultImageWidth: number) {
     this._drawImageOnCanvasModel.calculateCanvasSize(drawHeight, defaultImageWidth);

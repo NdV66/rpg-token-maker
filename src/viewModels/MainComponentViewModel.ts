@@ -21,17 +21,11 @@ export class MainComponentViewModel implements IMainComponentViewModel {
     public readonly resizeAvatarViewModel: IResizeAvatarImageComponentViewModel,
     public readonly avatarFrameComponentViewModel: IAvatarFrameComponentViewModel,
     public readonly avatarImageComponentViewModel: IAvatarImageComponentViewModel,
-
     private readonly _exportCanvasModel: IExportCanvasModel,
   ) {}
 
-  get avatarFrameSize() {
-    return this._appEnv.defaultFrameSize;
-  }
-
-  get defaultAvatarImageWidth() {
-    return this._appEnv.defaultImageWidth;
-  }
+  public readonly avatarFrameSize = this._appEnv.defaultFrameSize;
+  public readonly defaultAvatarImageWidth = this._appEnv.defaultImageWidth;
 
   public exportToPng = (currentImage: HTMLCanvasElement, currentFrame: HTMLCanvasElement) => {
     return this._exportCanvasModel.exportToPng(currentImage, currentFrame);

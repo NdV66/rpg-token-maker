@@ -4,11 +4,9 @@ import { IDrawImageOnCanvasViewModel } from 'types';
 export interface IAvatarFrameComponentViewModel extends IDrawImageOnCanvasViewModel {}
 
 export class AvatarFrameComponentViewModel implements IAvatarFrameComponentViewModel {
-  constructor(private readonly _drawImageOnCanvasModel: IDrawImageOnCanvasModel) {}
+  public readonly canvasSize$ = this._drawImageOnCanvasModel.canvasSize$;
 
-  get canvasSize$() {
-    return this._drawImageOnCanvasModel.canvasSize$;
-  }
+  constructor(private readonly _drawImageOnCanvasModel: IDrawImageOnCanvasModel) {}
 
   public async loadImage(imageSrc: string, defaultImageWidth: number) {
     return this._drawImageOnCanvasModel.loadImage(imageSrc, defaultImageWidth);

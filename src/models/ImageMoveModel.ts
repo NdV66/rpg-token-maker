@@ -12,7 +12,7 @@ export interface IImageMoveModel extends IAMouseHandler {
   updateElementPositionRaw: (newPosition: TPosition) => void;
 }
 
-const START_OFFSET: TPosition = { x: 50, y: 50 };
+const START_OFFSET: TPosition = { x: 50, y: 50 }; //from CSS top left
 
 export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
   private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
@@ -52,6 +52,3 @@ export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
     this._currentOffset = offset;
   };
 }
-
-// x: element.offsetLeft - event.pageX,
-// y: element.offsetTop - event.pageY,
