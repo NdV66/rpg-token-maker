@@ -1,7 +1,7 @@
 import {
   AMouseHandler,
   IAMouseHandler,
-  IAvatarImageMoveModel,
+  IImageMoveModel,
   IDrawImageOnCanvasModel,
   IImageResizeModelFabric,
   IResizeImageModel,
@@ -50,7 +50,7 @@ export class ResizeAvatarImageComponentViewModel
 
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
-    private readonly _moveImageViewModel: IAvatarImageMoveModel,
+    private readonly _moveImageViewModel: IImageMoveModel,
     private readonly _imageResizeModelFabric: IImageResizeModelFabric,
   ) {
     super();

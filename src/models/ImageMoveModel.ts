@@ -2,7 +2,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { TPosition } from 'types';
 import { AMouseHandler, IAMouseHandler } from './AMouseHandler';
 
-export interface IAvatarImageMoveModel extends IAMouseHandler {
+export interface IImageMoveModel extends IAMouseHandler {
   elementOffset$: Observable<TPosition>;
 
   handleMouseUp: () => void;
@@ -15,7 +15,7 @@ export interface IAvatarImageMoveModel extends IAMouseHandler {
 
 const START_OFFSET: TPosition = { x: 50, y: 50 };
 
-export class AvatarImageMoveModel extends AMouseHandler implements IAvatarImageMoveModel {
+export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
   private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
   private _currentOffset = START_OFFSET;
 

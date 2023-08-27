@@ -1,4 +1,4 @@
-import { IAvatarImageMoveModel, IDrawImageOnCanvasModel } from 'models';
+import { IImageMoveModel, IDrawImageOnCanvasModel } from 'models';
 import { Observable } from 'rxjs';
 import { IDrawImageOnCanvasViewModel, TCanvasSize, TPosition } from 'types';
 
@@ -18,7 +18,7 @@ export interface IAvatarImageComponentViewModel extends IDrawImageOnCanvasViewMo
 export class AvatarImageComponentViewModel implements IAvatarImageComponentViewModel {
   constructor(
     private readonly _drawImageOnCanvasModel: IDrawImageOnCanvasModel,
-    private readonly _imageMoveModel: IAvatarImageMoveModel,
+    private readonly _imageMoveModel: IImageMoveModel,
   ) {}
 
   get canvasSize$() {
@@ -37,15 +37,15 @@ export class AvatarImageComponentViewModel implements IAvatarImageComponentViewM
     this._imageMoveModel.turnOffIsMouseDown();
   }
 
-  public fromMouseEvent: IAvatarImageMoveModel['fromMouseEvent'] = (element, trigger) => {
+  public fromMouseEvent: IImageMoveModel['fromMouseEvent'] = (element, trigger) => {
     return this._imageMoveModel.fromMouseEvent(element, trigger);
   };
 
-  public handleMouseMove: IAvatarImageMoveModel['handleMouseMove'] = (event) => {
+  public handleMouseMove: IImageMoveModel['handleMouseMove'] = (event) => {
     this._imageMoveModel.handleMouseMove(event);
   };
 
-  public handleMouseDown: IAvatarImageMoveModel['handleMouseDown'] = (element, event) => {
+  public handleMouseDown: IImageMoveModel['handleMouseDown'] = (element, event) => {
     this._imageMoveModel.handleMouseDown(element, event);
   };
 
