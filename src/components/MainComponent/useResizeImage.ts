@@ -1,16 +1,7 @@
 import { useCallback, useEffect } from 'react';
-import { EDotsNames, TDotsRef, TResizeDots } from 'types';
+import { EDotsNames, TDotsRef } from 'types';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
-
-const updateDotsPositions = (elements: TDotsRef, dotsPositions: TResizeDots) => {
-  const values = Object.values(EDotsNames);
-  values.forEach((key) => {
-    elements[key as EDotsNames].setAttribute(
-      'style',
-      ` top: ${dotsPositions[key].y}px; left: ${dotsPositions[key as EDotsNames].x}px;`,
-    );
-  });
-};
+import { updateDotsPositions } from './tools';
 
 export const useResizeImage = (
   viewModel: IResizeAvatarImageComponentViewModel,
