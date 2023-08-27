@@ -14,19 +14,6 @@ export class ResizeImageModel implements IResizeImageModel {
   constructor(private readonly _appEnv: TAppEnv, private readonly _ratio: number) {}
 
   /**
-   * It prepare image size based on ratio and current width.
-   * @param currentWidth current image width
-   * @param ratio imageWidth / imageHeight
-   * @returns
-   */
-  private _prepareSizesWithRatio = (currentWidth: number, ratio: number) => {
-    const width =
-      currentWidth < this._appEnv.minAvatarWidth ? this._appEnv.minAvatarWidth : currentWidth;
-    const height = width / ratio;
-    return { width, height };
-  };
-
-  /**
    * This calculation is based on pageY and pageX.
    * @param currentDot
    * @param mousePosition
@@ -43,7 +30,10 @@ export class ResizeImageModel implements IResizeImageModel {
     A: TPosition,
   ) {
     const cssA = { ...topLeftOffset }; //TODO calc in the viewModel
-    let width = imageSize.width;
+    const newImageSize: TSize = {
+      width: imageSize.width,
+      height: imageSize.height,
+    };
 
     if (currentDot === EDotsNames.A) {
       const offset: TPosition = {
@@ -52,17 +42,19 @@ export class ResizeImageModel implements IResizeImageModel {
       };
 
       if (mousePosition.x < A.x) {
-        width += 2 * offset.x;
+        newImageSize.width += 2 * offset.x;
         cssA.x -= offset.x;
       } else {
-        width -= 2 * offset.x;
+        newImageSize.width -= 2 * offset.x;
         cssA.x += offset.x;
       }
 
       if (mousePosition.y < A.y) {
         cssA.y -= offset.y;
+        newImageSize.height += 2 * offset.y;
       } else {
         cssA.y += offset.y;
+        newImageSize.height -= 2 * offset.y;
       }
     } else if (currentDot === EDotsNames.B) {
       const B: TPosition = {
@@ -75,17 +67,19 @@ export class ResizeImageModel implements IResizeImageModel {
       };
 
       if (mousePosition.x < B.x) {
-        width -= 2 * offset.x;
+        newImageSize.width -= 2 * offset.x;
         cssA.x += offset.x;
       } else {
-        width += 2 * offset.x;
+        newImageSize.width += 2 * offset.x;
         cssA.x -= offset.x;
       }
 
       if (mousePosition.y < B.y) {
         cssA.y -= offset.y;
+        newImageSize.height += 2 * offset.y;
       } else {
         cssA.y += offset.y;
+        newImageSize.height -= 2 * offset.y;
       }
     } else if (currentDot === EDotsNames.C) {
       const C: TPosition = {
@@ -98,42 +92,24 @@ export class ResizeImageModel implements IResizeImageModel {
       };
 
       if (mousePosition.x < C.x) {
-        console.log('zmniejszam width');
-        width -= 2 * offset.x;
+        newImageSize.width -= 2 * offset.x;
         cssA.x += offset.x;
       } else {
-        console.log('zwiekszam width');
-        width += 2 * offset.x;
+        newImageSize.width += 2 * offset.x;
         cssA.x -= offset.x;
       }
 
       if (mousePosition.y < C.y) {
-        console.log('zmniejszam height');
         cssA.y += offset.y;
+        newImageSize.height -= 2 * offset.y;
       } else {
-        console.log('zwiekszam height');
         cssA.y -= offset.y;
+        newImageSize.height += 2 * offset.y;
       }
-
-      console.log(
-        // 'A',
-        // A,
-        'topLeftOffset',
-        topLeftOffset,
-        'cssA',
-        cssA,
-        'offset',
-        offset,
-        'mouse',
-        mousePosition,
-      );
     } else {
     }
 
-    const size = this._prepareSizesWithRatio(width, this._ratio);
-    // const heightOffset = imageSize.height - size.height;
-    // cssA.y += heightOffset;
-    return { ...size, cssA };
+    return { ...newImageSize, cssA };
   }
 }
 
