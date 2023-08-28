@@ -3,7 +3,7 @@ import {
   IAMouseHandler,
   IImageMoveModel,
   IDrawImageOnCanvasModel,
-  IImageResizeModelFabric,
+  IImageResizeModelFactory,
   IResizeImageModel,
 } from 'models';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
@@ -49,7 +49,7 @@ export class ResizeAvatarImageComponentViewModel
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
     private readonly _moveImageViewModel: IImageMoveModel,
-    private readonly _imageResizeModelFabric: IImageResizeModelFabric,
+    private readonly _imageResizeModelFactory: IImageResizeModelFactory,
   ) {
     super();
     this._updateCurrentSizeWithTopLeftPosition();
@@ -106,7 +106,7 @@ export class ResizeAvatarImageComponentViewModel
     image: HTMLCanvasElement,
   ) => {
     const ratio = image.width / image.height;
-    this._currentImageResizeModel = this._imageResizeModelFabric(ratio);
+    this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
     this.turnOnIsMouseDown();
     this._moveImageViewModel.handleMouseDown(element, event);
   };

@@ -159,8 +159,8 @@ export class ResizeImageModel implements IResizeImageModel {
   }
 }
 
-// FABRIC
-export type IImageResizeModelFabric = (ratio: number) => ResizeImageModel;
+// Factory
+export type IImageResizeModelFactory = (ratio: number) => ResizeImageModel;
 
-export const imageResizeModelFabric = (APP_ENV: TAppEnv) => (ratio: number) =>
+export const imageResizeModelFactory = (APP_ENV: TAppEnv) => (ratio: number) =>
   new ResizeImageModel(APP_ENV, ratio);
