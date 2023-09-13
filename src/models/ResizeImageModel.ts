@@ -166,19 +166,26 @@ export class ResizeImageModel implements IResizeImageModel {
 
         if (mousePosition.x < D.x) {
           newImageSize.width += 2 * offset.x;
-          cssA.x -= offset.x;
         } else {
           newImageSize.width -= 2 * offset.x;
-          cssA.x += offset.x;
         }
 
         if (mousePosition.y < D.y) {
-          cssA.y += offset.y;
           newImageSize.height -= 2 * offset.y;
         } else {
-          cssA.y -= offset.y;
           newImageSize.height += 2 * offset.y;
         }
+
+        if (offset.x > offset.y) {
+          newImageSize.height = this._calcHeightByRatio(imageSize.width);
+        } else {
+          newImageSize.width = this._calcWidthByRatio(imageSize.height);
+        }
+
+        const newD = mousePosition;
+        cssA.x = newD.x - parentOffset.x;
+        cssA.y = newD.y - newImageSize.height - parentOffset.y;
+
         return newImageSize;
       },
     };
