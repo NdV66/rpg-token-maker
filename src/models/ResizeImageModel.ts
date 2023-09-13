@@ -39,6 +39,7 @@ export class ResizeImageModel implements IResizeImageModel {
     A: TPosition,
   ) {
     const cssA = { ...topLeftOffset }; //TODO calc in the viewModel
+    console.log('cssA', cssA);
 
     const commands = {
       [EDotsNames.A]: () => {
@@ -48,20 +49,40 @@ export class ResizeImageModel implements IResizeImageModel {
         };
         const offset = this._calcOffset(mousePosition, A);
 
-        if (mousePosition.x < A.x) {
-          newImageSize.width += 2 * offset.x;
-          cssA.x -= offset.x;
-        } else {
-          newImageSize.width -= 2 * offset.x;
-          cssA.x += offset.x;
-        }
+        if (offset.x > offset.y) {
+          if (mousePosition.x < A.x) {
+            newImageSize.width += 2 * offset.x;
+            cssA.x -= offset.x;
+          } else {
+            newImageSize.width -= 2 * offset.x;
+            cssA.x += offset.x;
+          }
 
-        if (mousePosition.y < A.y) {
-          cssA.y -= offset.y;
-          newImageSize.height += 2 * offset.y;
+          const newHeight = newImageSize.width / this._ratio;
+          newImageSize.height = newHeight;
+
+          if (mousePosition.y < A.y) {
+            cssA.y -= offset.y;
+          } else {
+            cssA.y += offset.y;
+          }
         } else {
-          cssA.y += offset.y;
-          newImageSize.height -= 2 * offset.y;
+          if (mousePosition.y < A.y) {
+            cssA.y -= offset.y;
+            newImageSize.height += 2 * offset.y;
+          } else {
+            cssA.y += offset.y;
+            newImageSize.height -= 2 * offset.y;
+          }
+
+          const newWidth = this._ratio * newImageSize.height;
+          newImageSize.width = newWidth;
+
+          if (mousePosition.x < A.x) {
+            cssA.x -= offset.x;
+          } else {
+            cssA.x += offset.x;
+          }
         }
 
         return newImageSize;
