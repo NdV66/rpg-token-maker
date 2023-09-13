@@ -120,18 +120,6 @@ export class ResizeImageModel implements IResizeImageModel {
         }
 
         const newB = mousePosition;
-        const nA: TPosition = {
-          x: newB.x - newImageSize.width,
-          y: newB.y,
-        };
-        const diffBetweenStartAndFinishA = {
-          x: Math.abs(nA.x - A.x),
-          y: Math.abs(nA.y - A.y),
-        };
-
-        offset.x = diffBetweenStartAndFinishA.x;
-        offset.y = diffBetweenStartAndFinishA.y;
-
         cssA.x = newB.x - newImageSize.width - parentOffset.x;
         cssA.y = newB.y - parentOffset.y;
 
