@@ -22,6 +22,14 @@ export class ResizeImageModel implements IResizeImageModel {
     };
   }
 
+  private _calcHeightByRatio(width: number) {
+    return width / this._ratio;
+  }
+
+  private _calcWidthByRatio(height: number) {
+    return this._ratio * height;
+  }
+
   /**
    * This calculation is based on pageY and pageX.
    * @param currentDot
@@ -39,7 +47,6 @@ export class ResizeImageModel implements IResizeImageModel {
     A: TPosition,
   ) {
     const cssA = { ...topLeftOffset }; //TODO calc in the viewModel
-    console.log('cssA', cssA);
 
     const commands = {
       [EDotsNames.A]: () => {
@@ -52,37 +59,31 @@ export class ResizeImageModel implements IResizeImageModel {
         if (offset.x > offset.y) {
           if (mousePosition.x < A.x) {
             newImageSize.width += 2 * offset.x;
-            cssA.x -= offset.x;
           } else {
             newImageSize.width -= 2 * offset.x;
-            cssA.x += offset.x;
           }
 
-          const newHeight = newImageSize.width / this._ratio;
-          newImageSize.height = newHeight;
-
-          if (mousePosition.y < A.y) {
-            cssA.y -= offset.y;
-          } else {
-            cssA.y += offset.y;
-          }
+          newImageSize.height = this._calcHeightByRatio(imageSize.width);
         } else {
           if (mousePosition.y < A.y) {
-            cssA.y -= offset.y;
             newImageSize.height += 2 * offset.y;
           } else {
-            cssA.y += offset.y;
             newImageSize.height -= 2 * offset.y;
           }
 
-          const newWidth = this._ratio * newImageSize.height;
-          newImageSize.width = newWidth;
+          newImageSize.width = this._calcWidthByRatio(imageSize.height);
+        }
 
-          if (mousePosition.x < A.x) {
-            cssA.x -= offset.x;
-          } else {
-            cssA.x += offset.x;
-          }
+        if (mousePosition.y < A.y) {
+          cssA.y -= offset.y;
+        } else {
+          cssA.y += offset.y;
+        }
+
+        if (mousePosition.x < A.x) {
+          cssA.x -= offset.x;
+        } else {
+          cssA.x += offset.x;
         }
 
         return newImageSize;
