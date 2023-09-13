@@ -105,7 +105,8 @@ export class ResizeAvatarImageComponentViewModel
     event: React.MouseEvent,
     image: HTMLCanvasElement,
   ) => {
-    const ratio = image.width / image.height;
+    const rawRatio = image.width / image.height;
+    const ratio = Math.floor(rawRatio * 1000) / 1000;
     this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
     this.turnOnIsMouseDown();
     this._moveImageViewModel.handleMouseDown(element, event);
