@@ -7,6 +7,7 @@ export interface IResizeImageModel {
     imageSize: TSize,
     topLeftOffset: TPosition,
     A_pageXY: TPosition,
+    parentOffset: TPosition,
   ) => TSize & { cssA: TPosition };
 }
 
@@ -32,12 +33,6 @@ export class ResizeImageModel implements IResizeImageModel {
 
   /**
    * This calculation is based on pageY and pageX.
-   * @param currentDot
-   * @param mousePosition
-   * @param imageSize
-   * @param topLeftOffset
-   * @param A
-   * @returns
    */
   public calcResize(
     currentDot: EDotsNames,
@@ -45,8 +40,15 @@ export class ResizeImageModel implements IResizeImageModel {
     imageSize: TSize,
     topLeftOffset: TPosition,
     A: TPosition,
+    parentOffset: TPosition,
   ) {
     const cssA = { ...topLeftOffset }; //TODO calc in the viewModel
+    const diff: TPosition = {
+      x: A.x - topLeftOffset.y,
+      y: A.y - topLeftOffset.y,
+    };
+
+    console.log(diff);
 
     const commands = {
       [EDotsNames.A]: () => {
@@ -101,19 +103,38 @@ export class ResizeImageModel implements IResizeImageModel {
 
         if (mousePosition.x < B.x) {
           newImageSize.width -= 2 * offset.x;
-          cssA.x += offset.x;
         } else {
           newImageSize.width += 2 * offset.x;
-          cssA.x -= offset.x;
         }
 
         if (mousePosition.y < B.y) {
-          cssA.y -= offset.y;
           newImageSize.height += 2 * offset.y;
         } else {
-          cssA.y += offset.y;
           newImageSize.height -= 2 * offset.y;
         }
+
+        if (offset.x > offset.y) {
+          newImageSize.height = this._calcHeightByRatio(imageSize.width);
+        } else {
+          newImageSize.width = this._calcWidthByRatio(imageSize.height);
+        }
+
+        const newB = mousePosition;
+        const nA: TPosition = {
+          x: newB.x - newImageSize.width,
+          y: newB.y,
+        };
+        const diffBetweenStartAndFinishA = {
+          x: Math.abs(nA.x - A.x),
+          y: Math.abs(nA.y - A.y),
+        };
+
+        offset.x = diffBetweenStartAndFinishA.x;
+        offset.y = diffBetweenStartAndFinishA.y;
+
+        cssA.x = newB.x - newImageSize.width - parentOffset.x;
+        cssA.y = newB.y - parentOffset.y;
+
         return newImageSize;
       },
       [EDotsNames.C]: () => {

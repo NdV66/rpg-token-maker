@@ -79,6 +79,10 @@ export class ResizeAvatarImageComponentViewModel
       };
       const A: TPosition = { x: imageRect.left, y: imageRect.top }; //pageX and pageY for HTML element
       const topLeft = { x: image.offsetLeft, y: image.offsetTop };
+      const parentOffset = {
+        x: image.parentElement!.offsetLeft,
+        y: image.parentElement!.offsetTop,
+      };
 
       const { width, height, cssA } = this._currentImageResizeModel.calcResize(
         currentDot,
@@ -86,6 +90,7 @@ export class ResizeAvatarImageComponentViewModel
         image,
         topLeft,
         A,
+        parentOffset,
       );
 
       this._moveImageViewModel.turnOffIsMouseDown();
