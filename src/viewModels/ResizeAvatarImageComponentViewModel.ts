@@ -6,6 +6,7 @@ import {
   IImageResizeModelFactory,
   IResizeImageModel,
 } from 'models';
+import { roundNumber } from 'models/tool';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { EDotsNames, TCanvasSize, TPosition, TResizeDots } from 'types';
 
@@ -110,8 +111,8 @@ export class ResizeAvatarImageComponentViewModel
     event: React.MouseEvent,
     image: HTMLCanvasElement,
   ) => {
-    const rawRatio = image.width / image.height;
-    const ratio = Math.floor(rawRatio * 1000) / 1000;
+    const rawRatio = image.width / image.height; //TODO: BETTER ratio calc!
+    const ratio = roundNumber(rawRatio);
     this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
     this.turnOnIsMouseDown();
     this._moveImageViewModel.handleMouseDown(element, event);
