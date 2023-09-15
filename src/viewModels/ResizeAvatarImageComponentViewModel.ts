@@ -88,7 +88,7 @@ export class ResizeAvatarImageComponentViewModel
       const { width, height, cssA } = this._currentImageResizeModel.calcResize(
         currentDot,
         mousePosition,
-        image,
+        { width: image.width, height: image.height },
         topLeft,
         A,
         parentOffset,

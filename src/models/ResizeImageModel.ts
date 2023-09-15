@@ -48,10 +48,7 @@ export class ResizeImageModel implements IResizeImageModel {
     const commands = {
       [EDotsNames.A]: () => {
         const cssA = { ...topLeftOffset }; //TODO calc in the viewModel
-        const newImageSize: TSize = {
-          width: imageSize.width,
-          height: imageSize.height,
-        };
+        const newImageSize: TSize = { ...imageSize };
         const offset = this._calcOffset(mousePosition, A);
 
         if (offset.x > offset.y) {
@@ -88,10 +85,7 @@ export class ResizeImageModel implements IResizeImageModel {
       },
       [EDotsNames.B]: () => {
         const cssA = { ...topLeftOffset };
-        const newImageSize: TSize = {
-          width: imageSize.width,
-          height: imageSize.height,
-        };
+        const newImageSize: TSize = { ...imageSize };
         const B: TPosition = {
           x: A.x + imageSize.width,
           y: A.y,
@@ -124,25 +118,27 @@ export class ResizeImageModel implements IResizeImageModel {
       },
       [EDotsNames.C]: () => {
         const cssA = { ...topLeftOffset };
-        const newImageSize: TSize = {
-          width: imageSize.width,
-          height: imageSize.height,
-        };
+        const newImageSize: TSize = { ...imageSize };
         const C: TPosition = {
           x: A.x + imageSize.width,
           y: A.y + imageSize.height,
         };
+
         const offset = this._calcOffset(mousePosition, C);
 
         if (mousePosition.x < C.x) {
+          console.log('X -');
           newImageSize.width -= 2 * offset.x;
         } else {
+          console.log('X +');
           newImageSize.width += 2 * offset.x;
         }
 
         if (mousePosition.y < C.y) {
+          console.log('Y -');
           newImageSize.height -= 2 * offset.y;
         } else {
+          console.log('Y +');
           newImageSize.height += 2 * offset.y;
         }
 
@@ -155,15 +151,12 @@ export class ResizeImageModel implements IResizeImageModel {
         const newC = mousePosition;
         cssA.x = newC.x - newImageSize.width - parentOffset.x;
         cssA.y = newC.y - newImageSize.height - parentOffset.y;
-        console.log(newC, cssA, newImageSize, parentOffset);
+
         return { newImageSize, cssA };
       },
       [EDotsNames.D]: () => {
         const cssA = { ...topLeftOffset };
-        const newImageSize: TSize = {
-          width: imageSize.width,
-          height: imageSize.height,
-        };
+        const newImageSize: TSize = { ...imageSize };
         const D: TPosition = {
           x: A.x,
           y: A.y + imageSize.height,
