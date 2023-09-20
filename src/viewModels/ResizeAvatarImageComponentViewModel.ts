@@ -124,7 +124,7 @@ export class ResizeAvatarImageComponentViewModel
         y: image.parentElement!.offsetTop,
       };
 
-      const { newImageSize } = this._currentImageResizeModel.calcResize(
+      const newImageSize = this._currentImageResizeModel.calcResize(
         currentDot,
         mousePosition,
         { width: image.width, height: image.height },
@@ -136,13 +136,11 @@ export class ResizeAvatarImageComponentViewModel
       this._moveImageViewModel.turnOffIsMouseDown();
       this._drawAvatarOnCanvasModel.calculateCanvasSize(newImageSize.height, newImageSize.width);
       this._moveImageViewModel.updateElementPositionRaw(cssA);
-
-      //   console.log('>>>', this._calcRatio(newImageSize));
     }
   }
 
   public handleFinishResize = () => {
-    // this._currentImageResizeModel = null;
+    this._currentImageResizeModel = null;
     this.turnOffIsMouseDown();
     this._moveImageViewModel.handleMouseUp();
   };
@@ -152,11 +150,8 @@ export class ResizeAvatarImageComponentViewModel
     event: React.MouseEvent,
     image: HTMLCanvasElement,
   ) => {
-    if (!this._currentImageResizeModel) {
-      const ratio = roundNumber(this._calcRatio(image)); //TODO how to do it better?
-      this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
-      console.log('@@@@@@@@@', ratio);
-    }
+    const ratio = roundNumber(this._calcRatio(image));
+    this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
     this.turnOnIsMouseDown();
     this._moveImageViewModel.handleMouseDown(element, event);
   };

@@ -7,9 +7,8 @@ export interface IResizeImageModel {
     currentDot: EDotsNames,
     mousePosition: TPosition,
     imageSize: TSize,
-
     A_pageXY: TPosition,
-  ) => { offset: TPosition; newImageSize: TSize };
+  ) => TSize;
 }
 
 //TODO add min width and/or min height
@@ -54,7 +53,7 @@ export class ResizeImageModel implements IResizeImageModel {
         if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
         else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
 
-        return { newImageSize, offset };
+        return newImageSize;
       },
       [EDotsNames.B]: () => {
         const newImageSize: TSize = { ...imageSize };
@@ -73,7 +72,7 @@ export class ResizeImageModel implements IResizeImageModel {
         if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
         else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
 
-        return { newImageSize, offset };
+        return newImageSize;
       },
       [EDotsNames.C]: () => {
         const newImageSize: TSize = { ...imageSize };
@@ -93,7 +92,7 @@ export class ResizeImageModel implements IResizeImageModel {
         if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
         else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
 
-        return { newImageSize, offset };
+        return newImageSize;
       },
       [EDotsNames.D]: () => {
         const newImageSize: TSize = { ...imageSize };
@@ -112,7 +111,7 @@ export class ResizeImageModel implements IResizeImageModel {
         if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
         else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
 
-        return { newImageSize, offset };
+        return newImageSize;
       },
     };
 
