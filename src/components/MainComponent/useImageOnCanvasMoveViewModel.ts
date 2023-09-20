@@ -9,6 +9,9 @@ export const useImageOnCanvasMoveViewModel = (
     const element = canvasRef.current;
 
     if (element) {
+      const offset = { x: element.offsetLeft, y: element.offsetTop };
+      viewModel.setInitialElementOffset(offset);
+
       const mouseUp$ = viewModel.fromMouseEvent(element, 'mouseup').subscribe(() => {
         viewModel.turnOffIsMouseDown();
       });

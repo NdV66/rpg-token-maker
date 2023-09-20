@@ -6,6 +6,7 @@ export interface IAvatarImageComponentViewModel extends IDrawImageOnCanvasViewMo
   canvasSize$: Observable<TCanvasSize>;
   elementOffset$: Observable<TPosition>;
 
+  setInitialElementOffset: (offset: TPosition) => void;
   turnOffIsMouseDown: () => void;
   fromMouseEvent: IImageMoveModel['fromMouseEvent'];
   handleMouseMove: (event: React.MouseEvent) => void;
@@ -20,6 +21,10 @@ export class AvatarImageComponentViewModel implements IAvatarImageComponentViewM
 
   public elementOffset$ = this._imageMoveModel.elementOffset$;
   public canvasSize$ = this._drawImageOnCanvasModel.canvasSize$;
+
+  public setInitialElementOffset(offset: TPosition) {
+    this._imageMoveModel.setInitialElementOffset(offset);
+  }
 
   public calculateCanvasSize(drawHeight: number, defaultImageWidth: number) {
     this._drawImageOnCanvasModel.calculateCanvasSize(drawHeight, defaultImageWidth);

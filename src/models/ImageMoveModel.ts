@@ -1,10 +1,10 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { TPosition } from 'types';
 import { AMouseHandler, IAMouseHandler } from './AMouseHandler';
 
 export interface IImageMoveModel extends IAMouseHandler {
   elementOffset$: Observable<TPosition>;
-
+  setInitialElementOffset: (offset: TPosition) => void;
   handleMouseUp: () => void;
   handleMouseMove: (event: React.MouseEvent) => void;
   handleMouseDown: (topLeftOffset: TPosition, event: React.MouseEvent) => void;
@@ -12,13 +12,18 @@ export interface IImageMoveModel extends IAMouseHandler {
   updateElementPositionRaw: (newPosition: TPosition) => void;
 }
 
-const START_OFFSET: TPosition = { x: 50, y: 50 }; //from CSS top left
+const EMPTY_OFFSET: TPosition = { x: 0, y: 0 };
 
 export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
-  private _elementOffset$ = new BehaviorSubject<TPosition>(START_OFFSET);
-  private _currentOffset = START_OFFSET;
+  private _elementOffset$ = new ReplaySubject<TPosition>();
+  private _currentOffset = EMPTY_OFFSET;
 
   public readonly elementOffset$ = this._elementOffset$.asObservable();
+
+  public setInitialElementOffset(offset: TPosition) {
+    this._elementOffset$.next(offset);
+    this._currentOffset = offset;
+  }
 
   public handleMouseMove = (event: React.MouseEvent) => {
     if (this.isMouseDown) {
@@ -35,7 +40,7 @@ export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
   };
 
   public updateElementPositionRaw = (newPosition: TPosition) => {
-    this._currentOffset = { x: 0, y: 0 };
+    this._currentOffset = EMPTY_OFFSET;
     this._elementOffset$.next(newPosition);
   };
 
