@@ -1,5 +1,4 @@
-import { EDotsNames, TAppEnv, TPosition, TSize } from 'types';
-import { roundNumber } from './tool';
+import { EDotsNames, TPosition, TSize } from 'types';
 
 const DOUBLE = 2;
 
@@ -13,7 +12,6 @@ export interface IResizeImageModel {
   ) => { offset: TPosition; newImageSize: TSize };
 }
 
-//TODO add ratio
 //TODO add min width and/or min height
 export class ResizeImageModel implements IResizeImageModel {
   constructor(private readonly _ratio: number) {}
@@ -53,8 +51,8 @@ export class ResizeImageModel implements IResizeImageModel {
         if (mousePosition.y < A.y) newImageSize.height += DOUBLE * offset.y;
         else newImageSize.height -= DOUBLE * offset.y;
 
-        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(imageSize.width);
-        else newImageSize.width = this._calcWidthByRatio(imageSize.height);
+        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
+        else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
 
         return { newImageSize, offset };
       },
@@ -72,8 +70,8 @@ export class ResizeImageModel implements IResizeImageModel {
         if (mousePosition.y < B.y) newImageSize.height += DOUBLE * offset.y;
         else newImageSize.height -= DOUBLE * offset.y;
 
-        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(imageSize.width);
-        else newImageSize.width = this._calcWidthByRatio(imageSize.height);
+        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
+        else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
 
         return { newImageSize, offset };
       },
@@ -92,8 +90,8 @@ export class ResizeImageModel implements IResizeImageModel {
         if (mousePosition.y < C.y) newImageSize.height -= DOUBLE * offset.y;
         else newImageSize.height += DOUBLE * offset.y;
 
-        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(imageSize.width);
-        else newImageSize.width = this._calcWidthByRatio(imageSize.height);
+        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
+        else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
 
         return { newImageSize, offset };
       },
@@ -111,8 +109,8 @@ export class ResizeImageModel implements IResizeImageModel {
         if (mousePosition.y < D.y) newImageSize.height -= DOUBLE * offset.y;
         else newImageSize.height += DOUBLE * offset.y;
 
-        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(imageSize.width);
-        else newImageSize.width = this._calcWidthByRatio(imageSize.height);
+        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
+        else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
 
         return { newImageSize, offset };
       },

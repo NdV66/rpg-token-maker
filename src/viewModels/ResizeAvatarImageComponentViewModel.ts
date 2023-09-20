@@ -137,7 +137,7 @@ export class ResizeAvatarImageComponentViewModel
       this._drawAvatarOnCanvasModel.calculateCanvasSize(newImageSize.height, newImageSize.width);
       this._moveImageViewModel.updateElementPositionRaw(cssA);
 
-      console.log('>>>', this._calcRatio(newImageSize));
+      //   console.log('>>>', this._calcRatio(newImageSize));
     }
   }
 
@@ -153,7 +153,7 @@ export class ResizeAvatarImageComponentViewModel
     image: HTMLCanvasElement,
   ) => {
     if (!this._currentImageResizeModel) {
-      const ratio = this._calcRatio(image); //TODO how to do it better?
+      const ratio = roundNumber(this._calcRatio(image)); //TODO how to do it better?
       this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
       console.log('@@@@@@@@@', ratio);
     }
