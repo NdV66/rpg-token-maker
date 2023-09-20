@@ -6,7 +6,7 @@ import {
   IImageResizeModelFactory,
   IResizeImageModel,
 } from 'models';
-import { roundNumber } from 'models/tool';
+import { roundNumber } from 'models/tools';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { EDotsNames, TCanvasSize, TPosition, TResizeDots, TSize } from 'types';
 
