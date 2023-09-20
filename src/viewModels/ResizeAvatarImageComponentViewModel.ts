@@ -85,17 +85,42 @@ export class ResizeAvatarImageComponentViewModel
         y: image.parentElement!.offsetTop,
       };
 
-      const { width, height, cssA } = this._currentImageResizeModel.calcResize(
+      const { newImageSize, offset } = this._currentImageResizeModel.calcResize(
         currentDot,
         mousePosition,
         { width: image.width, height: image.height },
-        topLeft,
         A,
-        parentOffset,
       );
 
+      const cssA = { ...topLeft };
+
+      switch (currentDot) {
+        case EDotsNames.A:
+          if (mousePosition.y < A.y) cssA.y -= offset.y;
+          else cssA.y += offset.y;
+
+          if (mousePosition.x < A.x) cssA.x -= offset.x;
+          else cssA.x += offset.x;
+          break;
+        case EDotsNames.B:
+          const newB = mousePosition;
+          cssA.x = newB.x - newImageSize.width - parentOffset.x;
+          cssA.y = newB.y - parentOffset.y;
+          break;
+        case EDotsNames.C:
+          const newC = mousePosition;
+          cssA.x = newC.x - newImageSize.width - parentOffset.x;
+          cssA.y = newC.y - newImageSize.height - parentOffset.y;
+          break;
+        case EDotsNames.D:
+          const newD = mousePosition;
+          cssA.x = newD.x - parentOffset.x;
+          cssA.y = newD.y - newImageSize.height - parentOffset.y;
+          break;
+      }
+
       this._moveImageViewModel.turnOffIsMouseDown();
-      this._drawAvatarOnCanvasModel.calculateCanvasSize(height, width);
+      this._drawAvatarOnCanvasModel.calculateCanvasSize(newImageSize.height, newImageSize.width);
       this._moveImageViewModel.updateElementPositionRaw(cssA);
     }
   }

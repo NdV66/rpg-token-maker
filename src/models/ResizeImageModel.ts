@@ -6,10 +6,9 @@ export interface IResizeImageModel {
     currentDot: EDotsNames,
     mousePosition: TPosition,
     imageSize: TSize,
-    topLeftOffset: TPosition,
+
     A_pageXY: TPosition,
-    parentOffset: TPosition,
-  ) => TSize & { cssA: TPosition };
+  ) => { offset: TPosition; newImageSize: TSize };
 }
 
 //TODO add ratio
@@ -39,15 +38,12 @@ export class ResizeImageModel implements IResizeImageModel {
     currentDot: EDotsNames,
     mousePosition: TPosition,
     imageSize: TSize,
-    topLeftOffset: TPosition,
     A: TPosition,
-    parentOffset: TPosition,
   ) {
     //TODO calc in the viewModel
 
     const commands = {
       [EDotsNames.A]: () => {
-        const cssA = { ...topLeftOffset }; //TODO calc in the viewModel
         const newImageSize: TSize = { ...imageSize };
         const offset = this._calcOffset(mousePosition, A);
 
@@ -69,22 +65,9 @@ export class ResizeImageModel implements IResizeImageModel {
           newImageSize.width = this._calcWidthByRatio(imageSize.height);
         }
 
-        if (mousePosition.y < A.y) {
-          cssA.y -= offset.y;
-        } else {
-          cssA.y += offset.y;
-        }
-
-        if (mousePosition.x < A.x) {
-          cssA.x -= offset.x;
-        } else {
-          cssA.x += offset.x;
-        }
-
-        return { newImageSize, cssA };
+        return { newImageSize, offset };
       },
       [EDotsNames.B]: () => {
-        const cssA = { ...topLeftOffset };
         const newImageSize: TSize = { ...imageSize };
         const B: TPosition = {
           x: A.x + imageSize.width,
@@ -110,14 +93,9 @@ export class ResizeImageModel implements IResizeImageModel {
           newImageSize.width = this._calcWidthByRatio(imageSize.height);
         }
 
-        const newB = mousePosition;
-        cssA.x = newB.x - newImageSize.width - parentOffset.x;
-        cssA.y = newB.y - parentOffset.y;
-
-        return { newImageSize, cssA };
+        return { newImageSize, offset };
       },
       [EDotsNames.C]: () => {
-        const cssA = { ...topLeftOffset };
         const newImageSize: TSize = { ...imageSize };
         const C: TPosition = {
           x: A.x + imageSize.width,
@@ -144,14 +122,9 @@ export class ResizeImageModel implements IResizeImageModel {
           newImageSize.width = this._calcWidthByRatio(imageSize.height);
         }
 
-        const newC = mousePosition;
-        cssA.x = newC.x - newImageSize.width - parentOffset.x;
-        cssA.y = newC.y - newImageSize.height - parentOffset.y;
-
-        return { newImageSize, cssA };
+        return { newImageSize, offset };
       },
       [EDotsNames.D]: () => {
-        const cssA = { ...topLeftOffset };
         const newImageSize: TSize = { ...imageSize };
         const D: TPosition = {
           x: A.x,
@@ -177,18 +150,14 @@ export class ResizeImageModel implements IResizeImageModel {
           newImageSize.width = this._calcWidthByRatio(imageSize.height);
         }
 
-        const newD = mousePosition;
-        cssA.x = newD.x - parentOffset.x;
-        cssA.y = newD.y - newImageSize.height - parentOffset.y;
-
-        return { newImageSize, cssA };
+        return { newImageSize, offset };
       },
     };
 
     const action = commands[currentDot];
-    const { newImageSize, cssA } = action();
+    const { newImageSize, offset } = action();
 
-    return { ...newImageSize, cssA };
+    return { newImageSize, offset };
   }
 }
 
