@@ -8,7 +8,7 @@ import {
 } from 'models';
 import { roundNumber } from 'models/tool';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { EDotsNames, TCanvasSize, TPosition, TResizeDots } from 'types';
+import { EDotsNames, TCanvasSize, TPosition, TResizeDots, TSize } from 'types';
 
 type TCanvasSizeWithOffset = {
   size: TCanvasSize;
@@ -65,6 +65,49 @@ export class ResizeAvatarImageComponentViewModel
     });
   }
 
+  private _calcCssAByDotName(
+    dot: EDotsNames,
+    cssA: TPosition,
+    offset: TPosition,
+    parentOffset: TPosition,
+    newImageSize: TSize,
+    mousePositionAsNewPointPosition: TPosition,
+    A: TPosition,
+  ) {
+    const actions = {
+      [EDotsNames.A]: () => {
+        if (mousePositionAsNewPointPosition.y < A.y) cssA.y -= offset.y;
+        else cssA.y += offset.y;
+
+        if (mousePositionAsNewPointPosition.x < A.x) cssA.x -= offset.x;
+        else cssA.x += offset.x;
+
+        return cssA;
+      },
+      [EDotsNames.B]: () => {
+        cssA.x = mousePositionAsNewPointPosition.x - newImageSize.width - parentOffset.x;
+        cssA.y = mousePositionAsNewPointPosition.y - parentOffset.y;
+        return cssA;
+      },
+      [EDotsNames.C]: () => {
+        cssA.x = mousePositionAsNewPointPosition.x - newImageSize.width - parentOffset.x;
+        cssA.y = mousePositionAsNewPointPosition.y - newImageSize.height - parentOffset.y;
+        return cssA;
+      },
+      [EDotsNames.D]: () => {
+        cssA.x = mousePositionAsNewPointPosition.x - parentOffset.x;
+        cssA.y = mousePositionAsNewPointPosition.y - newImageSize.height - parentOffset.y;
+        return cssA;
+      },
+    };
+
+    return actions[dot]();
+  }
+
+  private _calcRatio(image: TSize) {
+    return image.width / image.height;
+  }
+
   /**
    * This calculation is based on pageY and pageX.
    * @param currentDot
@@ -92,32 +135,15 @@ export class ResizeAvatarImageComponentViewModel
         A,
       );
 
-      const cssA = { ...topLeft };
-
-      switch (currentDot) {
-        case EDotsNames.A:
-          if (mousePosition.y < A.y) cssA.y -= offset.y;
-          else cssA.y += offset.y;
-
-          if (mousePosition.x < A.x) cssA.x -= offset.x;
-          else cssA.x += offset.x;
-          break;
-        case EDotsNames.B:
-          const newB = mousePosition;
-          cssA.x = newB.x - newImageSize.width - parentOffset.x;
-          cssA.y = newB.y - parentOffset.y;
-          break;
-        case EDotsNames.C:
-          const newC = mousePosition;
-          cssA.x = newC.x - newImageSize.width - parentOffset.x;
-          cssA.y = newC.y - newImageSize.height - parentOffset.y;
-          break;
-        case EDotsNames.D:
-          const newD = mousePosition;
-          cssA.x = newD.x - parentOffset.x;
-          cssA.y = newD.y - newImageSize.height - parentOffset.y;
-          break;
-      }
+      const cssA = this._calcCssAByDotName(
+        currentDot,
+        topLeft,
+        offset,
+        parentOffset,
+        newImageSize,
+        mousePosition,
+        A,
+      );
 
       this._moveImageViewModel.turnOffIsMouseDown();
       this._drawAvatarOnCanvasModel.calculateCanvasSize(newImageSize.height, newImageSize.width);
@@ -136,8 +162,8 @@ export class ResizeAvatarImageComponentViewModel
     event: React.MouseEvent,
     image: HTMLCanvasElement,
   ) => {
-    const rawRatio = image.width / image.height; //TODO: BETTER ratio calc!
-    const ratio = roundNumber(rawRatio);
+    const rawRatio = this._calcRatio(image); //TODO: BETTER ratio calc!
+    const ratio = roundNumber(rawRatio); //TODO do I need it?
     this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
     this.turnOnIsMouseDown();
     this._moveImageViewModel.handleMouseDown(element, event);

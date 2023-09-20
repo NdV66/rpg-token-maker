@@ -119,9 +119,7 @@ export class ResizeImageModel implements IResizeImageModel {
     };
 
     const action = commands[currentDot];
-    const { newImageSize, offset } = action();
-
-    return { newImageSize, offset };
+    return action();
   }
 }
 
