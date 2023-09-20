@@ -127,18 +127,14 @@ export class ResizeImageModel implements IResizeImageModel {
         const offset = this._calcOffset(mousePosition, C);
 
         if (mousePosition.x < C.x) {
-          console.log('X -');
           newImageSize.width -= 2 * offset.x;
         } else {
-          console.log('X +');
           newImageSize.width += 2 * offset.x;
         }
 
         if (mousePosition.y < C.y) {
-          console.log('Y -');
           newImageSize.height -= 2 * offset.y;
         } else {
-          console.log('Y +');
           newImageSize.height += 2 * offset.y;
         }
 
