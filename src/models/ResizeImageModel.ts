@@ -1,6 +1,8 @@
 import { EDotsNames, TAppEnv, TPosition, TSize } from 'types';
 import { roundNumber } from './tool';
 
+const DOUBLE = 2;
+
 export interface IResizeImageModel {
   calcResize: (
     currentDot: EDotsNames,
@@ -40,30 +42,19 @@ export class ResizeImageModel implements IResizeImageModel {
     imageSize: TSize,
     A: TPosition,
   ) {
-    //TODO calc in the viewModel
-
     const commands = {
       [EDotsNames.A]: () => {
         const newImageSize: TSize = { ...imageSize };
         const offset = this._calcOffset(mousePosition, A);
 
-        if (mousePosition.x < A.x) {
-          newImageSize.width += 2 * offset.x;
-        } else {
-          newImageSize.width -= 2 * offset.x;
-        }
+        if (mousePosition.x < A.x) newImageSize.width += DOUBLE * offset.x;
+        else newImageSize.width -= DOUBLE * offset.x;
 
-        if (mousePosition.y < A.y) {
-          newImageSize.height += 2 * offset.y;
-        } else {
-          newImageSize.height -= 2 * offset.y;
-        }
+        if (mousePosition.y < A.y) newImageSize.height += DOUBLE * offset.y;
+        else newImageSize.height -= DOUBLE * offset.y;
 
-        if (offset.x > offset.y) {
-          newImageSize.height = this._calcHeightByRatio(imageSize.width);
-        } else {
-          newImageSize.width = this._calcWidthByRatio(imageSize.height);
-        }
+        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(imageSize.width);
+        else newImageSize.width = this._calcWidthByRatio(imageSize.height);
 
         return { newImageSize, offset };
       },
@@ -75,23 +66,14 @@ export class ResizeImageModel implements IResizeImageModel {
         };
         const offset = this._calcOffset(mousePosition, B);
 
-        if (mousePosition.x < B.x) {
-          newImageSize.width -= 2 * offset.x;
-        } else {
-          newImageSize.width += 2 * offset.x;
-        }
+        if (mousePosition.x < B.x) newImageSize.width -= DOUBLE * offset.x;
+        else newImageSize.width += DOUBLE * offset.x;
 
-        if (mousePosition.y < B.y) {
-          newImageSize.height += 2 * offset.y;
-        } else {
-          newImageSize.height -= 2 * offset.y;
-        }
+        if (mousePosition.y < B.y) newImageSize.height += DOUBLE * offset.y;
+        else newImageSize.height -= DOUBLE * offset.y;
 
-        if (offset.x > offset.y) {
-          newImageSize.height = this._calcHeightByRatio(imageSize.width);
-        } else {
-          newImageSize.width = this._calcWidthByRatio(imageSize.height);
-        }
+        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(imageSize.width);
+        else newImageSize.width = this._calcWidthByRatio(imageSize.height);
 
         return { newImageSize, offset };
       },
@@ -104,23 +86,14 @@ export class ResizeImageModel implements IResizeImageModel {
 
         const offset = this._calcOffset(mousePosition, C);
 
-        if (mousePosition.x < C.x) {
-          newImageSize.width -= 2 * offset.x;
-        } else {
-          newImageSize.width += 2 * offset.x;
-        }
+        if (mousePosition.x < C.x) newImageSize.width -= DOUBLE * offset.x;
+        else newImageSize.width += DOUBLE * offset.x;
 
-        if (mousePosition.y < C.y) {
-          newImageSize.height -= 2 * offset.y;
-        } else {
-          newImageSize.height += 2 * offset.y;
-        }
+        if (mousePosition.y < C.y) newImageSize.height -= DOUBLE * offset.y;
+        else newImageSize.height += DOUBLE * offset.y;
 
-        if (offset.x > offset.y) {
-          newImageSize.height = this._calcHeightByRatio(imageSize.width);
-        } else {
-          newImageSize.width = this._calcWidthByRatio(imageSize.height);
-        }
+        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(imageSize.width);
+        else newImageSize.width = this._calcWidthByRatio(imageSize.height);
 
         return { newImageSize, offset };
       },
@@ -132,23 +105,14 @@ export class ResizeImageModel implements IResizeImageModel {
         };
         const offset = this._calcOffset(mousePosition, D);
 
-        if (mousePosition.x < D.x) {
-          newImageSize.width += 2 * offset.x;
-        } else {
-          newImageSize.width -= 2 * offset.x;
-        }
+        if (mousePosition.x < D.x) newImageSize.width += DOUBLE * offset.x;
+        else newImageSize.width -= DOUBLE * offset.x;
 
-        if (mousePosition.y < D.y) {
-          newImageSize.height -= 2 * offset.y;
-        } else {
-          newImageSize.height += 2 * offset.y;
-        }
+        if (mousePosition.y < D.y) newImageSize.height -= DOUBLE * offset.y;
+        else newImageSize.height += DOUBLE * offset.y;
 
-        if (offset.x > offset.y) {
-          newImageSize.height = this._calcHeightByRatio(imageSize.width);
-        } else {
-          newImageSize.width = this._calcWidthByRatio(imageSize.height);
-        }
+        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(imageSize.width);
+        else newImageSize.width = this._calcWidthByRatio(imageSize.height);
 
         return { newImageSize, offset };
       },
