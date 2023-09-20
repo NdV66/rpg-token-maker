@@ -67,8 +67,6 @@ export class ResizeAvatarImageComponentViewModel
 
   private _calcCssAByDotName(
     dot: EDotsNames,
-    cssA: TPosition,
-    offset: TPosition,
     parentOffset: TPosition,
     newImageSize: TSize,
     mousePositionAsNewPointPosition: TPosition,
@@ -76,28 +74,28 @@ export class ResizeAvatarImageComponentViewModel
   ) {
     const actions = {
       [EDotsNames.A]: () => {
-        if (mousePositionAsNewPointPosition.y < A.y) cssA.y -= offset.y;
-        else cssA.y += offset.y;
-
-        if (mousePositionAsNewPointPosition.x < A.x) cssA.x -= offset.x;
-        else cssA.x += offset.x;
-
-        return cssA;
+        return {
+          x: mousePositionAsNewPointPosition.x - parentOffset.x,
+          y: mousePositionAsNewPointPosition.y - parentOffset.y,
+        };
       },
       [EDotsNames.B]: () => {
-        cssA.x = mousePositionAsNewPointPosition.x - newImageSize.width - parentOffset.x;
-        cssA.y = mousePositionAsNewPointPosition.y - parentOffset.y;
-        return cssA;
+        return {
+          x: mousePositionAsNewPointPosition.x - newImageSize.width - parentOffset.x,
+          y: mousePositionAsNewPointPosition.y - parentOffset.y,
+        };
       },
       [EDotsNames.C]: () => {
-        cssA.x = mousePositionAsNewPointPosition.x - newImageSize.width - parentOffset.x;
-        cssA.y = mousePositionAsNewPointPosition.y - newImageSize.height - parentOffset.y;
-        return cssA;
+        return {
+          x: mousePositionAsNewPointPosition.x - newImageSize.width - parentOffset.x,
+          y: mousePositionAsNewPointPosition.y - newImageSize.height - parentOffset.y,
+        };
       },
       [EDotsNames.D]: () => {
-        cssA.x = mousePositionAsNewPointPosition.x - parentOffset.x;
-        cssA.y = mousePositionAsNewPointPosition.y - newImageSize.height - parentOffset.y;
-        return cssA;
+        return {
+          x: mousePositionAsNewPointPosition.x - parentOffset.x,
+          y: mousePositionAsNewPointPosition.y - newImageSize.height - parentOffset.y,
+        };
       },
     };
 
@@ -105,7 +103,7 @@ export class ResizeAvatarImageComponentViewModel
   }
 
   private _calcRatio(image: TSize) {
-    return image.width / image.height;
+    return Math.min(image.width / image.height);
   }
 
   /**
@@ -128,7 +126,7 @@ export class ResizeAvatarImageComponentViewModel
         y: image.parentElement!.offsetTop,
       };
 
-      const { newImageSize, offset } = this._currentImageResizeModel.calcResize(
+      const { newImageSize } = this._currentImageResizeModel.calcResize(
         currentDot,
         mousePosition,
         { width: image.width, height: image.height },
@@ -137,8 +135,6 @@ export class ResizeAvatarImageComponentViewModel
 
       const cssA = this._calcCssAByDotName(
         currentDot,
-        topLeft,
-        offset,
         parentOffset,
         newImageSize,
         mousePosition,
@@ -148,6 +144,8 @@ export class ResizeAvatarImageComponentViewModel
       this._moveImageViewModel.turnOffIsMouseDown();
       this._drawAvatarOnCanvasModel.calculateCanvasSize(newImageSize.height, newImageSize.width);
       this._moveImageViewModel.updateElementPositionRaw(cssA);
+
+      console.log('>>>', this._calcRatio(newImageSize));
     }
   }
 
@@ -164,6 +162,7 @@ export class ResizeAvatarImageComponentViewModel
   ) => {
     const rawRatio = this._calcRatio(image); //TODO: BETTER ratio calc!
     const ratio = roundNumber(rawRatio); //TODO do I need it?
+    console.log('RATIO', ratio);
     this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
     this.turnOnIsMouseDown();
     this._moveImageViewModel.handleMouseDown(element, event);

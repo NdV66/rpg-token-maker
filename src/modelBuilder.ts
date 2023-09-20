@@ -28,7 +28,7 @@ const avatarImageComponentViewModel = new AvatarImageComponentViewModel(
 const resizeAvatarViewModel = new ResizeAvatarImageComponentViewModel(
   avatarImageComponentViewModel,
   imageMoveModel,
-  imageResizeModelFactory(APP_ENV),
+  imageResizeModelFactory(),
 );
 
 export const mainComponentViewModel = new MainComponentViewModel(

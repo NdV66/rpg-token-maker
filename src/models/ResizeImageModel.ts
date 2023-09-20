@@ -26,11 +26,11 @@ export class ResizeImageModel implements IResizeImageModel {
   }
 
   private _calcHeightByRatio(width: number) {
-    return roundNumber(width / this._ratio);
+    return width / this._ratio;
   }
 
   private _calcWidthByRatio(height: number) {
-    return roundNumber(this._ratio * height);
+    return this._ratio * height;
   }
 
   /**
