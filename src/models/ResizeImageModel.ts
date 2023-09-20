@@ -16,7 +16,7 @@ export interface IResizeImageModel {
 //TODO add ratio
 //TODO add min width and/or min height
 export class ResizeImageModel implements IResizeImageModel {
-  constructor(private readonly _appEnv: TAppEnv, private readonly _ratio: number) {}
+  constructor(private readonly _ratio: number) {}
 
   private _calcOffset(mousePosition: TPosition, point: TPosition) {
     return {
@@ -126,5 +126,4 @@ export class ResizeImageModel implements IResizeImageModel {
 // Factory
 export type IImageResizeModelFactory = (ratio: number) => ResizeImageModel;
 
-export const imageResizeModelFactory = (APP_ENV: TAppEnv) => (ratio: number) =>
-  new ResizeImageModel(APP_ENV, ratio);
+export const imageResizeModelFactory = () => (ratio: number) => new ResizeImageModel(ratio);
