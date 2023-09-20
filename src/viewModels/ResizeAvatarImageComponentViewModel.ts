@@ -70,7 +70,6 @@ export class ResizeAvatarImageComponentViewModel
     parentOffset: TPosition,
     newImageSize: TSize,
     mousePositionAsNewPointPosition: TPosition,
-    A: TPosition,
   ) {
     const actions = {
       [EDotsNames.A]: () => {
@@ -120,7 +119,6 @@ export class ResizeAvatarImageComponentViewModel
         y: event.pageY,
       };
       const A: TPosition = { x: imageRect.left, y: imageRect.top }; //pageX and pageY for HTML element
-      const topLeft = { x: image.offsetLeft, y: image.offsetTop };
       const parentOffset = {
         x: image.parentElement!.offsetLeft,
         y: image.parentElement!.offsetTop,
@@ -133,13 +131,7 @@ export class ResizeAvatarImageComponentViewModel
         A,
       );
 
-      const cssA = this._calcCssAByDotName(
-        currentDot,
-        parentOffset,
-        newImageSize,
-        mousePosition,
-        A,
-      );
+      const cssA = this._calcCssAByDotName(currentDot, parentOffset, newImageSize, mousePosition);
 
       this._moveImageViewModel.turnOffIsMouseDown();
       this._drawAvatarOnCanvasModel.calculateCanvasSize(newImageSize.height, newImageSize.width);
@@ -150,7 +142,7 @@ export class ResizeAvatarImageComponentViewModel
   }
 
   public handleFinishResize = () => {
-    this._currentImageResizeModel = null;
+    // this._currentImageResizeModel = null;
     this.turnOffIsMouseDown();
     this._moveImageViewModel.handleMouseUp();
   };
@@ -160,10 +152,11 @@ export class ResizeAvatarImageComponentViewModel
     event: React.MouseEvent,
     image: HTMLCanvasElement,
   ) => {
-    const rawRatio = this._calcRatio(image); //TODO: BETTER ratio calc!
-    const ratio = roundNumber(rawRatio); //TODO do I need it?
-    console.log('RATIO', ratio);
-    this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
+    if (!this._currentImageResizeModel) {
+      const ratio = this._calcRatio(image); //TODO how to do it better?
+      this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
+      console.log('@@@@@@@@@', ratio);
+    }
     this.turnOnIsMouseDown();
     this._moveImageViewModel.handleMouseDown(element, event);
   };
