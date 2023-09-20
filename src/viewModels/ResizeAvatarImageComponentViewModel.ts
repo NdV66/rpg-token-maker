@@ -28,7 +28,7 @@ const DEFAULT_SIZE: TCanvasSizeWithOffset = {
 export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   currentSizeWithTopLeftPosition$: Observable<TCanvasSizeWithOffset>;
   handleResize: (currentDot: EDotsNames, event: React.MouseEvent, image: HTMLCanvasElement) => void;
-  handleStartResize: (element: any, event: React.MouseEvent, image: HTMLCanvasElement) => void;
+  handleStartResize: (image: HTMLCanvasElement) => void;
   handleFinishResize: () => void;
   prepareOffsetsForDots: (
     imageTopLeft: TPosition,
@@ -145,15 +145,10 @@ export class ResizeAvatarImageComponentViewModel
     this._moveImageViewModel.handleMouseUp();
   };
 
-  public handleStartResize = (
-    element: TPosition,
-    event: React.MouseEvent,
-    image: HTMLCanvasElement,
-  ) => {
+  public handleStartResize = (image: HTMLCanvasElement) => {
     const ratio = roundNumber(this._calcRatio(image));
     this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
     this.turnOnIsMouseDown();
-    this._moveImageViewModel.handleMouseDown(element, event);
   };
 
   public prepareOffsetsForDots({ x, y }: TPosition, imageWidth: number, imageHeight: number) {

@@ -30,8 +30,8 @@ export const useResizeImage = (
   const subscribeToMouseDown = useCallback(
     (dots: HTMLDivElement[], image: HTMLCanvasElement) =>
       dots.map((dot) =>
-        viewModel.fromMouseEvent(dot!, 'mousedown').subscribe((event) => {
-          viewModel.handleStartResize(image, event, image);
+        viewModel.fromMouseEvent(dot!, 'mousedown').subscribe(() => {
+          viewModel.handleStartResize(image);
         }),
       ),
     [viewModel],
