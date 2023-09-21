@@ -5,9 +5,9 @@ import { AMouseHandler, IAMouseHandler } from './AMouseHandler';
 export interface IImageMoveModel extends IAMouseHandler {
   elementOffset$: Observable<TPosition>;
   setInitialElementOffset: (offset: TPosition) => void;
-  handleMouseUp: () => void;
-  handleMouseMove: (event: React.MouseEvent) => void;
-  handleMouseDown: (topLeftOffset: TPosition, event: React.MouseEvent) => void;
+  finishMoveImage: () => void;
+  moveImage: (event: React.MouseEvent) => void;
+  startMoveImage: (topLeftOffset: TPosition, event: React.MouseEvent) => void;
   updateElementPosition: (newPosition: TPosition) => void;
   updateElementPositionRaw: (newPosition: TPosition) => void;
 }
@@ -25,7 +25,7 @@ export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
     this._currentOffset = offset;
   }
 
-  public handleMouseMove = (event: React.MouseEvent) => {
+  public moveImage = (event: React.MouseEvent) => {
     if (this.isMouseDown) {
       const value = {
         x: event.pageX + this._currentOffset.x,
@@ -44,11 +44,11 @@ export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
     this._elementOffset$.next(newPosition);
   };
 
-  public handleMouseUp() {
+  public finishMoveImage() {
     this.turnOffIsMouseDown();
   }
 
-  public handleMouseDown = (topLeftOffset: TPosition, event: React.MouseEvent) => {
+  public startMoveImage = (topLeftOffset: TPosition, event: React.MouseEvent) => {
     this.turnOnIsMouseDown();
     const offset: TPosition = {
       x: topLeftOffset.x - event.pageX,

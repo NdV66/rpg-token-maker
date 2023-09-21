@@ -17,11 +17,11 @@ export const useImageOnCanvasMoveViewModel = (
       });
 
       const mouseDown$ = viewModel.fromMouseEvent(element, 'mousedown').subscribe((event) => {
-        viewModel.handleMouseDown(element, event);
+        viewModel.startMoveImage(element, event);
       });
 
       const mouseMove$ = viewModel.fromMouseEvent(element, 'mousemove').subscribe((event) => {
-        viewModel.handleMouseMove(event);
+        viewModel.moveImage(event);
       });
 
       const subscribeToOffset$ = viewModel.elementOffset$.subscribe((offset) => {

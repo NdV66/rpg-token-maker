@@ -9,8 +9,8 @@ export interface IAvatarImageComponentViewModel extends IDrawImageOnCanvasViewMo
   setInitialElementOffset: (offset: TPosition) => void;
   turnOffIsMouseDown: () => void;
   fromMouseEvent: IImageMoveModel['fromMouseEvent'];
-  handleMouseMove: (event: React.MouseEvent) => void;
-  handleMouseDown: (element: HTMLElement, event: React.MouseEvent) => void;
+  moveImage: (event: React.MouseEvent) => void;
+  startMoveImage: (element: HTMLElement, event: React.MouseEvent) => void;
 }
 
 export class AvatarImageComponentViewModel implements IAvatarImageComponentViewModel {
@@ -38,13 +38,13 @@ export class AvatarImageComponentViewModel implements IAvatarImageComponentViewM
     return this._imageMoveModel.fromMouseEvent(element, trigger);
   };
 
-  public handleMouseMove: IImageMoveModel['handleMouseMove'] = (event) => {
-    this._imageMoveModel.handleMouseMove(event);
+  public moveImage: IImageMoveModel['moveImage'] = (event) => {
+    this._imageMoveModel.moveImage(event);
   };
 
-  public handleMouseDown = (element: HTMLElement, event: React.MouseEvent) => {
+  public startMoveImage = (element: HTMLElement, event: React.MouseEvent) => {
     const topLeftOffset: TPosition = { x: element.offsetLeft, y: element.offsetTop };
-    this._imageMoveModel.handleMouseDown(topLeftOffset, event);
+    this._imageMoveModel.startMoveImage(topLeftOffset, event);
   };
 
   public loadImage: IDrawImageOnCanvasModel['loadImage'] = (src, width) => {

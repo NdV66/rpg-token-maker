@@ -5,6 +5,7 @@ import {
   IDrawImageOnCanvasModel,
   IImageResizeModelFactory,
   IResizeImageModel,
+  ITopLeftCssCalculatorModel,
 } from 'models';
 import { roundNumber } from 'models/tools';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
@@ -51,6 +52,7 @@ export class ResizeAvatarImageComponentViewModel
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
     private readonly _moveImageViewModel: IImageMoveModel,
     private readonly _imageResizeModelFactory: IImageResizeModelFactory,
+    private readonly _topLeftCssCalculator: ITopLeftCssCalculatorModel,
   ) {
     super();
     this._updateCurrentSizeWithTopLeftPosition();
@@ -63,42 +65,6 @@ export class ResizeAvatarImageComponentViewModel
     ]).subscribe(([size, offset]) => {
       this._currentSizeWithTopLeftPosition$.next({ size, offset });
     });
-  }
-
-  private _calcCssAByDotName(
-    dot: EDotsNames,
-    parentOffset: TPosition,
-    newImageSize: TSize,
-    mousePositionAsNewPointPosition: TPosition,
-  ) {
-    const actions = {
-      [EDotsNames.A]: () => {
-        return {
-          x: mousePositionAsNewPointPosition.x - parentOffset.x,
-          y: mousePositionAsNewPointPosition.y - parentOffset.y,
-        };
-      },
-      [EDotsNames.B]: () => {
-        return {
-          x: mousePositionAsNewPointPosition.x - newImageSize.width - parentOffset.x,
-          y: mousePositionAsNewPointPosition.y - parentOffset.y,
-        };
-      },
-      [EDotsNames.C]: () => {
-        return {
-          x: mousePositionAsNewPointPosition.x - newImageSize.width - parentOffset.x,
-          y: mousePositionAsNewPointPosition.y - newImageSize.height - parentOffset.y,
-        };
-      },
-      [EDotsNames.D]: () => {
-        return {
-          x: mousePositionAsNewPointPosition.x - parentOffset.x,
-          y: mousePositionAsNewPointPosition.y - newImageSize.height - parentOffset.y,
-        };
-      },
-    };
-
-    return actions[dot]();
   }
 
   private _calcRatio(image: TSize) {
@@ -131,8 +97,12 @@ export class ResizeAvatarImageComponentViewModel
         A,
       );
 
-      const cssA = this._calcCssAByDotName(currentDot, parentOffset, newImageSize, mousePosition);
-
+      const cssA = this._topLeftCssCalculator.calcTopLeftCss(
+        currentDot,
+        parentOffset,
+        newImageSize,
+        mousePosition,
+      );
       this._moveImageViewModel.turnOffIsMouseDown();
       this._drawAvatarOnCanvasModel.calculateCanvasSize(newImageSize.height, newImageSize.width);
       this._moveImageViewModel.updateElementPositionRaw(cssA);
@@ -142,7 +112,7 @@ export class ResizeAvatarImageComponentViewModel
   public handleFinishResize = () => {
     this._currentImageResizeModel = null;
     this.turnOffIsMouseDown();
-    this._moveImageViewModel.handleMouseUp();
+    this._moveImageViewModel.finishMoveImage();
   };
 
   public handleStartResize = (image: HTMLCanvasElement) => {
