@@ -80,10 +80,7 @@ export class ResizeAvatarImageComponentViewModel
   public handleResize(currentDot: EDotsNames, event: React.MouseEvent, image: HTMLCanvasElement) {
     if (this.isMouseDown && this._currentImageResizeModel) {
       const imageRect = image.getBoundingClientRect();
-      const mousePosition: TPosition = {
-        x: event.pageX,
-        y: event.pageY,
-      };
+      const mousePosition: TPosition = { x: event.pageX, y: event.pageY };
       const A: TPosition = { x: imageRect.left, y: imageRect.top }; //pageX and pageY for HTML element
       const parentOffset = {
         x: image.parentElement!.offsetLeft,
@@ -96,13 +93,13 @@ export class ResizeAvatarImageComponentViewModel
         { width: image.width, height: image.height },
         A,
       );
-
       const cssA = this._topLeftCssCalculator.calcTopLeftCss(
         currentDot,
         parentOffset,
         newImageSize,
         mousePosition,
       );
+
       this._moveImageViewModel.turnOffIsMouseDown();
       this._drawAvatarOnCanvasModel.calculateCanvasSize(newImageSize.height, newImageSize.width);
       this._moveImageViewModel.updateElementPositionRaw(cssA);
