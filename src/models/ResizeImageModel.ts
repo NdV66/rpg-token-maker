@@ -36,6 +36,21 @@ export class ResizeImageModel implements IResizeImageModel {
     return size;
   }
 
+  private _action(
+    mousePosition: TPosition,
+    currentPoint: TPosition,
+    calcRawNewImageSize: (offset: TPosition) => TSize,
+  ) {
+    const offset = this._calcOffset(mousePosition, currentPoint);
+    const rawNewImageSize = calcRawNewImageSize(offset);
+    const newImageSize = this._keepMinSize(rawNewImageSize, this._appEnv.minImageSize);
+
+    if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
+    else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
+
+    return newImageSize;
+  }
+
   /**
    * This calculation is based on pageY and pageX.
    */
@@ -45,88 +60,80 @@ export class ResizeImageModel implements IResizeImageModel {
     imageSize: TSize,
     A: TPosition,
   ) {
-    //TODO refactor
     const commands = {
       [EDotsNames.A]: () => {
-        const rawNewImageSize: TSize = { ...imageSize };
-        const offset = this._calcOffset(mousePosition, A);
+        const calcSize = (offset: TPosition) => {
+          const rawNewImageSize: TSize = { ...imageSize };
 
-        if (mousePosition.x < A.x) rawNewImageSize.width += DOUBLE * offset.x;
-        else rawNewImageSize.width -= DOUBLE * offset.x;
+          if (mousePosition.x < A.x) rawNewImageSize.width += DOUBLE * offset.x;
+          else rawNewImageSize.width -= DOUBLE * offset.x;
 
-        if (mousePosition.y < A.y) rawNewImageSize.height += DOUBLE * offset.y;
-        else rawNewImageSize.height -= DOUBLE * offset.y;
+          if (mousePosition.y < A.y) rawNewImageSize.height += DOUBLE * offset.y;
+          else rawNewImageSize.height -= DOUBLE * offset.y;
 
-        const newImageSize = this._keepMinSize(rawNewImageSize, this._appEnv.minImageSize);
+          return rawNewImageSize;
+        };
 
-        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
-        else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
-
-        return newImageSize;
+        return this._action(mousePosition, A, calcSize);
       },
       [EDotsNames.B]: () => {
-        const rawNewImageSize: TSize = { ...imageSize };
         const B: TPosition = {
           x: A.x + imageSize.width,
           y: A.y,
         };
-        const offset = this._calcOffset(mousePosition, B);
 
-        if (mousePosition.x < B.x) rawNewImageSize.width -= DOUBLE * offset.x;
-        else rawNewImageSize.width += DOUBLE * offset.x;
+        const calcSize = (offset: TPosition) => {
+          const rawNewImageSize: TSize = { ...imageSize };
 
-        if (mousePosition.y < B.y) rawNewImageSize.height += DOUBLE * offset.y;
-        else rawNewImageSize.height -= DOUBLE * offset.y;
+          if (mousePosition.x < B.x) rawNewImageSize.width -= DOUBLE * offset.x;
+          else rawNewImageSize.width += DOUBLE * offset.x;
 
-        const newImageSize = this._keepMinSize(rawNewImageSize, this._appEnv.minImageSize);
+          if (mousePosition.y < B.y) rawNewImageSize.height += DOUBLE * offset.y;
+          else rawNewImageSize.height -= DOUBLE * offset.y;
 
-        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
-        else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
+          return rawNewImageSize;
+        };
 
-        return newImageSize;
+        return this._action(mousePosition, B, calcSize);
       },
       [EDotsNames.C]: () => {
-        const rawNewImageSize: TSize = { ...imageSize };
         const C: TPosition = {
           x: A.x + imageSize.width,
           y: A.y + imageSize.height,
         };
 
-        const offset = this._calcOffset(mousePosition, C);
+        const calcSize = (offset: TPosition) => {
+          const rawNewImageSize: TSize = { ...imageSize };
+          if (mousePosition.x < C.x) rawNewImageSize.width -= DOUBLE * offset.x;
+          else rawNewImageSize.width += DOUBLE * offset.x;
 
-        if (mousePosition.x < C.x) rawNewImageSize.width -= DOUBLE * offset.x;
-        else rawNewImageSize.width += DOUBLE * offset.x;
+          if (mousePosition.y < C.y) rawNewImageSize.height -= DOUBLE * offset.y;
+          else rawNewImageSize.height += DOUBLE * offset.y;
 
-        if (mousePosition.y < C.y) rawNewImageSize.height -= DOUBLE * offset.y;
-        else rawNewImageSize.height += DOUBLE * offset.y;
+          return rawNewImageSize;
+        };
 
-        const newImageSize = this._keepMinSize(rawNewImageSize, this._appEnv.minImageSize);
-
-        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
-        else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
-
-        return newImageSize;
+        return this._action(mousePosition, C, calcSize);
       },
       [EDotsNames.D]: () => {
-        const rawNewImageSize: TSize = { ...imageSize };
         const D: TPosition = {
           x: A.x,
           y: A.y + imageSize.height,
         };
-        const offset = this._calcOffset(mousePosition, D);
 
-        if (mousePosition.x < D.x) rawNewImageSize.width += DOUBLE * offset.x;
-        else rawNewImageSize.width -= DOUBLE * offset.x;
+        const calcSize = (offset: TPosition) => {
+          const rawNewImageSize: TSize = { ...imageSize };
 
-        if (mousePosition.y < D.y) rawNewImageSize.height -= DOUBLE * offset.y;
-        else rawNewImageSize.height += DOUBLE * offset.y;
+          if (mousePosition.x < D.x) rawNewImageSize.width += DOUBLE * offset.x;
+          else rawNewImageSize.width -= DOUBLE * offset.x;
 
-        const newImageSize = this._keepMinSize(rawNewImageSize, this._appEnv.minImageSize);
+          if (mousePosition.y < D.y) rawNewImageSize.height -= DOUBLE * offset.y;
+          else rawNewImageSize.height += DOUBLE * offset.y;
 
-        if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
-        else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
+          return rawNewImageSize;
+        };
 
-        return newImageSize;
+        return this._action(mousePosition, D, calcSize);
       },
     };
 
