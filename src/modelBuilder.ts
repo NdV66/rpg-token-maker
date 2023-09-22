@@ -7,6 +7,7 @@ import {
   imageResizeModelFactory,
   TopLeftCssCalculatorModel,
 } from 'models';
+import { ResizeImageCalculationModel } from 'models/ResizeImageCalculationModel';
 
 import {
   MainComponentViewModel,
@@ -21,6 +22,7 @@ const drawAvatarFrameModel = new DrawImageOnCanvasModel(imageLoaderModel);
 const drawAvatarImageModel = new DrawImageOnCanvasModel(imageLoaderModel);
 const imageMoveModel = new ImageMoveModel();
 const topLeftCssCalculatorModel = new TopLeftCssCalculatorModel();
+const resizeImageCalculationModel = new ResizeImageCalculationModel();
 
 const avatarFrameComponentViewModel = new AvatarFrameComponentViewModel(drawAvatarFrameModel);
 const avatarImageComponentViewModel = new AvatarImageComponentViewModel(
@@ -30,7 +32,7 @@ const avatarImageComponentViewModel = new AvatarImageComponentViewModel(
 const resizeAvatarViewModel = new ResizeAvatarImageComponentViewModel(
   avatarImageComponentViewModel,
   imageMoveModel,
-  imageResizeModelFactory(APP_ENV),
+  imageResizeModelFactory(APP_ENV, resizeImageCalculationModel),
   topLeftCssCalculatorModel,
 );
 
