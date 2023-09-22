@@ -6,5 +6,5 @@ export const APP_ENV: TAppEnv = {
   defaultImageWidth: 300, //the same in css
   defaultFrameSize: 200, //the same in css
   workspaceSize: 600, //the same in css
-  minAvatarWidth: 100,
+  minImageSize: 100,
 };

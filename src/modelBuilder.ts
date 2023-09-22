@@ -30,7 +30,7 @@ const avatarImageComponentViewModel = new AvatarImageComponentViewModel(
 const resizeAvatarViewModel = new ResizeAvatarImageComponentViewModel(
   avatarImageComponentViewModel,
   imageMoveModel,
-  imageResizeModelFactory(),
+  imageResizeModelFactory(APP_ENV),
   topLeftCssCalculatorModel,
 );
 

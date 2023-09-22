@@ -5,5 +5,5 @@ export type TAppEnv = {
   defaultImageWidth: number;
   defaultFrameSize: number;
   workspaceSize: number;
-  minAvatarWidth: number;
+  minImageSize: number;
 };

@@ -1,4 +1,4 @@
-import { EDotsNames, TPosition, TSize } from 'types';
+import { EDotsNames, TAppEnv, TPosition, TSize } from 'types';
 
 const DOUBLE = 2;
 
@@ -11,9 +11,8 @@ export interface IResizeImageModel {
   ) => TSize;
 }
 
-//TODO add min width and/or min height
 export class ResizeImageModel implements IResizeImageModel {
-  constructor(private readonly _ratio: number) {}
+  constructor(private readonly _ratio: number, private readonly _appEnv: TAppEnv) {}
 
   private _calcOffset(mousePosition: TPosition, point: TPosition) {
     return {
@@ -30,6 +29,13 @@ export class ResizeImageModel implements IResizeImageModel {
     return this._ratio * height;
   }
 
+  private _keepMinSize(newImageSize: TSize, minSize: number) {
+    const size = { ...newImageSize };
+    if (size.width < minSize) size.width = minSize;
+    if (size.height < minSize) size.height = minSize;
+    return size;
+  }
+
   /**
    * This calculation is based on pageY and pageX.
    */
@@ -39,16 +45,19 @@ export class ResizeImageModel implements IResizeImageModel {
     imageSize: TSize,
     A: TPosition,
   ) {
+    //TODO refactor
     const commands = {
       [EDotsNames.A]: () => {
-        const newImageSize: TSize = { ...imageSize };
+        const rawNewImageSize: TSize = { ...imageSize };
         const offset = this._calcOffset(mousePosition, A);
 
-        if (mousePosition.x < A.x) newImageSize.width += DOUBLE * offset.x;
-        else newImageSize.width -= DOUBLE * offset.x;
+        if (mousePosition.x < A.x) rawNewImageSize.width += DOUBLE * offset.x;
+        else rawNewImageSize.width -= DOUBLE * offset.x;
 
-        if (mousePosition.y < A.y) newImageSize.height += DOUBLE * offset.y;
-        else newImageSize.height -= DOUBLE * offset.y;
+        if (mousePosition.y < A.y) rawNewImageSize.height += DOUBLE * offset.y;
+        else rawNewImageSize.height -= DOUBLE * offset.y;
+
+        const newImageSize = this._keepMinSize(rawNewImageSize, this._appEnv.minImageSize);
 
         if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
         else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
@@ -56,18 +65,20 @@ export class ResizeImageModel implements IResizeImageModel {
         return newImageSize;
       },
       [EDotsNames.B]: () => {
-        const newImageSize: TSize = { ...imageSize };
+        const rawNewImageSize: TSize = { ...imageSize };
         const B: TPosition = {
           x: A.x + imageSize.width,
           y: A.y,
         };
         const offset = this._calcOffset(mousePosition, B);
 
-        if (mousePosition.x < B.x) newImageSize.width -= DOUBLE * offset.x;
-        else newImageSize.width += DOUBLE * offset.x;
+        if (mousePosition.x < B.x) rawNewImageSize.width -= DOUBLE * offset.x;
+        else rawNewImageSize.width += DOUBLE * offset.x;
 
-        if (mousePosition.y < B.y) newImageSize.height += DOUBLE * offset.y;
-        else newImageSize.height -= DOUBLE * offset.y;
+        if (mousePosition.y < B.y) rawNewImageSize.height += DOUBLE * offset.y;
+        else rawNewImageSize.height -= DOUBLE * offset.y;
+
+        const newImageSize = this._keepMinSize(rawNewImageSize, this._appEnv.minImageSize);
 
         if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
         else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
@@ -75,7 +86,7 @@ export class ResizeImageModel implements IResizeImageModel {
         return newImageSize;
       },
       [EDotsNames.C]: () => {
-        const newImageSize: TSize = { ...imageSize };
+        const rawNewImageSize: TSize = { ...imageSize };
         const C: TPosition = {
           x: A.x + imageSize.width,
           y: A.y + imageSize.height,
@@ -83,11 +94,13 @@ export class ResizeImageModel implements IResizeImageModel {
 
         const offset = this._calcOffset(mousePosition, C);
 
-        if (mousePosition.x < C.x) newImageSize.width -= DOUBLE * offset.x;
-        else newImageSize.width += DOUBLE * offset.x;
+        if (mousePosition.x < C.x) rawNewImageSize.width -= DOUBLE * offset.x;
+        else rawNewImageSize.width += DOUBLE * offset.x;
 
-        if (mousePosition.y < C.y) newImageSize.height -= DOUBLE * offset.y;
-        else newImageSize.height += DOUBLE * offset.y;
+        if (mousePosition.y < C.y) rawNewImageSize.height -= DOUBLE * offset.y;
+        else rawNewImageSize.height += DOUBLE * offset.y;
+
+        const newImageSize = this._keepMinSize(rawNewImageSize, this._appEnv.minImageSize);
 
         if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
         else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
@@ -95,18 +108,20 @@ export class ResizeImageModel implements IResizeImageModel {
         return newImageSize;
       },
       [EDotsNames.D]: () => {
-        const newImageSize: TSize = { ...imageSize };
+        const rawNewImageSize: TSize = { ...imageSize };
         const D: TPosition = {
           x: A.x,
           y: A.y + imageSize.height,
         };
         const offset = this._calcOffset(mousePosition, D);
 
-        if (mousePosition.x < D.x) newImageSize.width += DOUBLE * offset.x;
-        else newImageSize.width -= DOUBLE * offset.x;
+        if (mousePosition.x < D.x) rawNewImageSize.width += DOUBLE * offset.x;
+        else rawNewImageSize.width -= DOUBLE * offset.x;
 
-        if (mousePosition.y < D.y) newImageSize.height -= DOUBLE * offset.y;
-        else newImageSize.height += DOUBLE * offset.y;
+        if (mousePosition.y < D.y) rawNewImageSize.height -= DOUBLE * offset.y;
+        else rawNewImageSize.height += DOUBLE * offset.y;
+
+        const newImageSize = this._keepMinSize(rawNewImageSize, this._appEnv.minImageSize);
 
         if (offset.x > offset.y) newImageSize.height = this._calcHeightByRatio(newImageSize.width);
         else newImageSize.width = this._calcWidthByRatio(newImageSize.height);
@@ -123,4 +138,5 @@ export class ResizeImageModel implements IResizeImageModel {
 // Factory
 export type IImageResizeModelFactory = (ratio: number) => ResizeImageModel;
 
-export const imageResizeModelFactory = () => (ratio: number) => new ResizeImageModel(ratio);
+export const imageResizeModelFactory = (appEnv: TAppEnv) => (ratio: number) =>
+  new ResizeImageModel(ratio, appEnv);
