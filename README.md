@@ -15,7 +15,7 @@ This project allows you to create an RPG token from your own image.
 4. Run `yarn start` to run app in the dev mode.
 5. App is available under `localhost:3000`.
 
-# How to deploy?
+<!-- # How to deploy?
 0. Create dedicated branch for the version
 1. Change version in the `package.json`.
 2. Make sure everything is merged etc.
@@ -25,7 +25,7 @@ This project allows you to create an RPG token from your own image.
 4. Merge all changes to the `master` branch.
 5. After merge a simple deploy action is called //TODO
 6. Refresh master locally using `git pull origin master`.
-7. App is available under `rpg-token.narin.dev`
+7. App is available under `rpg-token.narin.dev` -->
 
 <!-- ## How to run e2e tests?
 1. Go to the main folder.
@@ -45,13 +45,13 @@ This project allows you to create an RPG token from your own image.
 - `/src`\
     Source code folder.
     - `modelBuilder.ts`
-    - `appEnvs.ts`
+    - `appEnv.ts`
     - `App.tsx`
     - `/data` \
         All **const** data for the app (translations, icon names, errors, color themes etc.).
     - `/models` \
         Models with logic for this app.
-    - `/pages` \
+    - `/components` \
         Visual part of this app.
         - `/<name>Component` \
         A dedicated areas of a page(s).
