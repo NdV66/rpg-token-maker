@@ -7,7 +7,6 @@ import {
   IResizeImageModel,
   ITopLeftCssCalculatorModel,
 } from 'models';
-import { roundNumber } from 'models/tools';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { EDotsNames, TCanvasSize, TPosition, TResizeDots, TSize } from 'types';
 
@@ -71,6 +70,10 @@ export class ResizeAvatarImageComponentViewModel
     return Math.min(image.width / image.height);
   }
 
+  private _roundNumber(data: number) {
+    return Math.floor(data * 1000) / 1000;
+  }
+
   /**
    * This calculation is based on pageY and pageX.
    * @param currentDot
@@ -113,7 +116,8 @@ export class ResizeAvatarImageComponentViewModel
   };
 
   public handleStartResize = (image: HTMLCanvasElement) => {
-    const ratio = roundNumber(this._calcRatio(image));
+    const rawRatio = this._calcRatio(image);
+    const ratio = this._roundNumber(rawRatio);
     this._currentImageResizeModel = this._imageResizeModelFactory(ratio);
     this.turnOnIsMouseDown();
   };

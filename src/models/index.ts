@@ -4,5 +4,4 @@ export * from './DrawImageOnCanvasModel';
 export * from './ImageMoveModel';
 export * from './AMouseHandler';
 export * from './ResizeImageModel';
-export * from './tools';
 export * from './TopLeftCssCalculatorModel';
