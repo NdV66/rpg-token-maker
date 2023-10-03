@@ -22,15 +22,7 @@ describe('DrawImageOnCanvasModel', () => {
       const image = new Image();
       image.width = widthMock;
       image.height = heightMock;
-
-      imageLoaderMock.loadImage = jest.fn().mockImplementation(() => {
-        if (image.onload) {
-          const event: any = {};
-          image.onload(event);
-        }
-
-        return image;
-      });
+      imageLoaderMock.loadImage = jest.fn().mockResolvedValue(image);
 
       const expectResult = {
         drawHeight: 900, //(defaultImageWidth * height) / width
@@ -44,21 +36,11 @@ describe('DrawImageOnCanvasModel', () => {
       expect(result).toEqual(expectResult);
     });
 
-    // it('Should throw an error, if there is any problem', async () => {
-    //   const image = new Image();
-    //   const expectedError = new Error('a');
+    it('Should throw an error, if there is any problem', async () => {
+      const expectedError = new Error('a');
+      imageLoaderMock.loadImage = jest.fn().mockRejectedValue(expectedError);
 
-    //   imageLoaderMock.loadImage = jest.fn().mockImplementation(() => {
-    //     image.onerror = jest.fn().mockReturnValue(expectedError);
-    //     if (image.onerror) {
-    //       console.log('TUTAJ');
-    //       image.onerror('error');
-    //     }
-    //     return image;
-    //   });
-
-    //   const result = await model.loadImage(src, defaultImageWidth);
-    //   console.log('>>>', result);
-    // });
+      await expect(() => model.loadImage(src, defaultImageWidth)).rejects.toThrow(expectedError);
+    });
   });
 });
