@@ -18,7 +18,7 @@ export interface IDrawImageOnCanvasModel {
   calculateCanvasSize: (drawHeight: number, width: number) => void;
 }
 
-const DEFAULT_SIZE: TCanvasSize = {
+export const DEFAULT_SIZE: TCanvasSize = {
   height: 0,
   styleHeight: 0,
   width: 0,

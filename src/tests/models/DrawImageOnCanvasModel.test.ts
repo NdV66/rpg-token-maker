@@ -1,4 +1,6 @@
 import { DrawImageOnCanvasModel, IImageLoaderModel } from 'models';
+import { TestScheduler } from 'rxjs/testing';
+import { makeTestScheduler } from 'tests/tools';
 
 const imageLoaderMock: IImageLoaderModel = {
   loadImage: jest.fn(),
@@ -11,17 +13,32 @@ const src = 'image.jpg';
 
 describe('DrawImageOnCanvasModel', () => {
   let model: DrawImageOnCanvasModel;
+  let testScheduler: TestScheduler;
 
   beforeEach(() => {
     model = new DrawImageOnCanvasModel(imageLoaderMock);
+    testScheduler = makeTestScheduler();
   });
 
-  describe('_calculateDrawHeight()', () => {
-    it('Should calculate draw height correctly', () => {
-      const expectedDrawHeight = 900;
-      const result = model['_calculateDrawHeight'](defaultImageWidth, widthMock, heightMock);
-      expect(result).toBe(expectedDrawHeight);
+  it('calculateCanvasSize() - should calc correctly', () => {
+    const drawHeight = 900;
+    const expectedResult = {
+      width: widthMock,
+      height: drawHeight,
+      styleHeight: drawHeight,
+      styleWidth: widthMock,
+    };
+
+    testScheduler.run(({ expectObservable }) => {
+      model.calculateCanvasSize(drawHeight, widthMock);
+      expectObservable(model.canvasSize$).toBe('a', { a: expectedResult });
     });
+  });
+
+  it('_calculateDrawHeight() - should calculate draw height correctly', () => {
+    const expectedDrawHeight = 900;
+    const result = model['_calculateDrawHeight'](defaultImageWidth, widthMock, heightMock);
+    expect(result).toBe(expectedDrawHeight);
   });
 
   describe('loadImage()', () => {
