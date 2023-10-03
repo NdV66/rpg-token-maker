@@ -8,7 +8,7 @@ export class ImageLoaderModel implements IImageLoaderModel {
       const image = new Image();
       image.src = imageSrc;
       image.onload = () => resolve(image);
-      image.onerror = reject;
+      image.onerror = () => reject;
     });
   }
 }
