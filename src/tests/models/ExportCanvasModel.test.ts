@@ -1,6 +1,5 @@
-import { appEnvMock } from 'appEnv';
 import { ExportCanvasModel } from 'models';
-import { commonErrorMock, imageLoaderModelMock } from 'tests/mocks';
+import { commonErrorMock, imageLoaderModelMock, appEnvMock } from 'tests/mocks';
 
 const contextMock = {
   globalCompositeOperation: 'color',

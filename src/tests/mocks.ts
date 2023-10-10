@@ -4,7 +4,7 @@ import { IImageLoaderModel } from 'models';
 
 export const commonErrorMock = new Error('mocked error');
 
-export const APP_ENV: TAppEnv = {
+export const appEnvMock: TAppEnv = {
   translations: enEN,
   defaultImageWidth: 300, //the same in css
   defaultFrameSize: 200, //the same in css
