@@ -9,7 +9,6 @@ export interface IImageMoveModel extends IAMouseHandler {
   moveImage: (event: React.MouseEvent) => void;
   startMoveImage: (topLeftOffset: TPosition, event: React.MouseEvent) => void;
   updateElementPosition: (newPosition: TPosition) => void;
-  updateElementPositionRaw: (newPosition: TPosition) => void;
 }
 
 const EMPTY_OFFSET: TPosition = { x: 0, y: 0 };
@@ -36,11 +35,6 @@ export class ImageMoveModel extends AMouseHandler implements IImageMoveModel {
   };
 
   public updateElementPosition = (newPosition: TPosition) => {
-    this._elementOffset$.next(newPosition);
-  };
-
-  public updateElementPositionRaw = (newPosition: TPosition) => {
-    this._currentOffset = EMPTY_OFFSET;
     this._elementOffset$.next(newPosition);
   };
 
