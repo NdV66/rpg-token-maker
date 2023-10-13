@@ -3,6 +3,7 @@ import { makeTestScheduler } from 'tests/tools';
 import { TPosition } from 'types';
 
 const initialOffsetMock: TPosition = { x: 10, y: 20 };
+const eventMock = { pageX: 100, pageY: 200 } as any as React.MouseEvent;
 
 describe('ImageMoveModel', () => {
   let model: ImageMoveModel;
@@ -29,6 +30,26 @@ describe('ImageMoveModel', () => {
     });
   });
 
+  it('finishMoveImage() - Should set _isMouseDown to false', () => {
+    model['_isMouseDown'] = true;
+    model.finishMoveImage();
+    expect(model['_isMouseDown']).toBe(false);
+  });
+
+  it('startMoveImage() - Should start moving the image', () => {
+    const topLeftOffsetMock: TPosition = { x: 10, y: 20 };
+    const expectedOffset: TPosition = {
+      x: topLeftOffsetMock.x - eventMock.pageX,
+      y: topLeftOffsetMock.y - eventMock.pageY,
+    };
+    model.turnOnIsMouseDown = jest.fn();
+
+    model.startMoveImage(topLeftOffsetMock, eventMock);
+
+    expect(model['_currentOffset']).toEqual(expectedOffset);
+    expect(model.turnOnIsMouseDown).toHaveBeenCalledTimes(1);
+  });
+
   describe('moveImage()', () => {
     beforeEach(() => {
       model['_currentOffset'] = initialOffsetMock;
@@ -36,9 +57,8 @@ describe('ImageMoveModel', () => {
     });
 
     it('Should move an image, when mouse is down', () => {
-      const eventMock = { pageX: 100, pageY: 200 } as any as React.MouseEvent;
       const expectedValue = { x: eventMock.pageX + initialOffsetMock.x, y: eventMock.pageY + initialOffsetMock.y };
-      model['_isDown'] = true;
+      model['_isMouseDown'] = true;
 
       model.moveImage(eventMock);
 
@@ -48,7 +68,7 @@ describe('ImageMoveModel', () => {
 
     it('Should NOT move an image, when mouse is NOT down', () => {
       const eventMock = { pageX: 100, pageY: 200 } as any as React.MouseEvent;
-      model['_isDown'] = false;
+      model['_isMouseDown'] = false;
 
       model.moveImage(eventMock);
 
