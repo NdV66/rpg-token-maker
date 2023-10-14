@@ -1,13 +1,8 @@
 import { TPosition, TSize } from 'types';
 
-const DOUBLE = 2;
+export const DOUBLE = 2;
 
-type TAction = (
-  imageSize: TSize,
-  mousePosition: TPosition,
-  A: TPosition,
-  offset: TPosition,
-) => TSize;
+type TAction = (imageSize: TSize, mousePosition: TPosition, A: TPosition, offset: TPosition) => TSize;
 
 export interface IResizeImageCalculationModel {
   calcSizeByPointA: TAction;
@@ -17,12 +12,7 @@ export interface IResizeImageCalculationModel {
 }
 
 export class ResizeImageCalculationModel {
-  public calcSizeByPointA(
-    imageSize: TSize,
-    mousePosition: TPosition,
-    A: TPosition,
-    offset: TPosition,
-  ) {
+  public calcSizeByPointA(imageSize: TSize, mousePosition: TPosition, A: TPosition, offset: TPosition) {
     const rawNewImageSize: TSize = { ...imageSize };
 
     if (mousePosition.x < A.x) rawNewImageSize.width += DOUBLE * offset.x;
@@ -34,12 +24,7 @@ export class ResizeImageCalculationModel {
     return rawNewImageSize;
   }
 
-  public calcSizeByPointB(
-    imageSize: TSize,
-    mousePosition: TPosition,
-    B: TPosition,
-    offset: TPosition,
-  ) {
+  public calcSizeByPointB(imageSize: TSize, mousePosition: TPosition, B: TPosition, offset: TPosition) {
     const rawNewImageSize: TSize = { ...imageSize };
 
     if (mousePosition.x < B.x) rawNewImageSize.width -= DOUBLE * offset.x;
@@ -51,12 +36,7 @@ export class ResizeImageCalculationModel {
     return rawNewImageSize;
   }
 
-  public calcSizeByPointC(
-    imageSize: TSize,
-    mousePosition: TPosition,
-    C: TPosition,
-    offset: TPosition,
-  ) {
+  public calcSizeByPointC(imageSize: TSize, mousePosition: TPosition, C: TPosition, offset: TPosition) {
     const rawNewImageSize: TSize = { ...imageSize };
     if (mousePosition.x < C.x) rawNewImageSize.width -= DOUBLE * offset.x;
     else rawNewImageSize.width += DOUBLE * offset.x;
@@ -67,12 +47,7 @@ export class ResizeImageCalculationModel {
     return rawNewImageSize;
   }
 
-  public calcSizeByPointD(
-    imageSize: TSize,
-    mousePosition: TPosition,
-    D: TPosition,
-    offset: TPosition,
-  ) {
+  public calcSizeByPointD(imageSize: TSize, mousePosition: TPosition, D: TPosition, offset: TPosition) {
     const rawNewImageSize: TSize = { ...imageSize };
 
     if (mousePosition.x < D.x) rawNewImageSize.width += DOUBLE * offset.x;

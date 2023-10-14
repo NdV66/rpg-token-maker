@@ -64,6 +64,12 @@ This project allows you to create an RPG token from your own image.
     - `/types` \
         All important types and all enums.
 
+## Naming of the image
+- `A` top left
+- `B` top right
+- `C` bottom right
+- `D` bottom left \
+![Image points and number lines](./doc/image.jpg "Title")
 
 ## Naming conventions
 - use camelCase
