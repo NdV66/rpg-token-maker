@@ -4,14 +4,14 @@ export const DOUBLE = 2;
 
 type TAction = (imageSize: TSize, mousePosition: TPosition, A: TPosition, offset: TPosition) => TSize;
 
-export interface IResizeImageCalculationModel {
+export interface IResizeImageCalculationPointsModel {
   calcSizeByPointA: TAction;
   calcSizeByPointB: TAction;
   calcSizeByPointC: TAction;
   calcSizeByPointD: TAction;
 }
 
-export class ResizeImageCalculationModel {
+export class ResizeImageCalculationPointsModel implements IResizeImageCalculationPointsModel {
   public calcSizeByPointA(imageSize: TSize, mousePosition: TPosition, A: TPosition, offset: TPosition) {
     const rawNewImageSize: TSize = { ...imageSize };
 

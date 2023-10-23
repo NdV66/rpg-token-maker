@@ -1,5 +1,5 @@
 import { ImageMoveModel } from 'models';
-import { makeTestScheduler } from 'tests/tools';
+import { makeTestScheduler } from './tools';
 import { TPosition } from 'types';
 
 const initialOffsetMock: TPosition = { x: 10, y: 20 };

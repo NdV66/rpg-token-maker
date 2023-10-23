@@ -1,6 +1,6 @@
 import { DrawImageOnCanvasModel, IImageLoaderModel } from 'models';
 import { TestScheduler } from 'rxjs/testing';
-import { makeTestScheduler } from 'tests/tools';
+import { makeTestScheduler } from './tools';
 
 const imageLoaderMock: IImageLoaderModel = {
   loadImage: jest.fn(),
@@ -8,7 +8,6 @@ const imageLoaderMock: IImageLoaderModel = {
 
 const defaultImageWidth = 300;
 const widthMock = 200;
-const heightMock = 600;
 const src = 'image.jpg';
 
 describe('DrawImageOnCanvasModel', () => {
@@ -35,12 +34,6 @@ describe('DrawImageOnCanvasModel', () => {
     });
   });
 
-  it('_calculateDrawHeight() - should calculate draw height correctly', () => {
-    const expectedDrawHeight = 900;
-    const result = model['_calculateDrawHeight'](defaultImageWidth, widthMock, heightMock);
-    expect(result).toBe(expectedDrawHeight);
-  });
-
   describe('loadImage()', () => {
     it('Should load an image without any problems', async () => {
       const widthMock = 200;
@@ -52,7 +45,6 @@ describe('DrawImageOnCanvasModel', () => {
       image.height = heightMock;
 
       imageLoaderMock.loadImage = jest.fn().mockResolvedValue(image);
-      model['_calculateDrawHeight'] = jest.fn().mockReturnValue(drawHeight);
 
       const expectResult = {
         drawHeight,

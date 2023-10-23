@@ -1,4 +1,4 @@
-import { ResizeImageCalculationModel, DOUBLE } from 'models/ResizeImageCalculationModel';
+import { ResizeImageCalculationPointsModel, DOUBLE } from 'models/ResizeImageCalculationPointsModel';
 import { TPosition, TSize } from 'types';
 
 const imageSize: TSize = { height: 100, width: 100 };
@@ -8,11 +8,11 @@ const calcAbsOffset = (point: TPosition, mousePosition: TPosition): TPosition =>
   y: Math.abs(point.y - mousePosition.y),
 });
 
-describe('ResizeImageCalculationModel', () => {
-  let model: ResizeImageCalculationModel;
+describe('ResizeImageCalculationPointsModel', () => {
+  let model: ResizeImageCalculationPointsModel;
 
   beforeEach(() => {
-    model = new ResizeImageCalculationModel();
+    model = new ResizeImageCalculationPointsModel();
   });
 
   describe('calcSizeByPointA() - Should calculate an image size by point A', () => {
