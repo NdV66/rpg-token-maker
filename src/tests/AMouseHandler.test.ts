@@ -31,7 +31,7 @@ describe('AMouseHandler', () => {
     });
   });
 
-  it('fromMouseEvent: Should convert event to observable', () => {
+  it('fromMouseEvent() - Should convert event to observable', () => {
     const trigger = 'mousemove';
     const element = document.createElement('div');
     const result$ = model.fromMouseEvent(element, trigger);

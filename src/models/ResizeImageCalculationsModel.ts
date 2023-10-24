@@ -23,6 +23,7 @@ export class ResizeImageCalculationsModel implements IResizeImageCalculationsMod
     return ratio * height;
   }
 
+  //minSize = one for width and height together
   public keepMinSize(newImageSize: TSize, minSize: number) {
     const size = { ...newImageSize };
     if (size.width < minSize) size.width = minSize;
