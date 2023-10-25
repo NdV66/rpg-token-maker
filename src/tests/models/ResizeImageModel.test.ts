@@ -1,5 +1,5 @@
 import { IResizeImageCalculationsModel, ResizeImageModel, imageResizeModelFactory } from 'models';
-import { appEnvMock } from './mocks';
+import { appEnvMock } from '../mocks';
 import { IResizeImageCalculationPointsModel } from 'models/ResizeImageCalculationPointsModel';
 import { EDotsNames, TPosition, TSize } from 'types';
 

@@ -1,6 +1,6 @@
 import { DrawImageOnCanvasModel, IImageLoaderModel } from 'models';
 import { TestScheduler } from 'rxjs/testing';
-import { makeTestScheduler } from './tools';
+import { makeTestScheduler } from '../tools';
 
 const imageLoaderMock: IImageLoaderModel = {
   loadImage: jest.fn(),
