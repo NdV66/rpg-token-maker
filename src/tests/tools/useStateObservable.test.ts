@@ -24,7 +24,7 @@ describe('useStateObservable', () => {
     expect(result.current).toEqual(initialValue);
   });
 
-  it.only('Should work, when observable is changed', () => {
+  it('Should work, when observable is changed', () => {
     const data1 = 11;
     const data2 = 22;
     const observable1$ = new Observable<number>((observer) => {

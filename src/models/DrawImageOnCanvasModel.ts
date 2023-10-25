@@ -10,11 +10,7 @@ type TCanvasSize = {
 
 export interface IDrawImageOnCanvasModel {
   canvasSize$: Observable<TCanvasSize>;
-
-  loadImage: (
-    imageSrc: string,
-    defaultImageWidth: number,
-  ) => Promise<{ drawHeight: number; image: HTMLImageElement }>;
+  loadImage: (imageSrc: string, defaultImageWidth: number) => Promise<{ drawHeight: number; image: HTMLImageElement }>;
   calculateCanvasSize: (drawHeight: number, width: number) => void;
 }
 
