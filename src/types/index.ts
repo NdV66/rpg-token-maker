@@ -7,3 +7,4 @@ export * from './IDrawImageOnCanvasViewModel';
 export * from './TDotsRef';
 export * from './EDotsNames';
 export * from './TResizeDots';
+export * from './TAppTheme';

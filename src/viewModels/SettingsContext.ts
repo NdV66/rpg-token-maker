@@ -1,8 +1,9 @@
 import { createContext } from 'react';
-import { TTranslations } from 'types';
+import { TAppTheme, TTranslations } from 'types';
 
 export type ISettingContext = {
   translations: TTranslations;
+  theme: TAppTheme;
 };
 
 export const SettingContext = createContext<ISettingContext>({} as ISettingContext);

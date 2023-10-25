@@ -3,11 +3,13 @@ import { enEN } from 'data';
 import { IDrawImageOnCanvasModel, IExportCanvasModel, IImageLoaderModel, IImageMoveModel, IImageResizeModelFactory, IResizeImageModel, ITopLeftCssCalculatorModel } from 'models';
 import { Subject } from 'rxjs';
 import { IAvatarFrameComponentViewModel, IAvatarImageComponentViewModel, IResizeAvatarImageComponentViewModel } from 'viewModels';
+import { DARK_THEME } from 'data/theme';
 
 export const commonErrorMock = new Error('mocked error');
 
 export const appEnvMock: TAppEnv = {
   translations: enEN,
+  theme: DARK_THEME,
   defaultImageWidth: 300, //the same in css
   defaultFrameSize: 200, //the same in css
   workspaceSize: 600, //the same in css
