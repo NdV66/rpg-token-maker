@@ -1,6 +1,8 @@
 import { TAppEnv } from 'types';
 import { enEN } from 'data';
-import { IImageLoaderModel } from 'models';
+import { IDrawImageOnCanvasModel, IExportCanvasModel, IImageLoaderModel, IImageMoveModel } from 'models';
+import { Subject } from 'rxjs';
+import { IAvatarFrameComponentViewModel, IAvatarImageComponentViewModel, IResizeAvatarImageComponentViewModel } from 'viewModels';
 
 export const commonErrorMock = new Error('mocked error');
 
@@ -14,4 +16,55 @@ export const appEnvMock: TAppEnv = {
 
 export const imageLoaderModelMock: IImageLoaderModel = {
   loadImage: jest.fn(),
+};
+
+export const drawImageOnCanvasModelMock: IDrawImageOnCanvasModel = {
+  calculateCanvasSize: jest.fn(),
+  canvasSize$: new Subject(),
+  loadImage: jest.fn(),
+};
+
+export const imageMoveModelMock: IImageMoveModel = {
+  elementOffset$: new Subject(),
+  setInitialElementOffset: jest.fn(),
+  finishMoveImage: jest.fn(),
+  moveImage: jest.fn(),
+  startMoveImage: jest.fn(),
+  updateElementPosition: jest.fn(),
+  fromMouseEvent: jest.fn(),
+  turnOffIsMouseDown: jest.fn(),
+  turnOnIsMouseDown: jest.fn(),
+};
+
+export const resizeAvatarViewModelMock: IResizeAvatarImageComponentViewModel = {
+  fromMouseEvent: jest.fn(),
+  turnOffIsMouseDown: jest.fn(),
+  turnOnIsMouseDown: jest.fn(),
+  currentSizeWithTopLeftPosition$: new Subject(),
+  handleResize: jest.fn(),
+  handleStartResize: jest.fn(),
+  handleFinishResize: jest.fn(),
+  prepareOffsetsForDots: jest.fn(),
+};
+
+export const avatarFrameComponentViewModelMock: IAvatarFrameComponentViewModel = {
+  calculateCanvasSize: jest.fn(),
+  canvasSize$: new Subject(),
+  loadImage: jest.fn(),
+};
+
+export const avatarImageComponentViewModelMock: IAvatarImageComponentViewModel = {
+  canvasSize$: new Subject(),
+  loadImage: jest.fn(),
+  calculateCanvasSize: jest.fn(),
+  elementOffset$: new Subject(),
+  setInitialElementOffset: jest.fn(),
+  turnOffIsMouseDown: jest.fn(),
+  fromMouseEvent: jest.fn(),
+  moveImage: jest.fn(),
+  startMoveImage: jest.fn(),
+};
+
+export const exportCanvasModelMock: IExportCanvasModel = {
+  exportToPng: jest.fn(),
 };

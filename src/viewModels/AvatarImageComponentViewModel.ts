@@ -5,7 +5,6 @@ import { IDrawImageOnCanvasViewModel, TCanvasSize, TPosition } from 'types';
 export interface IAvatarImageComponentViewModel extends IDrawImageOnCanvasViewModel {
   canvasSize$: Observable<TCanvasSize>;
   elementOffset$: Observable<TPosition>;
-
   setInitialElementOffset: (offset: TPosition) => void;
   turnOffIsMouseDown: () => void;
   fromMouseEvent: IImageMoveModel['fromMouseEvent'];
@@ -14,10 +13,7 @@ export interface IAvatarImageComponentViewModel extends IDrawImageOnCanvasViewMo
 }
 
 export class AvatarImageComponentViewModel implements IAvatarImageComponentViewModel {
-  constructor(
-    private readonly _drawImageOnCanvasModel: IDrawImageOnCanvasModel,
-    private readonly _imageMoveModel: IImageMoveModel,
-  ) {}
+  constructor(private readonly _drawImageOnCanvasModel: IDrawImageOnCanvasModel, private readonly _imageMoveModel: IImageMoveModel) {}
 
   public elementOffset$ = this._imageMoveModel.elementOffset$;
   public canvasSize$ = this._drawImageOnCanvasModel.canvasSize$;

@@ -1,12 +1,5 @@
-import { IDrawImageOnCanvasModel } from 'models';
-import { Subject } from 'rxjs';
+import { drawImageOnCanvasModelMock } from 'tests/mocks';
 import { AvatarFrameComponentViewModel } from 'viewModels';
-
-const drawImageOnCanvasModelMock: IDrawImageOnCanvasModel = {
-  calculateCanvasSize: jest.fn(),
-  canvasSize$: new Subject(),
-  loadImage: jest.fn(),
-};
 
 describe('AvatarFrameComponentViewModel', () => {
   let viewModel: AvatarFrameComponentViewModel;
