@@ -1,6 +1,6 @@
 import { TAppEnv } from 'types';
 import { enEN } from 'data';
-import { IDrawImageOnCanvasModel, IExportCanvasModel, IImageLoaderModel, IImageMoveModel } from 'models';
+import { IDrawImageOnCanvasModel, IExportCanvasModel, IImageLoaderModel, IImageMoveModel, IImageResizeModelFactory, IResizeImageModel, ITopLeftCssCalculatorModel } from 'models';
 import { Subject } from 'rxjs';
 import { IAvatarFrameComponentViewModel, IAvatarImageComponentViewModel, IResizeAvatarImageComponentViewModel } from 'viewModels';
 
@@ -67,4 +67,26 @@ export const avatarImageComponentViewModelMock: IAvatarImageComponentViewModel =
 
 export const exportCanvasModelMock: IExportCanvasModel = {
   exportToPng: jest.fn(),
+};
+
+export const moveImageViewModelMock: IImageMoveModel = {
+  fromMouseEvent: jest.fn(),
+  turnOffIsMouseDown: jest.fn(),
+  turnOnIsMouseDown: jest.fn(),
+  elementOffset$: new Subject(),
+  setInitialElementOffset: jest.fn(),
+  finishMoveImage: jest.fn(),
+  moveImage: jest.fn(),
+  startMoveImage: jest.fn(),
+  updateElementPosition: jest.fn(),
+};
+
+export const resizeImageModelMock: IResizeImageModel = {
+  calcResize: jest.fn(),
+};
+
+export const imageResizeModelFactoryMock: IImageResizeModelFactory = jest.fn().mockReturnValue(resizeImageModelMock);
+
+export const topLeftCssCalculatorMock: ITopLeftCssCalculatorModel = {
+  calcTopLeftCss: jest.fn(),
 };

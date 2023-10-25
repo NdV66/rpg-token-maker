@@ -7,7 +7,7 @@ type TCanvasSizeWithOffset = {
   offset: TPosition;
 };
 
-const DEFAULT_SIZE: TCanvasSizeWithOffset = {
+export const DEFAULT_SIZE: TCanvasSizeWithOffset = {
   size: {
     height: 0,
     styleHeight: 0,
