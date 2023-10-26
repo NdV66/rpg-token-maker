@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import { IMainComponentViewModel } from 'viewModels';
 
 type Props = {
@@ -12,9 +13,5 @@ export const ExportCanvasComponent = ({ exportToPng, imageCanvasRef, frameCanvas
     window.open(exportData, '_blank');
   };
 
-  return (
-    <button onClick={exportAsImage} className="export-button">
-      EXPORT TEST IMAGE
-    </button>
-  );
+  return <Button onClick={exportAsImage}>EXPORT TEST IMAGE</Button>;
 };

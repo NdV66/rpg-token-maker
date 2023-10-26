@@ -9,7 +9,7 @@ import {
   ResizeImageCalculationPointsModel,
   ResizeImageCalculationsModel,
 } from 'models';
-import { MainComponentViewModel, ResizeAvatarImageComponentViewModel, AvatarFrameComponentViewModel, AvatarImageComponentViewModel } from 'viewModels';
+import { ResizeComponentViewModel, ResizeAvatarImageComponentViewModel, AvatarFrameComponentViewModel, AvatarImageComponentViewModel } from 'viewModels';
 
 const imageLoaderModel = new ImageLoaderModel();
 const exportCanvasModel = new ExportCanvasModel(APP_ENV, imageLoaderModel);
@@ -29,4 +29,10 @@ const resizeAvatarViewModel = new ResizeAvatarImageComponentViewModel(
   topLeftCssCalculatorModel,
 );
 
-export const mainComponentViewModel = new MainComponentViewModel(APP_ENV, resizeAvatarViewModel, avatarFrameComponentViewModel, avatarImageComponentViewModel, exportCanvasModel);
+export const resizeComponentViewModel = new ResizeComponentViewModel(
+  APP_ENV,
+  resizeAvatarViewModel,
+  avatarFrameComponentViewModel,
+  avatarImageComponentViewModel,
+  exportCanvasModel,
+);

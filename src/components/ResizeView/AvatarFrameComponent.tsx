@@ -1,5 +1,5 @@
 import { IAvatarFrameComponentViewModel } from 'viewModels';
-import { useDrawAnyImageOnCanvas } from './useDrawAnyImageOnCanvas';
+import { useDrawAnyImageOnCanvas } from './hooks/useDrawAnyImageOnCanvas';
 
 import frame from 'data/frame.png'; //TODO load
 

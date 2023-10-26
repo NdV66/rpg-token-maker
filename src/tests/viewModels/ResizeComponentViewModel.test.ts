@@ -1,11 +1,11 @@
 import { appEnvMock, avatarFrameComponentViewModelMock, avatarImageComponentViewModelMock, exportCanvasModelMock, resizeAvatarViewModelMock } from 'tests/mocks';
-import { MainComponentViewModel } from 'viewModels';
+import { ResizeComponentViewModel } from 'viewModels';
 
-describe('MainComponentViewModel', () => {
-  let viewModel: MainComponentViewModel;
+describe('ResizeComponentViewModel', () => {
+  let viewModel: ResizeComponentViewModel;
 
   beforeEach(() => {
-    viewModel = new MainComponentViewModel(appEnvMock, resizeAvatarViewModelMock, avatarFrameComponentViewModelMock, avatarImageComponentViewModelMock, exportCanvasModelMock);
+    viewModel = new ResizeComponentViewModel(appEnvMock, resizeAvatarViewModelMock, avatarFrameComponentViewModelMock, avatarImageComponentViewModelMock, exportCanvasModelMock);
   });
 
   it('Should export to png', () => {

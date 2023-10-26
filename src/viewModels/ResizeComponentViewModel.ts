@@ -15,7 +15,7 @@ export interface IMainComponentViewModel {
   exportToPng: IExportCanvasModel['exportToPng'];
 }
 
-export class MainComponentViewModel implements IMainComponentViewModel {
+export class ResizeComponentViewModel implements IMainComponentViewModel {
   constructor(
     private _appEnv: TAppEnv,
     public readonly resizeAvatarViewModel: IResizeAvatarImageComponentViewModel,

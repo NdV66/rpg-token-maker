@@ -1,16 +1,16 @@
 import { ThemeProvider, CssBaseline } from '@mui/material';
-import { MainComponent } from '../MainComponent/MainComponent';
+import { ResizeView } from '../ResizeView';
 import { IMainComponentViewModel } from 'viewModels';
 import { useMuiTheme } from '../useMuiTheme';
 import { useSettingsContext } from '../SettingsContextComponent';
 import { AppNavbarView } from './AppNavbarView';
-import { MainComponentWrapper } from './MainComponentWrapper';
+import { ResizeViewWrapper } from './ResizeViewWrapper';
 
 type Props = {
-  mainComponentViewModel: IMainComponentViewModel;
+  resizeComponentViewModel: IMainComponentViewModel;
 };
 
-export const HomePage = ({ mainComponentViewModel }: Props) => {
+export const HomePage = ({ resizeComponentViewModel }: Props) => {
   const { theme } = useSettingsContext();
   const muiTheme = useMuiTheme(theme);
 
@@ -23,9 +23,9 @@ export const HomePage = ({ mainComponentViewModel }: Props) => {
       </header>
 
       <main role="main">
-        <MainComponentWrapper>
-          <MainComponent mainComponentViewModel={mainComponentViewModel} />
-        </MainComponentWrapper>
+        <ResizeViewWrapper>
+          <ResizeView resizeComponentViewModel={resizeComponentViewModel} />
+        </ResizeViewWrapper>
       </main>
     </ThemeProvider>
   );

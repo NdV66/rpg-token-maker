@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
-import { useResizeImage } from './useResizeImage';
+import { useResizeImage } from './hooks/useResizeImage';
 import { EDotsNames, TDotsRef } from 'types';
-import { ResizeDot } from './ResizeDot';
+import { ResizeDot } from './ResizeDot/ResizeDot';
 import { ResizeWorkArea } from './ResizeWorkArea';
 
 type Props = {
