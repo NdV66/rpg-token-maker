@@ -1,5 +1,5 @@
 import { AppBar, Typography, Box, Toolbar } from '@mui/material';
-import { useSettingsContext } from './SettingsContextComponent';
+import { useSettingsContext } from '../SettingsContextComponent';
 
 export const AppNavbarView = () => {
   const { translations } = useSettingsContext();

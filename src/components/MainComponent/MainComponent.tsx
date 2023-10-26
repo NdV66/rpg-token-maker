@@ -15,12 +15,8 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
   return (
-    <>
-      <ExportCanvasComponent
-        exportToPng={mainComponentViewModel.exportToPng}
-        frameCanvasRef={frameCanvasRef}
-        imageCanvasRef={imageCanvasRef}
-      />
+    <div>
+      <ExportCanvasComponent exportToPng={mainComponentViewModel.exportToPng} frameCanvasRef={frameCanvasRef} imageCanvasRef={imageCanvasRef} />
 
       <div
         className="area"
@@ -33,17 +29,10 @@ export const MainComponent = ({ mainComponentViewModel }: Props) => {
           defaultWidth={mainComponentViewModel.defaultAvatarImageWidth}
           viewModel={mainComponentViewModel.avatarImageComponentViewModel}
         />
-        <ResizeAvatarImageComponent
-          viewModel={mainComponentViewModel.resizeAvatarViewModel}
-          imageRef={imageCanvasRef}
-        />
+        <ResizeAvatarImageComponent viewModel={mainComponentViewModel.resizeAvatarViewModel} imageRef={imageCanvasRef} />
 
-        <AvatarFrameComponent
-          canvasRef={frameCanvasRef}
-          size={mainComponentViewModel.avatarFrameSize}
-          viewModel={mainComponentViewModel.avatarFrameComponentViewModel}
-        />
+        <AvatarFrameComponent canvasRef={frameCanvasRef} size={mainComponentViewModel.avatarFrameSize} viewModel={mainComponentViewModel.avatarFrameComponentViewModel} />
       </div>
-    </>
+    </div>
   );
 };

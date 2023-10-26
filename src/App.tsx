@@ -1,6 +1,6 @@
 import { APP_ENV } from 'appEnv';
 import { SettingContextWrapper } from 'components';
-import { HomePage } from 'components/HomeView';
+import { HomePage } from 'components/HomeView/HomeView';
 import { mainComponentViewModel } from 'modelBuilder';
 
 export const App = () => (

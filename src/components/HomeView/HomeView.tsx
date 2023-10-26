@@ -1,9 +1,10 @@
 import { ThemeProvider, CssBaseline } from '@mui/material';
-import { MainComponent } from './MainComponent/MainComponent';
+import { MainComponent } from '../MainComponent/MainComponent';
 import { IMainComponentViewModel } from 'viewModels';
-import { useMuiTheme } from './useMuiTheme';
-import { useSettingsContext } from './SettingsContextComponent';
+import { useMuiTheme } from '../useMuiTheme';
+import { useSettingsContext } from '../SettingsContextComponent';
 import { AppNavbarView } from './AppNavbarView';
+import { MainComponentWrapper } from './MainComponentWrapper';
 
 type Props = {
   mainComponentViewModel: IMainComponentViewModel;
@@ -22,7 +23,9 @@ export const HomePage = ({ mainComponentViewModel }: Props) => {
       </header>
 
       <main role="main">
-        <MainComponent mainComponentViewModel={mainComponentViewModel} />
+        <MainComponentWrapper>
+          <MainComponent mainComponentViewModel={mainComponentViewModel} />
+        </MainComponentWrapper>
       </main>
     </ThemeProvider>
   );

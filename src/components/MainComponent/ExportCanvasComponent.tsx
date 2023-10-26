@@ -13,7 +13,7 @@ export const ExportCanvasComponent = ({ exportToPng, imageCanvasRef, frameCanvas
   };
 
   return (
-    <button onClick={exportAsImage} className="export-button ">
+    <button onClick={exportAsImage} className="export-button">
       EXPORT TEST IMAGE
     </button>
   );
