@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 
-export const WORKSPACE_SIZE_PX = 600;
+type Props = {
+  size: number;
+};
 
-export const ResizeArea = styled('div')(() => ({
-  width: WORKSPACE_SIZE_PX,
-  height: WORKSPACE_SIZE_PX,
+export const ResizeArea = styled('div')<Props>(({ theme, size }) => ({
+  width: size,
+  height: size,
   overflow: 'hidden',
   position: 'relative',
   zIndex: 1,

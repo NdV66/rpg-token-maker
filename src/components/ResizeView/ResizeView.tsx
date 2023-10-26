@@ -6,18 +6,21 @@ import { AvatarImageComponent } from './AvatarImageComponent';
 import { ExportCanvasComponent } from './ExportCanvasComponent';
 import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
 import { ResizeArea } from './ResizeArea';
+import { useSettingsContext } from 'components/SettingsContextComponent';
 
 type Props = {
   resizeComponentViewModel: IMainComponentViewModel;
 };
 
 export const ResizeView = ({ resizeComponentViewModel }: Props) => {
+  const { workspaceSize } = useSettingsContext();
   const frameCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
   return (
     <div>
       <ResizeArea
+        size={workspaceSize}
         onMouseLeave={() => {
           resizeComponentViewModel.avatarImageComponentViewModel.turnOffIsMouseDown();
         }}

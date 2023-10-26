@@ -4,7 +4,7 @@ import { HomePage } from 'components/HomeView/HomeView';
 import { resizeComponentViewModel } from 'modelBuilder';
 
 export const App = () => (
-  <SettingContextWrapper translations={APP_ENV.translations} theme={APP_ENV.theme}>
+  <SettingContextWrapper appEnv={APP_ENV}>
     <HomePage resizeComponentViewModel={resizeComponentViewModel} />
   </SettingContextWrapper>
 );
