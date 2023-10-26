@@ -6,14 +6,6 @@
     z-index: 10;
 }
 
-.area {
-    width: 600px;
-    height: 600px;
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-}
-
 .frame {
     $size: 200px; //the same as in env!!!
     width: $size;

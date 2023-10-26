@@ -5,6 +5,7 @@ import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
 import { ExportCanvasComponent } from './ExportCanvasComponent';
 import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
+import { ResizeArea } from './ResizeArea';
 
 type Props = {
   resizeComponentViewModel: IMainComponentViewModel;
@@ -16,8 +17,7 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
 
   return (
     <div>
-      <div
-        className="area"
+      <ResizeArea
         onMouseLeave={() => {
           resizeComponentViewModel.avatarImageComponentViewModel.turnOffIsMouseDown();
         }}
@@ -30,7 +30,7 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
         <ResizeAvatarImageComponent viewModel={resizeComponentViewModel.resizeAvatarViewModel} imageRef={imageCanvasRef} />
 
         <AvatarFrameComponent canvasRef={frameCanvasRef} size={resizeComponentViewModel.avatarFrameSize} viewModel={resizeComponentViewModel.avatarFrameComponentViewModel} />
-      </div>
+      </ResizeArea>
 
       <ExportCanvasComponent exportToPng={resizeComponentViewModel.exportToPng} frameCanvasRef={frameCanvasRef} imageCanvasRef={imageCanvasRef} />
     </div>
