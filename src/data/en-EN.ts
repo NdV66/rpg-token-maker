@@ -4,4 +4,5 @@ export const enEN: TTranslations = {
   lang: 'en-EN',
   langName: 'English',
   name: 'rpgToken',
+  exportImageToPng: 'Export image (png)',
 };

@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const ResizeView = ({ resizeComponentViewModel }: Props) => {
-  const { workspaceSize } = useSettingsContext();
+  const { workspaceSize, translations } = useSettingsContext();
   const frameCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -35,7 +35,9 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
         <AvatarFrameComponent canvasRef={frameCanvasRef} size={resizeComponentViewModel.avatarFrameSize} viewModel={resizeComponentViewModel.avatarFrameComponentViewModel} />
       </ResizeArea>
 
-      <ExportCanvasComponent exportToPng={resizeComponentViewModel.exportToPng} frameCanvasRef={frameCanvasRef} imageCanvasRef={imageCanvasRef} />
+      <ExportCanvasComponent exportToPng={resizeComponentViewModel.exportToPng} frameCanvasRef={frameCanvasRef} imageCanvasRef={imageCanvasRef}>
+        {translations.exportImageToPng}
+      </ExportCanvasComponent>
     </div>
   );
 };

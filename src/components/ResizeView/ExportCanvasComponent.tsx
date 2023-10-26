@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import { PropsWithChildren } from 'react';
 import { IMainComponentViewModel } from 'viewModels';
 
 type Props = {
@@ -7,11 +8,11 @@ type Props = {
   imageCanvasRef: React.RefObject<HTMLCanvasElement>;
 };
 
-export const ExportCanvasComponent = ({ exportToPng, imageCanvasRef, frameCanvasRef }: Props) => {
+export const ExportCanvasComponent = ({ exportToPng, imageCanvasRef, frameCanvasRef, children }: PropsWithChildren<Props>) => {
   const exportAsImage = async () => {
     const exportData = await exportToPng(imageCanvasRef.current!, frameCanvasRef.current!);
     window.open(exportData, '_blank');
   };
 
-  return <Button onClick={exportAsImage}>EXPORT TEST IMAGE</Button>;
+  return <Button onClick={exportAsImage}>{children}</Button>;
 };
