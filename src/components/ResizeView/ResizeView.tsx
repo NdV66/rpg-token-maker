@@ -26,6 +26,7 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
         }}
       >
         <AvatarImageComponent
+          workspaceSize={workspaceSize}
           canvasRef={imageCanvasRef}
           defaultWidth={resizeComponentViewModel.defaultAvatarImageWidth}
           viewModel={resizeComponentViewModel.avatarImageComponentViewModel}

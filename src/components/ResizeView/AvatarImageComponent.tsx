@@ -8,14 +8,22 @@ import { useDrawAnyImageOnCanvas } from './hooks/useDrawAnyImageOnCanvas';
 import { styled } from '@mui/material';
 
 type Props = {
+  workspaceSize: number;
   defaultWidth: number;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   viewModel: IAvatarImageComponentViewModel;
 };
 
-export const AvatarImageComponent = ({ defaultWidth, canvasRef, viewModel }: Props) => {
+export const AvatarImageComponent = ({ defaultWidth, canvasRef, viewModel, workspaceSize }: Props) => {
   useDrawAnyImageOnCanvas(img, defaultWidth, viewModel, canvasRef);
   useImageOnCanvasMoveViewModel(viewModel, canvasRef);
+
+  viewModel.canvasSize$.subscribe((size) => {
+    const top = (workspaceSize - size.height) / 2;
+    const left = (workspaceSize - size.width) / 2;
+
+    viewModel.setInitialElementOffset({ x: left, y: top });
+  });
 
   return <AvatarImageComponentStyled ref={canvasRef} className="image-canvas" />;
 };

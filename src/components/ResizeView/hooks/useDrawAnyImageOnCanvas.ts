@@ -4,18 +4,8 @@ import { IDrawImageOnCanvasViewModel, TCanvasSize } from 'types';
 
 //https://github.com/Automattic/node-canvas/issues/1271
 
-export const useDrawAnyImageOnCanvas = (
-  imgSrc: string,
-  defaultImageWidth: number,
-  viewModel: IDrawImageOnCanvasViewModel,
-  canvasRef: React.RefObject<HTMLCanvasElement>,
-) => {
-  const drawImageOnCanvas = (
-    canvas: HTMLCanvasElement,
-    size: TCanvasSize,
-    context: CanvasRenderingContext2D,
-    image: HTMLImageElement,
-  ) => {
+export const useDrawAnyImageOnCanvas = (imgSrc: string, defaultImageWidth: number, viewModel: IDrawImageOnCanvasViewModel, canvasRef: React.RefObject<HTMLCanvasElement>) => {
+  const drawImageOnCanvas = (canvas: HTMLCanvasElement, size: TCanvasSize, context: CanvasRenderingContext2D, image: HTMLImageElement) => {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     canvas.width = size.width;
