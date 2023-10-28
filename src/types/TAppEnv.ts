@@ -6,6 +6,7 @@ export type TAppEnv = {
   theme: TAppTheme;
   defaultImageWidth: number;
   defaultFrameSize: number;
-  workspaceSize: number; //TODO: separate width and height
+  workspaceSizeWidth: number;
+  workspaceSizeHeight: number;
   minImageSize: number;
 };

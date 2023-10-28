@@ -30,8 +30,8 @@ describe('ExportCanvasModel', () => {
     const layer = model['_prepareCanvasForMergeLayers']();
 
     expect(layer instanceof HTMLCanvasElement).toBe(true);
-    expect(layer.width).toBe(appEnvMock.workspaceSize);
-    expect(layer.height).toBe(appEnvMock.workspaceSize);
+    expect(layer.width).toBe(appEnvMock.workspaceSizeWidth);
+    expect(layer.height).toBe(appEnvMock.workspaceSizeHeight);
   });
 
   it('_prepareFinalCanvas() - Should prepare final canvas to contain final merged layers, based on avatar frame size', () => {
