@@ -114,3 +114,5 @@ This project allows you to create an RPG token from your own image.
 - file name should be the same as the pageComponent name
 - can use RxJS (if needed)
 - all logic should be placed inside its own hook (often in the same file)
+
+The sample image (avatar) is from [here](https://www.duitang.com/blog/?id=1172580997).
