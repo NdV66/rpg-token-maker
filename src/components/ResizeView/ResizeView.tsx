@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { Box } from '@mui/material';
+
 import { IResizeComponentViewModel } from 'viewModels';
 import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
@@ -7,7 +8,6 @@ import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
 import { ResizeArea } from './ResizeArea';
 import { useSettingsContext } from 'components/SettingsContextComponent';
 import { ExportCanvasButton } from './ExportCanvasButton';
-import img from 'data/other3.jpeg'; //TODO load
 import { UploadImageComponent } from './UploadImageComponent';
 import { useStateObservable } from 'tools';
 import { ResizeWorkArea } from './ResizeWorkArea';
@@ -20,9 +20,7 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
   const { workspaceSizeHeight, workspaceSizeWidth, translations } = useSettingsContext();
   const frameCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
-
   const img = useStateObservable(resizeComponentViewModel.currentImageSrc);
-  console.log(img);
 
   return (
     <Box textAlign="right">
@@ -35,7 +33,7 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
           resizeComponentViewModel.avatarImageComponentViewModel.turnOffIsMouseDown();
         }}
       >
-        {img && (
+        {img ? (
           <>
             <AvatarImageComponent
               imageSrc={img}
@@ -47,6 +45,8 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
             />
             <ResizeAvatarImageComponent viewModel={resizeComponentViewModel.resizeAvatarViewModel} imageRef={imageCanvasRef} />
           </>
+        ) : (
+          <ResizeWorkArea />
         )}
         <AvatarFrameComponent canvasRef={frameCanvasRef} size={resizeComponentViewModel.avatarFrameSize} viewModel={resizeComponentViewModel.avatarFrameComponentViewModel} />
       </ResizeArea>
