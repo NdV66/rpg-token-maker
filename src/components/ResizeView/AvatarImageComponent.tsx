@@ -1,10 +1,7 @@
-import { IAvatarImageComponentViewModel } from 'viewModels';
-
-import { useImageOnCanvasMoveViewModel } from './hooks/useImageOnCanvasMoveViewModel';
-
-import img from 'data/other3.jpeg'; //TODO load
-import { useDrawAnyImageOnCanvas } from './hooks/useDrawAnyImageOnCanvas';
 import { styled } from '@mui/material';
+import { IAvatarImageComponentViewModel } from 'viewModels';
+import { useImageOnCanvasMoveViewModel } from './hooks/useImageOnCanvasMoveViewModel';
+import { useDrawAnyImageOnCanvas } from './hooks/useDrawAnyImageOnCanvas';
 
 type Props = {
   workspaceSizeWidth: number;
@@ -12,10 +9,11 @@ type Props = {
   defaultWidth: number;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   viewModel: IAvatarImageComponentViewModel;
+  imageSrc: string;
 };
 
-export const AvatarImageComponent = ({ defaultWidth, canvasRef, viewModel, workspaceSizeHeight, workspaceSizeWidth }: Props) => {
-  useDrawAnyImageOnCanvas(img, defaultWidth, viewModel, canvasRef);
+export const AvatarImageComponent = ({ defaultWidth, canvasRef, viewModel, workspaceSizeHeight, workspaceSizeWidth, imageSrc }: Props) => {
+  useDrawAnyImageOnCanvas(imageSrc, defaultWidth, viewModel, canvasRef);
   useImageOnCanvasMoveViewModel(viewModel, canvasRef);
 
   viewModel.canvasSize$.subscribe((size) => {

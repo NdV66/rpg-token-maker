@@ -7,6 +7,7 @@ import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
 import { ResizeArea } from './ResizeArea';
 import { useSettingsContext } from 'components/SettingsContextComponent';
 import { ExportCanvasButton } from './ExportCanvasButton';
+import img from 'data/other3.jpeg'; //TODO load
 
 type Props = {
   resizeComponentViewModel: IMainComponentViewModel;
@@ -27,6 +28,7 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
         }}
       >
         <AvatarImageComponent
+          imageSrc={img}
           workspaceSizeHeight={workspaceSizeHeight}
           workspaceSizeWidth={workspaceSizeWidth}
           canvasRef={imageCanvasRef}
