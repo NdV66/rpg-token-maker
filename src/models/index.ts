@@ -7,3 +7,4 @@ export * from './ResizeImageModel';
 export * from './TopLeftCssCalculatorModel';
 export * from './ResizeImageCalculationsModel';
 export * from './ResizeImageCalculationPointsModel';
+export * from './ImageUploadModel';

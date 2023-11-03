@@ -2,15 +2,17 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { TTranslations } from 'types';
+import { IImageUploadViewModel } from 'viewModels';
 
 type Props = {
   translations: TTranslations;
+  viewModel: IImageUploadViewModel;
 };
 
-export const UploadImageComponent = ({ translations }: Props) => (
+export const UploadImageComponent = ({ translations, viewModel }: Props) => (
   <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
     {translations.uploadAvatar}
-    <VisuallyHiddenInput type="file" />
+    <VisuallyHiddenInput type="file" onChange={(event) => viewModel.uploadImage(event?.target?.files?.[0])} />
   </Button>
 );
 

@@ -9,6 +9,8 @@ import { useSettingsContext } from 'components/SettingsContextComponent';
 import { ExportCanvasButton } from './ExportCanvasButton';
 import img from 'data/other3.jpeg'; //TODO load
 import { UploadImageComponent } from './UploadImageComponent';
+import { useStateObservable } from 'tools';
+import { ResizeWorkArea } from './ResizeWorkArea';
 
 type Props = {
   resizeComponentViewModel: IResizeComponentViewModel;
@@ -19,9 +21,12 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
   const frameCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
+  const img = useStateObservable(resizeComponentViewModel.currentImageSrc);
+  console.log(img);
+
   return (
     <Box textAlign="right">
-      <UploadImageComponent translations={translations} />
+      <UploadImageComponent translations={translations} viewModel={resizeComponentViewModel} />
 
       <ResizeArea
         width={workspaceSizeWidth}
@@ -30,15 +35,19 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
           resizeComponentViewModel.avatarImageComponentViewModel.turnOffIsMouseDown();
         }}
       >
-        <AvatarImageComponent
-          imageSrc={img}
-          workspaceSizeHeight={workspaceSizeHeight}
-          workspaceSizeWidth={workspaceSizeWidth}
-          canvasRef={imageCanvasRef}
-          defaultWidth={resizeComponentViewModel.defaultAvatarImageWidth}
-          viewModel={resizeComponentViewModel.avatarImageComponentViewModel}
-        />
-        <ResizeAvatarImageComponent viewModel={resizeComponentViewModel.resizeAvatarViewModel} imageRef={imageCanvasRef} />
+        {img && (
+          <>
+            <AvatarImageComponent
+              imageSrc={img}
+              workspaceSizeHeight={workspaceSizeHeight}
+              workspaceSizeWidth={workspaceSizeWidth}
+              canvasRef={imageCanvasRef}
+              defaultWidth={resizeComponentViewModel.defaultAvatarImageWidth}
+              viewModel={resizeComponentViewModel.avatarImageComponentViewModel}
+            />
+            <ResizeAvatarImageComponent viewModel={resizeComponentViewModel.resizeAvatarViewModel} imageRef={imageCanvasRef} />
+          </>
+        )}
         <AvatarFrameComponent canvasRef={frameCanvasRef} size={resizeComponentViewModel.avatarFrameSize} viewModel={resizeComponentViewModel.avatarFrameComponentViewModel} />
       </ResizeArea>
 
