@@ -1,10 +1,13 @@
 import { TAppEnv } from 'types';
 import { enEN } from 'data';
+import { DARK_THEME } from 'data/theme';
 
 export const APP_ENV: TAppEnv = {
   translations: enEN,
-  defaultImageWidth: 300, //the same in css
-  defaultFrameSize: 200, //the same in css
-  workspaceSize: 600, //the same in css
+  theme: DARK_THEME,
+  defaultImageWidth: 300,
+  defaultFrameSize: 200,
+  workspaceSizeWidth: 800,
+  workspaceSizeHeight: 800,
   minImageSize: 100,
 };

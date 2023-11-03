@@ -1,7 +1,9 @@
 import { useRef } from 'react';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
-import { useResizeImage } from './useResizeImage';
+import { useResizeImage } from './hooks/useResizeImage';
 import { EDotsNames, TDotsRef } from 'types';
+import { ResizeDot } from './ResizeDot/ResizeDot';
+import { ResizeWorkArea } from './ResizeWorkArea';
 
 type Props = {
   viewModel: IResizeAvatarImageComponentViewModel;
@@ -19,15 +21,10 @@ export const ResizeAvatarImageComponent = ({ viewModel, imageRef }: Props) => {
   };
 
   return (
-    <div className="resize-avatar">
+    <ResizeWorkArea>
       {values.map((key) => (
-        <div
-          className="resize-dot"
-          key={key}
-          ref={(element) => addRef(element, key)}
-          onMouseLeave={() => viewModel.turnOffIsMouseDown()} //maybe turn off after time?
-        />
+        <ResizeDot key={key} ref={(element) => addRef(element, key)} onMouseLeave={() => viewModel.turnOffIsMouseDown()} />
       ))}
-    </div>
+    </ResizeWorkArea>
   );
 };

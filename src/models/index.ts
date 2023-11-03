@@ -5,3 +5,5 @@ export * from './ImageMoveModel';
 export * from './AMouseHandler';
 export * from './ResizeImageModel';
 export * from './TopLeftCssCalculatorModel';
+export * from './ResizeImageCalculationsModel';
+export * from './ResizeImageCalculationPointsModel';

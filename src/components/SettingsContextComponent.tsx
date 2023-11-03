@@ -1,13 +1,15 @@
 import { PropsWithChildren, useContext } from 'react';
 import { SettingContext } from 'viewModels';
-import { TTranslations } from 'types';
+import { TAppEnv } from 'types';
 
 type Props = {
-  translations: TTranslations;
+  appEnv: TAppEnv;
 };
 
-export const SettingContextWrapper = ({ translations, children }: PropsWithChildren<Props>) => {
-  const value = { translations };
+export const SettingContextWrapper = ({ appEnv, children }: PropsWithChildren<Props>) => {
+  const value = {
+    ...appEnv,
+  };
 
   return <SettingContext.Provider value={value}>{children}</SettingContext.Provider>;
 };

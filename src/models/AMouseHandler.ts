@@ -1,27 +1,24 @@
 import { Observable, fromEvent, map } from 'rxjs';
 
 export interface IAMouseHandler {
-  fromMouseEvent: <T extends HTMLElement>(
-    element: T,
-    trigger: string,
-  ) => Observable<React.MouseEvent<Element, MouseEvent>>;
+  fromMouseEvent: <T extends HTMLElement>(element: T, trigger: string) => Observable<React.MouseEvent<Element, MouseEvent>>;
   turnOffIsMouseDown: () => void;
   turnOnIsMouseDown: () => void;
 }
 
 export abstract class AMouseHandler implements IAMouseHandler {
-  private _isDown = false;
+  private _isMouseDown = false;
 
   public turnOffIsMouseDown = () => {
-    this._isDown = false;
+    this._isMouseDown = false;
   };
 
   public turnOnIsMouseDown = () => {
-    this._isDown = true;
+    this._isMouseDown = true;
   };
 
   protected get isMouseDown() {
-    return this._isDown;
+    return this._isMouseDown;
   }
 
   public fromMouseEvent<T extends HTMLElement>(element: T, trigger: string) {

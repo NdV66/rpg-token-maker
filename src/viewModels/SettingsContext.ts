@@ -1,8 +1,6 @@
 import { createContext } from 'react';
-import { TTranslations } from 'types';
+import { TAppEnv } from 'types';
 
-export type ISettingContext = {
-  translations: TTranslations;
-};
+export type ISettingContext = TAppEnv;
 
 export const SettingContext = createContext<ISettingContext>({} as ISettingContext);

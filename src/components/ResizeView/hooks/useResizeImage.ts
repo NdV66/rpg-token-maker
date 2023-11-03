@@ -1,13 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import { EDotsNames, TDotsRef } from 'types';
 import { IResizeAvatarImageComponentViewModel } from 'viewModels';
-import { updateDotsPositions } from './tools';
+import { updateDotsPositions } from '../ResizeDot/tools';
 
-export const useResizeImage = (
-  viewModel: IResizeAvatarImageComponentViewModel,
-  dotsRefs: React.MutableRefObject<TDotsRef>,
-  imageRef: React.RefObject<HTMLCanvasElement>,
-) => {
+export const useResizeImage = (viewModel: IResizeAvatarImageComponentViewModel, dotsRefs: React.MutableRefObject<TDotsRef>, imageRef: React.RefObject<HTMLCanvasElement>) => {
   const subscribeToStyleDots = useCallback(
     (elements: TDotsRef) =>
       viewModel.currentSizeWithTopLeftPosition$.subscribe(({ offset, size }) => {
@@ -40,11 +36,9 @@ export const useResizeImage = (
   const subscribeToMouseMove = useCallback(
     (keys: string[], image: HTMLCanvasElement, elements: TDotsRef) =>
       keys.map((key) => {
-        return viewModel
-          .fromMouseEvent(elements[key as EDotsNames], 'mousemove')
-          .subscribe((event) => {
-            viewModel.handleResize(key as EDotsNames, event, image);
-          });
+        return viewModel.fromMouseEvent(elements[key as EDotsNames], 'mousemove').subscribe((event) => {
+          viewModel.handleResize(key as EDotsNames, event, image);
+        });
       }),
     [viewModel],
   );
@@ -68,13 +62,5 @@ export const useResizeImage = (
         styleDots$.unsubscribe();
       };
     }
-  }, [
-    viewModel,
-    dotsRefs,
-    imageRef,
-    subscribeToStyleDots,
-    subscribeToMouseUp,
-    subscribeToMouseDown,
-    subscribeToMouseMove,
-  ]);
+  }, [viewModel, dotsRefs, imageRef, subscribeToStyleDots, subscribeToMouseUp, subscribeToMouseDown, subscribeToMouseMove]);
 };

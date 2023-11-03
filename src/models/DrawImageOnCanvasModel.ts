@@ -10,15 +10,11 @@ type TCanvasSize = {
 
 export interface IDrawImageOnCanvasModel {
   canvasSize$: Observable<TCanvasSize>;
-
-  loadImage: (
-    imageSrc: string,
-    defaultImageWidth: number,
-  ) => Promise<{ drawHeight: number; image: HTMLImageElement }>;
+  loadImage: (imageSrc: string, defaultImageWidth: number) => Promise<{ drawHeight: number; image: HTMLImageElement }>;
   calculateCanvasSize: (drawHeight: number, width: number) => void;
 }
 
-const DEFAULT_SIZE: TCanvasSize = {
+export const DEFAULT_SIZE: TCanvasSize = {
   height: 0,
   styleHeight: 0,
   width: 0,
@@ -31,11 +27,15 @@ export class DrawImageOnCanvasModel implements IDrawImageOnCanvasModel {
 
   constructor(private readonly _imageLoader: IImageLoaderModel) {}
 
+  private _calculateDrawHeight(defaultImageWidth: number, width: number, height: number) {
+    const drawHeightRaw = (defaultImageWidth * height) / width;
+    return Math.floor(drawHeightRaw);
+  }
+
   public async loadImage(imageSrc: string, defaultImageWidth: number) {
     const image = await this._imageLoader.loadImage(imageSrc);
     const { width, height } = image;
-    const drawHeightRaw = (defaultImageWidth * height) / width;
-    const drawHeight = Math.floor(drawHeightRaw);
+    const drawHeight = this._calculateDrawHeight(defaultImageWidth, width, height);
 
     return {
       drawHeight,

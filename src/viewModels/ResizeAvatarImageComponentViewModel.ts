@@ -1,12 +1,4 @@
-import {
-  AMouseHandler,
-  IAMouseHandler,
-  IImageMoveModel,
-  IDrawImageOnCanvasModel,
-  IImageResizeModelFactory,
-  IResizeImageModel,
-  ITopLeftCssCalculatorModel,
-} from 'models';
+import { AMouseHandler, IAMouseHandler, IImageMoveModel, IDrawImageOnCanvasModel, IImageResizeModelFactory, IResizeImageModel, ITopLeftCssCalculatorModel } from 'models';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { EDotsNames, TCanvasSize, TPosition, TResizeDots, TSize } from 'types';
 
@@ -15,7 +7,7 @@ type TCanvasSizeWithOffset = {
   offset: TPosition;
 };
 
-const DEFAULT_SIZE: TCanvasSizeWithOffset = {
+export const DEFAULT_SIZE: TCanvasSizeWithOffset = {
   size: {
     height: 0,
     styleHeight: 0,
@@ -30,22 +22,14 @@ export interface IResizeAvatarImageComponentViewModel extends IAMouseHandler {
   handleResize: (currentDot: EDotsNames, event: React.MouseEvent, image: HTMLCanvasElement) => void;
   handleStartResize: (image: HTMLCanvasElement) => void;
   handleFinishResize: () => void;
-  prepareOffsetsForDots: (
-    imageTopLeft: TPosition,
-    imageWidth: number,
-    imageHeight: number,
-  ) => TResizeDots;
+  prepareOffsetsForDots: (imageTopLeft: TPosition, imageWidth: number, imageHeight: number) => TResizeDots;
 }
 
-export class ResizeAvatarImageComponentViewModel
-  extends AMouseHandler
-  implements IResizeAvatarImageComponentViewModel
-{
+export class ResizeAvatarImageComponentViewModel extends AMouseHandler implements IResizeAvatarImageComponentViewModel {
   private _currentSizeWithTopLeftPosition$ = new BehaviorSubject(DEFAULT_SIZE);
   private _currentImageResizeModel: IResizeImageModel | null = null;
 
-  public readonly currentSizeWithTopLeftPosition$ =
-    this._currentSizeWithTopLeftPosition$.asObservable();
+  public readonly currentSizeWithTopLeftPosition$ = this._currentSizeWithTopLeftPosition$.asObservable();
 
   constructor(
     private readonly _drawAvatarOnCanvasModel: IDrawImageOnCanvasModel,
@@ -58,10 +42,7 @@ export class ResizeAvatarImageComponentViewModel
   }
 
   private _updateCurrentSizeWithTopLeftPosition() {
-    combineLatest([
-      this._drawAvatarOnCanvasModel.canvasSize$,
-      this._moveImageViewModel.elementOffset$,
-    ]).subscribe(([size, offset]) => {
+    combineLatest([this._drawAvatarOnCanvasModel.canvasSize$, this._moveImageViewModel.elementOffset$]).subscribe(([size, offset]) => {
       this._currentSizeWithTopLeftPosition$.next({ size, offset });
     });
   }
@@ -90,22 +71,12 @@ export class ResizeAvatarImageComponentViewModel
         y: image.parentElement!.offsetTop,
       };
 
-      const newImageSize = this._currentImageResizeModel.calcResize(
-        currentDot,
-        mousePosition,
-        { width: image.width, height: image.height },
-        A,
-      );
-      const cssA = this._topLeftCssCalculator.calcTopLeftCss(
-        currentDot,
-        parentOffset,
-        newImageSize,
-        mousePosition,
-      );
+      const newImageSize = this._currentImageResizeModel.calcResize(currentDot, mousePosition, { width: image.width, height: image.height }, A);
+      const cssA = this._topLeftCssCalculator.calcTopLeftCss(currentDot, parentOffset, newImageSize, mousePosition);
 
       this._moveImageViewModel.turnOffIsMouseDown();
       this._drawAvatarOnCanvasModel.calculateCanvasSize(newImageSize.height, newImageSize.width);
-      this._moveImageViewModel.updateElementPositionRaw(cssA);
+      this._moveImageViewModel.updateElementPosition(cssA);
     }
   }
 

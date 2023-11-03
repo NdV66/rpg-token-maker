@@ -5,17 +5,20 @@ import { IResizeAvatarImageComponentViewModel } from './ResizeAvatarImageCompone
 
 import { IExportCanvasModel } from 'models';
 
-export interface IMainComponentViewModel {
+export interface IExportToPngViewModel {
+  exportToPng: IExportCanvasModel['exportToPng'];
+}
+
+export interface IMainComponentViewModel extends IExportToPngViewModel {
   resizeAvatarViewModel: IResizeAvatarImageComponentViewModel;
   avatarFrameComponentViewModel: IAvatarFrameComponentViewModel;
   avatarImageComponentViewModel: IAvatarImageComponentViewModel;
 
   avatarFrameSize: number;
   defaultAvatarImageWidth: number;
-  exportToPng: IExportCanvasModel['exportToPng'];
 }
 
-export class MainComponentViewModel implements IMainComponentViewModel {
+export class ResizeComponentViewModel implements IMainComponentViewModel {
   constructor(
     private _appEnv: TAppEnv,
     public readonly resizeAvatarViewModel: IResizeAvatarImageComponentViewModel,

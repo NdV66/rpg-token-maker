@@ -1,10 +1,11 @@
 import { APP_ENV } from 'appEnv';
-import { MainComponent, SettingContextWrapper } from 'components';
-import { mainComponentViewModel } from 'modelBuilder';
+import { SettingContextWrapper } from 'components';
+import { HomePage } from 'components/HomeView/HomeView';
+import { resizeComponentViewModel } from 'modelBuilder';
 
 export const App = () => (
-  <SettingContextWrapper translations={APP_ENV.translations}>
-    <MainComponent mainComponentViewModel={mainComponentViewModel} />
+  <SettingContextWrapper appEnv={APP_ENV}>
+    <HomePage resizeComponentViewModel={resizeComponentViewModel} />
   </SettingContextWrapper>
 );
 
