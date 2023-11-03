@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Box } from '@mui/material';
-import { IMainComponentViewModel } from 'viewModels';
+import { IResizeComponentViewModel } from 'viewModels';
 import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
 import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
@@ -8,9 +8,10 @@ import { ResizeArea } from './ResizeArea';
 import { useSettingsContext } from 'components/SettingsContextComponent';
 import { ExportCanvasButton } from './ExportCanvasButton';
 import img from 'data/other3.jpeg'; //TODO load
+import { UploadImageComponent } from './UploadImageComponent';
 
 type Props = {
-  resizeComponentViewModel: IMainComponentViewModel;
+  resizeComponentViewModel: IResizeComponentViewModel;
 };
 
 export const ResizeView = ({ resizeComponentViewModel }: Props) => {
@@ -19,7 +20,9 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
   return (
-    <Box>
+    <Box textAlign="right">
+      <UploadImageComponent translations={translations} />
+
       <ResizeArea
         width={workspaceSizeWidth}
         height={workspaceSizeHeight}

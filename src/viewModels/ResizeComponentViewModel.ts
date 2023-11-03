@@ -9,7 +9,7 @@ export interface IExportToPngViewModel {
   exportToPng: IExportCanvasModel['exportToPng'];
 }
 
-export interface IMainComponentViewModel extends IExportToPngViewModel {
+export interface IResizeComponentViewModel extends IExportToPngViewModel {
   resizeAvatarViewModel: IResizeAvatarImageComponentViewModel;
   avatarFrameComponentViewModel: IAvatarFrameComponentViewModel;
   avatarImageComponentViewModel: IAvatarImageComponentViewModel;
@@ -18,7 +18,7 @@ export interface IMainComponentViewModel extends IExportToPngViewModel {
   defaultAvatarImageWidth: number;
 }
 
-export class ResizeComponentViewModel implements IMainComponentViewModel {
+export class ResizeComponentViewModel implements IResizeComponentViewModel {
   constructor(
     private _appEnv: TAppEnv,
     public readonly resizeAvatarViewModel: IResizeAvatarImageComponentViewModel,

@@ -1,9 +1,9 @@
 import { Button } from '@mui/material';
 import { PropsWithChildren } from 'react';
-import { IMainComponentViewModel } from 'viewModels';
+import { IResizeComponentViewModel } from 'viewModels';
 
 type Props = {
-  exportToPng: IMainComponentViewModel['exportToPng'];
+  exportToPng: IResizeComponentViewModel['exportToPng'];
   frameCanvasRef: React.RefObject<HTMLCanvasElement>;
   imageCanvasRef: React.RefObject<HTMLCanvasElement>;
 };

@@ -1,6 +1,6 @@
 import { ThemeProvider, CssBaseline, Alert, styled } from '@mui/material';
 import { ResizeView } from '../ResizeView';
-import { IMainComponentViewModel } from 'viewModels';
+import { IResizeComponentViewModel } from 'viewModels';
 import { useMuiTheme } from '../useMuiTheme';
 import { useSettingsContext } from '../SettingsContextComponent';
 import { AppNavbarView } from './AppNavbarView';
@@ -9,7 +9,7 @@ import { FooterView } from './FooterView';
 import { AppContainer } from 'components/elements';
 
 type Props = {
-  resizeComponentViewModel: IMainComponentViewModel;
+  resizeComponentViewModel: IResizeComponentViewModel;
 };
 
 export const HomePage = ({ resizeComponentViewModel }: Props) => {

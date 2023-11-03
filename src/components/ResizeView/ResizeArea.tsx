@@ -11,4 +11,5 @@ export const ResizeArea = styled('div')<Props>(({ width, height }) => ({
   overflow: 'hidden',
   position: 'relative',
   zIndex: 1,
+  margin: '16px 0px',
 }));
