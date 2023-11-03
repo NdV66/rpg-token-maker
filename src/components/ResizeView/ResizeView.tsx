@@ -1,12 +1,12 @@
 import { useRef } from 'react';
-
+import { Box } from '@mui/material';
 import { IMainComponentViewModel } from 'viewModels';
 import { AvatarFrameComponent } from './AvatarFrameComponent';
 import { AvatarImageComponent } from './AvatarImageComponent';
-import { ExportCanvasComponent } from './ExportCanvasComponent';
 import { ResizeAvatarImageComponent } from './ResizeAvatarImageComponent';
 import { ResizeArea } from './ResizeArea';
 import { useSettingsContext } from 'components/SettingsContextComponent';
+import { ExportCanvasButton } from './ExportCanvasButton';
 
 type Props = {
   resizeComponentViewModel: IMainComponentViewModel;
@@ -18,7 +18,7 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
   return (
-    <div>
+    <Box>
       <ResizeArea
         width={workspaceSizeWidth}
         height={workspaceSizeHeight}
@@ -34,13 +34,15 @@ export const ResizeView = ({ resizeComponentViewModel }: Props) => {
           viewModel={resizeComponentViewModel.avatarImageComponentViewModel}
         />
         <ResizeAvatarImageComponent viewModel={resizeComponentViewModel.resizeAvatarViewModel} imageRef={imageCanvasRef} />
-
         <AvatarFrameComponent canvasRef={frameCanvasRef} size={resizeComponentViewModel.avatarFrameSize} viewModel={resizeComponentViewModel.avatarFrameComponentViewModel} />
       </ResizeArea>
 
-      <ExportCanvasComponent exportToPng={resizeComponentViewModel.exportToPng} frameCanvasRef={frameCanvasRef} imageCanvasRef={imageCanvasRef}>
-        {translations.exportImageToPng}
-      </ExportCanvasComponent>
-    </div>
+      <ExportCanvasButton
+        exportToPngViewModel={resizeComponentViewModel}
+        frameCanvasRef={frameCanvasRef}
+        imageCanvasRef={imageCanvasRef}
+        translations={translations}
+      ></ExportCanvasButton>
+    </Box>
   );
 };
