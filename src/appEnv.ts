@@ -7,6 +7,7 @@ export const APP_ENV: TAppEnv = {
   theme: DARK_THEME,
   defaultImageWidth: 300,
   defaultFrameSize: 200,
-  workspaceSize: 800,
+  workspaceSizeWidth: 800,
+  workspaceSizeHeight: 800,
   minImageSize: 100,
 };

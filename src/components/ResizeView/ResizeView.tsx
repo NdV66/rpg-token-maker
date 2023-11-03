@@ -13,20 +13,22 @@ type Props = {
 };
 
 export const ResizeView = ({ resizeComponentViewModel }: Props) => {
-  const { workspaceSize, translations } = useSettingsContext();
+  const { workspaceSizeHeight, workspaceSizeWidth, translations } = useSettingsContext();
   const frameCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
 
   return (
     <div>
       <ResizeArea
-        size={workspaceSize}
+        width={workspaceSizeWidth}
+        height={workspaceSizeHeight}
         onMouseLeave={() => {
           resizeComponentViewModel.avatarImageComponentViewModel.turnOffIsMouseDown();
         }}
       >
         <AvatarImageComponent
-          workspaceSize={workspaceSize}
+          workspaceSizeHeight={workspaceSizeHeight}
+          workspaceSizeWidth={workspaceSizeWidth}
           canvasRef={imageCanvasRef}
           defaultWidth={resizeComponentViewModel.defaultAvatarImageWidth}
           viewModel={resizeComponentViewModel.avatarImageComponentViewModel}

@@ -25,8 +25,8 @@ export class ExportCanvasModel implements IExportCanvasModel {
 
   private _prepareCanvasForMergeLayers() {
     const mergedLayersCanvas = document.createElement('canvas');
-    mergedLayersCanvas.width = this._appEnv.workspaceSize;
-    mergedLayersCanvas.height = this._appEnv.workspaceSize;
+    mergedLayersCanvas.width = this._appEnv.workspaceSizeWidth;
+    mergedLayersCanvas.height = this._appEnv.workspaceSizeHeight;
     return mergedLayersCanvas;
   }
 
