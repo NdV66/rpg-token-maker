@@ -8,6 +8,7 @@ import {
   TopLeftCssCalculatorModel,
   ResizeImageCalculationPointsModel,
   ResizeImageCalculationsModel,
+  ImageUploadModel,
 } from 'models';
 import { ResizeComponentViewModel, ResizeAvatarImageComponentViewModel, AvatarFrameComponentViewModel, AvatarImageComponentViewModel } from 'viewModels';
 
@@ -19,6 +20,7 @@ const imageMoveModel = new ImageMoveModel();
 const topLeftCssCalculatorModel = new TopLeftCssCalculatorModel();
 const resizeImageCalculationPointsModel = new ResizeImageCalculationPointsModel();
 const resizeImageCalculationsModel = new ResizeImageCalculationsModel();
+const imageUploadImageModel = new ImageUploadModel();
 
 const avatarFrameComponentViewModel = new AvatarFrameComponentViewModel(drawAvatarFrameModel);
 const avatarImageComponentViewModel = new AvatarImageComponentViewModel(drawAvatarImageModel, imageMoveModel);
@@ -35,4 +37,5 @@ export const resizeComponentViewModel = new ResizeComponentViewModel(
   avatarFrameComponentViewModel,
   avatarImageComponentViewModel,
   exportCanvasModel,
+  imageUploadImageModel,
 );

@@ -1,6 +1,15 @@
 import { TAppEnv } from 'types';
 import { enEN } from 'data';
-import { IDrawImageOnCanvasModel, IExportCanvasModel, IImageLoaderModel, IImageMoveModel, IImageResizeModelFactory, IResizeImageModel, ITopLeftCssCalculatorModel } from 'models';
+import {
+  IDrawImageOnCanvasModel,
+  IExportCanvasModel,
+  IImageLoaderModel,
+  IImageMoveModel,
+  IImageResizeModelFactory,
+  IImageUploadModel,
+  IResizeImageModel,
+  ITopLeftCssCalculatorModel,
+} from 'models';
 import { Subject } from 'rxjs';
 import { IAvatarFrameComponentViewModel, IAvatarImageComponentViewModel, IResizeAvatarImageComponentViewModel } from 'viewModels';
 import { DARK_THEME } from 'data/theme';
@@ -48,6 +57,11 @@ export const resizeAvatarViewModelMock: IResizeAvatarImageComponentViewModel = {
   handleStartResize: jest.fn(),
   handleFinishResize: jest.fn(),
   prepareOffsetsForDots: jest.fn(),
+};
+
+export const imageUploadModelMock: IImageUploadModel = {
+  uploadImage: jest.fn(),
+  currentImageSrc: new Subject(),
 };
 
 export const avatarFrameComponentViewModelMock: IAvatarFrameComponentViewModel = {

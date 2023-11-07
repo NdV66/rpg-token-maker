@@ -13,4 +13,5 @@ export const enEN: TTranslations = {
   info: `This is only my MVP/POC project, so go easy with me.
    I've been just trying to use some new technologies and logic.
    This app doesn't work with mobile or touch screens.`,
+  uploadAvatar: 'Upload avatar',
 };

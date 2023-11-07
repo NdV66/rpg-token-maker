@@ -9,4 +9,5 @@ export type TTranslations = {
   linkedinLink: string;
   contact: string;
   info: string;
+  uploadAvatar: string;
 };
