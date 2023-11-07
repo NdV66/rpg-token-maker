@@ -1,4 +1,4 @@
-import { ThemeProvider, CssBaseline, Alert, styled } from '@mui/material';
+import { ThemeProvider, CssBaseline, Alert } from '@mui/material';
 import { ResizeView } from '../ResizeView';
 import { IResizeComponentViewModel } from 'viewModels';
 import { useMuiTheme } from '../useMuiTheme';
