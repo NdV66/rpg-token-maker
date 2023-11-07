@@ -11,10 +11,6 @@ jobs:
     name: 🚀 Deploy RPG Token Demo App
     runs-on: ubuntu-latest
 
-    env:
-      SERVER: ${{ secrets.PROD_SERVER }}
-      SERVER_DIR: ${{ secrets.PROD_DIR }}
-
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
@@ -33,9 +29,9 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: ${{ env.SERVER }}
+        server: ${{ secrets.PROD_SERVER }}
         username: ${{ secrets.PROD_USER }}
         password: ${{ secrets.PROD_PASSWORD }}
         local-dir: ./build/
-        server-dir: ${{ env.SERVER_DIR }}
+        server-dir: ${{ secrets.PROD_DIR }}
         dangerous-clean-slate: true
