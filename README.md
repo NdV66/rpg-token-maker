@@ -1,7 +1,10 @@
 # Getting Started with RPG Token Maker
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 This project allows you to create an RPG token from your own image.
+
+This is only my MVP/POC project, so go easy with me.
+I've been just trying to use some new technologies and logic.
+This app doesn't work with mobile or touch screens.
 
 # Run locally
 ## Requirements
@@ -26,11 +29,6 @@ This project allows you to create an RPG token from your own image.
 5. After merge a simple deploy action is called //TODO
 6. Refresh master locally using `git pull origin master`.
 7. App is available under `rpg-token.narin.dev` -->
-
-<!-- ## How to run e2e tests?
-1. Go to the main folder.
-2. Run `yarn start`
-3. Run `yarn cypress:open` -->
 
 # Architecture
 ## Overview
@@ -114,5 +112,3 @@ This project allows you to create an RPG token from your own image.
 - file name should be the same as the pageComponent name
 - can use RxJS (if needed)
 - all logic should be placed inside its own hook (often in the same file)
-
-The sample image (avatar) is from [here](https://www.duitang.com/blog/?id=1172580997).
