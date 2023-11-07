@@ -18,7 +18,7 @@ This app doesn't work with mobile or touch screens.
 4. Run `yarn start` to run app in the dev mode.
 5. App is available under `localhost:3000`.
 
-<!-- # How to deploy?
+# How to deploy?
 0. Create dedicated branch for the version
 1. Change version in the `package.json`.
 2. Make sure everything is merged etc.
@@ -28,7 +28,7 @@ This app doesn't work with mobile or touch screens.
 4. Merge all changes to the `master` branch.
 5. After merge a simple deploy action is called //TODO
 6. Refresh master locally using `git pull origin master`.
-7. App is available under `rpg-token.narin.dev` -->
+7. App is available under `rpg-token.narin.dev`
 
 # Architecture
 ## Overview
