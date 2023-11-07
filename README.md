@@ -26,7 +26,7 @@ This app doesn't work with mobile or touch screens.
 `git tag -a vX.X.X -m "What was done"` \
 `git push --tags`
 4. Merge all changes to the `master` branch.
-5. After merge a simple deploy action is called //TODO
+5. After merge a simple deploy action is called
 6. Refresh master locally using `git pull origin master`.
 7. App is available under `rpg-token.narin.dev`
 

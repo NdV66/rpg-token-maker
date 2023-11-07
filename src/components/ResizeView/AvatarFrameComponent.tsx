@@ -1,7 +1,7 @@
 import { IAvatarFrameComponentViewModel } from 'viewModels';
 import { useDrawAnyImageOnCanvas } from './hooks/useDrawAnyImageOnCanvas';
 
-import frame from 'data/frame.png'; //TODO load
+import frame from 'data/frame.png';
 import styled from '@emotion/styled';
 
 type Props = {
